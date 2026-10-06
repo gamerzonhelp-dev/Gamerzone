@@ -1,0 +1,1735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GAMERZONE</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050d0b;--card:#1d212b;--field:#11131a;--line:#2d3340;--text:#fff;--muted:#7d8492;--green:#00ff88;--tab:#1f4a3a;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% 40%,#0c2a1f 0,var(--bg) 70%);font-family:Roboto,system-ui,sans-serif;color:var(--text);display:flex;justify-content:center;padding:28px 16px}
+.card{width:100%;max-width:420px;background:var(--card);border:1px solid var(--line);border-radius:28px;padding:28px 24px 30px;height:fit-content}
+.logo{width:52px;height:52px;border:1.5px solid var(--green);border-radius:14px;display:grid;place-items:center;color:var(--green);font-weight:700;font-size:22px}
+.tabs{display:grid;grid-template-columns:1fr 1fr;margin-top:24px;background:#101218;border:1px solid var(--line);border-radius:14px;padding:4px}
+.tabs button{border:0;background:none;color:var(--muted);font:500 14px Roboto,sans-serif;padding:11px;border-radius:11px;cursor:pointer}
+.tabs button.on{background:var(--tab);color:var(--green)}
+.step{display:flex;align-items:center;gap:10px;margin:24px 0 8px;color:var(--green);font-weight:500;font-size:12px;letter-spacing:.16em}
+.step i{width:20px;height:3px;background:var(--green);border-radius:2px}
+h1{font-size:30px;line-height:1.2;font-weight:500;margin:0 0 10px;letter-spacing:-.01em}
+.sub{color:var(--muted);font-size:14px;line-height:1.6;margin:0 0 24px;font-weight:300}
+label{display:block;color:#b5bac5;font-size:13px;margin:0 0 8px}
+input{width:100%;background:var(--field);border:1px solid var(--line);border-radius:12px;padding:13px 16px;color:var(--text);font:400 15px Roboto,sans-serif;margin-bottom:18px}
+input::placeholder{color:#636a78}
+input:focus{outline:2px solid var(--green);outline-offset:1px;border-color:var(--green)}
+.err{color:#ff6b6b;font-size:14px;margin:-12px 0 18px;min-height:0}
+.cta{width:100%;border:0;background:var(--green);color:#04150d;font:500 16px Roboto,sans-serif;padding:15px;border-radius:14px;cursor:pointer;display:flex;justify-content:center;align-items:center;gap:14px;margin-top:8px}
+.cta:active{transform:scale(.99)}
+.cta:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.note{margin-top:18px;color:var(--green);font-size:15px;text-align:center}
+[hidden]{display:none}
+#intro{position:fixed;inset:0;z-index:99;background:#020605;display:grid;place-items:center;overflow:hidden;cursor:pointer;transition:opacity .6s,visibility .6s}
+#intro.out{opacity:0;visibility:hidden}
+#intro::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,255,136,.06) 0 2px,transparent 2px 4px);animation:scan 1s linear infinite}
+@keyframes scan{to{background-position:0 4px}}
+.beam{position:absolute;left:0;right:0;height:140px;background:linear-gradient(transparent,rgba(0,255,136,.2),transparent);animation:beam 2.2s linear infinite}
+@keyframes beam{from{top:-140px}to{top:100%}}
+.ibox{position:relative;text-align:center;padding:0 20px}
+.boot{font:500 13px ui-monospace,Menlo,monospace;color:var(--green);height:18px;margin-bottom:30px;opacity:.85}
+.ilogo{margin:0 auto 28px;animation:slam .55s cubic-bezier(.2,1.6,.4,1) .9s both;box-shadow:0 0 40px rgba(0,255,136,.45)}
+@keyframes slam{from{transform:scale(3.2) rotate(-12deg);opacity:0}to{transform:none;opacity:1}}
+.word{font-weight:700;font-size:clamp(38px,12vw,64px);letter-spacing:.06em;color:#fff;animation:pop .4s 1.5s both,glitch 1.6s steps(1) 1.9s infinite}
+.word b{color:var(--green);font-weight:700}
+@keyframes pop{from{opacity:0;letter-spacing:.4em}to{opacity:1;letter-spacing:.06em}}
+@keyframes glitch{0%,40%,100%{transform:none;text-shadow:0 0 18px rgba(0,255,136,.35)}10%{transform:translate(-4px,1px);text-shadow:4px 0 #ff2d6f,-4px 0 #00e5ff}20%{transform:translate(4px,-1px);text-shadow:-4px 0 #ff2d6f,4px 0 #00e5ff}30%{transform:translate(0,2px) skewX(-6deg);text-shadow:3px 0 #ff2d6f,-3px 0 #00e5ff}}
+.ibox .tag{display:block;background:none;padding:0;border-radius:0;font-weight:400;margin-top:14px;color:var(--muted);font-size:14px;letter-spacing:.3em;animation:pop .6s 2.1s both}
+.bar{width:min(260px,70vw);height:4px;background:#12231c;border-radius:4px;margin:34px auto 0;overflow:hidden}
+.bar span{display:block;height:100%;width:100%;background:var(--green);box-shadow:0 0 12px var(--green);transform-origin:left;animation:fill 3s cubic-bezier(.6,0,.3,1) .4s both}
+@keyframes fill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.skip{position:absolute;bottom:calc(28px + env(safe-area-inset-bottom,0px));left:0;right:0;text-align:center;color:#4a5560;font-size:13px}
+body.in{display:block;padding:0;background:#0d1016}
+.card.gone{display:none}
+#app{display:none;max-width:480px;margin:0 auto;min-height:100vh}
+body.in #app{display:block}
+.top{position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:rgba(13,16,22,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.brand{font-size:22px;font-weight:700;letter-spacing:.02em}.brand b{color:var(--green);font-weight:700}
+.tools{display:flex;gap:8px}
+.ib{width:38px;height:38px;border-radius:12px;border:1px solid var(--line);background:#141821;display:grid;place-items:center;color:#fff;cursor:pointer}
+svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.view{display:none;padding:18px 16px 110px}.view.on{display:block}
+.sech{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:14px}
+.eye{display:flex;align-items:center;gap:8px;color:var(--green);font-size:11px;letter-spacing:.16em;font-weight:500}.eye i{width:16px;height:2px;background:var(--green)}
+.sech h2{margin:4px 0 0;font-size:22px;font-weight:500}
+.sech a{color:var(--green);font-size:14px;cursor:pointer}
+.stories{display:flex;gap:14px;overflow-x:auto;padding-bottom:6px;scrollbar-width:none}
+.st{flex:none;width:64px;text-align:center;font:400 11px Roboto,sans-serif;color:var(--muted);cursor:pointer;background:none;border:0;padding:0}
+.ring{width:64px;height:64px;border-radius:50%;padding:3px;background:linear-gradient(45deg,#ff2d96,#b026d9);position:relative;margin-bottom:6px}
+.ring.me{background:#3a4150}
+.av{width:100%;height:100%;border-radius:50%;border:3px solid #0d1016;display:grid;place-items:center;font-weight:500;font-size:20px;color:#fff}
+.plus{position:absolute;right:-2px;bottom:-2px;width:20px;height:20px;border-radius:50%;background:var(--green);color:#04150d;display:grid;place-items:center;font-size:15px;font-weight:700;border:2px solid #0d1016}
+.post,.vid{background:#191d27;border:1px solid var(--line);border-radius:22px;overflow:hidden;margin-top:22px}
+.ph{display:flex;align-items:center;gap:10px;padding:12px 14px}
+.ph .av{width:38px;height:38px;border:0;flex:none;font-size:16px}
+.who{flex:1;min-width:0}.who b{font-size:15px;font-weight:500}.who small{display:block;color:var(--muted);font-size:12px}
+.vf{display:inline-block;width:14px;height:14px;border-radius:50%;background:#1d9bf0;vertical-align:-2px;margin-left:4px}
+.fol{background:none;border:1px solid var(--line);color:#fff;border-radius:10px;padding:6px 14px;font:500 13px Roboto,sans-serif;cursor:pointer}
+.fol.on{color:var(--green);border-color:var(--green)}
+.more{background:none;border:0;color:#fff;font-size:20px;cursor:pointer;padding:0 4px}
+.media{aspect-ratio:1/.64;background:linear-gradient(135deg,#0f2f2b,#15563f 60%,#1a7f55);position:relative;overflow:hidden;display:grid;place-items:center;text-align:center}
+.media::before,.media::after{content:"";position:absolute;width:140%;height:64px;background:#16a765;opacity:.55}
+.media::before{left:-25%;top:28%;transform:rotate(-38deg)}
+.media::after{right:-25%;top:68%;transform:rotate(38deg)}
+.media div{position:relative;z-index:1}
+.media small{display:block;font-size:13px;letter-spacing:.4em;font-weight:500}
+.media strong{display:block;font-size:84px;line-height:1;color:var(--green);font-weight:700;text-shadow:0 0 24px rgba(0,255,136,.5);margin:4px 0}
+.acts{display:flex;gap:16px;padding:12px 14px 4px;align-items:center}
+.acts button{background:none;border:0;color:#fff;cursor:pointer;padding:0}
+.acts .sp{flex:1}
+.acts .liked svg{fill:#ff4d6d;stroke:#ff4d6d}
+.cap{padding:4px 14px 2px;font-size:14px}.cap b{font-weight:500}
+.vc{padding:2px 14px 14px;color:var(--muted);font-size:13px}
+.vid{display:flex}
+.thumb{width:34%;min-height:130px;background:linear-gradient(135deg,#3b3f9c,#8a2a78);display:grid;place-items:center;text-align:center;font-weight:700;font-size:18px;line-height:1.15;padding:8px}
+.vi{padding:14px;flex:1}.vi b{font-size:15px;font-weight:500}.vi p{margin:4px 0 12px;color:#c3c8d2;font-size:14px}
+.watch{border:1px solid var(--line);background:#141821;color:#fff;border-radius:10px;padding:8px 14px;font:500 13px Roboto,sans-serif;cursor:pointer}
+.empty{text-align:center;padding:90px 20px;color:var(--muted)}
+.empty .ic{width:56px;height:56px;border-radius:16px;border:1px solid var(--line);margin:0 auto 16px;display:grid;place-items:center;color:var(--green)}
+.empty h2{color:#fff;font-size:20px;font-weight:500;margin:0 0 8px}.empty p{font-size:14px;margin:0}
+#nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;display:none;overflow-x:auto;background:rgba(17,20,28,.97);border-top:1px solid var(--line);padding:8px 6px calc(8px + env(safe-area-inset-bottom,0px));scrollbar-width:none;z-index:6}
+body.in #nav{display:flex}
+#nav button{flex:1 0 0;min-width:0;background:none;border:0;color:#7d8492;font:400 11px Roboto,sans-serif;display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 0;cursor:pointer}
+#nav button.on{color:var(--green)}
+#nav svg.i{width:22px;height:22px}
+.ib{position:relative}
+.bdg{position:absolute;top:-5px;right:-5px;min-width:18px;height:18px;border-radius:9px;background:var(--green);color:#04150d;font:700 11px Roboto,sans-serif;display:grid;place-items:center;padding:0 4px}
+#sbg{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.6);display:none;align-items:flex-end;justify-content:center}
+#sbg.on{display:flex}
+#sb{width:100%;max-width:480px;max-height:82vh;overflow:auto;background:#191d27;border:1px solid var(--line);border-bottom:0;border-radius:22px 22px 0 0;padding:16px 16px calc(20px + env(safe-area-inset-bottom,0px))}
+.sh-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:17px}.sh-h b{font-weight:500}
+.x{background:none;border:0;color:var(--muted);font-size:18px;cursor:pointer}
+.opt{display:flex;align-items:center;gap:12px;width:100%;background:none;border:0;border-top:1px solid var(--line);color:#fff;font:400 16px Roboto,sans-serif;padding:15px 4px;cursor:pointer;text-align:left}
+.opt.dng{color:#ff6b6b}
+#sb textarea{width:100%;min-height:110px;background:var(--field);border:1px solid var(--line);border-radius:12px;padding:13px 16px;color:#fff;font:400 15px Roboto,sans-serif;resize:none;margin-bottom:6px}
+#sb textarea:focus{outline:2px solid var(--green);outline-offset:1px}
+.mut{color:var(--muted);font-size:14px;margin:0 0 16px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{border:1px solid var(--line);background:#141821;color:#fff;border-radius:14px;padding:14px;font:500 15px Roboto,sans-serif;cursor:pointer}
+.btn.dng{background:#ff4d4d;border-color:#ff4d4d}
+.cm{display:flex;gap:10px;margin-bottom:14px;font-size:14px}.cm b{font-weight:500}.cm p{margin:2px 0 0;color:#c3c8d2}
+.cin{display:flex;gap:8px;margin-top:8px}.cin input{margin:0}.cin .btn{padding:0 18px}
+.ni{display:flex;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--line);font-size:14px}.ni p{margin:0}.ni small{color:var(--muted)}.ni .dot{margin-left:auto;width:8px;height:8px;border-radius:50%;background:var(--green);flex:none}
+.av.sm{width:36px;height:36px;border:0;flex:none;font-size:15px;background:#2b3140}
+#toast{position:fixed;left:50%;bottom:96px;transform:translate(-50%,20px);background:#e8ecf1;color:#0d1016;padding:10px 18px;border-radius:12px;font-size:14px;font-weight:500;opacity:0;pointer-events:none;transition:.2s;z-index:60;max-width:90%}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+.lc{padding:2px 14px;font-size:14px;font-weight:500}
+.saved svg{fill:var(--green);stroke:var(--green)}
+.vm{background:linear-gradient(135deg,#3b3f9c,#8a2a78)}
+.vm::before,.vm::after{background:#b03a9a;opacity:.3}
+#nv{position:fixed;inset:0;z-index:15;background:#0b0d12;display:none;overflow-y:auto}
+#nv.on{display:block}
+.nwrap{max-width:480px;margin:0 auto;padding-bottom:40px}
+.nh{display:flex;align-items:center;gap:22px;padding:16px 16px 10px;position:sticky;top:0;background:#0b0d12;z-index:2}
+.nh b{font-size:22px;font-weight:500}
+.nh button{background:none;border:0;color:#fff;cursor:pointer;display:grid;padding:0}
+.chips{display:flex;gap:10px;overflow-x:auto;padding:8px 16px 14px;scrollbar-width:none}
+.chip{flex:none;border:0;border-radius:12px;background:#2a2e35;color:#fff;font:500 14px Roboto,sans-serif;padding:10px 16px;cursor:pointer}
+.chip.on{background:#fff;color:#0b0d12}
+.ng{padding:14px 16px 8px;font-size:17px;font-weight:500}
+.nr{display:flex;gap:12px;align-items:center;padding:11px 16px}.nr.u{background:#22262d}
+.nr .av{width:50px;height:50px;border:0;flex:none;font-size:18px}
+.nt{flex:1;font-size:14px;line-height:1.4}.nt b{font-weight:500}.nt .tm{color:var(--muted)}
+.nt a{display:block;margin-top:4px;color:#7d8aa0;cursor:pointer;font-size:13px}
+.nth{width:44px;height:54px;border-radius:8px;flex:none;display:grid;place-items:center;font-size:20px}
+.cv{container-type:inline-size;position:relative;overflow:hidden;aspect-ratio:9/16;border-radius:18px}
+.si{position:absolute;transform:translate(-50%,-50%);white-space:pre-wrap;text-align:center;font-weight:700;line-height:1.15;cursor:grab;max-width:90%;user-select:none;text-shadow:0 1px 8px rgba(0,0,0,.35);touch-action:pan-y}
+#se,#sv{position:fixed;inset:0;z-index:40;background:#0b0d12;display:none;flex-direction:column}
+#se.on,#sv.on{display:flex}
+.sbar{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;max-width:480px;width:100%;margin:0 auto;gap:12px}
+.sbar b{font-weight:500}
+.cw{flex:1;min-height:0;display:grid;place-items:center;padding:0 16px}
+.cw .cv{height:100%;max-width:100%}
+.tl{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:12px 16px 6px}
+.tb{background:#141821;border:1px solid var(--line);color:#fff;border-radius:12px;padding:9px 12px;font:500 13px Roboto,sans-serif;cursor:pointer}
+.tb.on{border-color:var(--green);color:var(--green)}
+#sp{padding:6px 16px calc(14px + env(safe-area-inset-bottom,0px));max-width:480px;width:100%;margin:0 auto;min-height:70px}
+.sw{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;align-items:center}
+.sw i{flex:none;width:34px;height:34px;border-radius:50%;border:2px solid rgba(255,255,255,.2);cursor:pointer}
+.sw i.on{border-color:#fff}
+.sw .btn{padding:8px 12px;flex:none}
+.emo{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.emo button{background:none;border:0;font-size:28px;cursor:pointer;padding:2px 6px}
+.trow{display:flex;gap:8px;align-items:center;margin-bottom:10px}.trow input{margin:0;flex:1}
+.pg{flex:1;height:3px;background:rgba(255,255,255,.25);border-radius:2px;overflow:hidden}
+.pg i{display:block;height:100%;background:#fff;width:0;animation:pgf 8s linear forwards}
+@keyframes pgf{to{width:100%}}
+.who2{display:flex;gap:10px;align-items:center;flex:1}.who2 small{display:block;color:var(--muted);font-size:12px}
+.wal{display:flex;align-items:center;gap:8px;background:#141821;border:1px solid var(--line);border-radius:12px;padding:8px 12px;font:500 14px Roboto,sans-serif;cursor:pointer;color:#fff}
+.wal b{color:var(--green);font-weight:700}
+.hero{margin-top:14px;border-radius:22px;padding:20px;background:linear-gradient(135deg,#0f3d2c,#0d1016 70%);border:1px solid #1d5a42;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-40px;top:-40px;width:170px;height:170px;border-radius:50%;background:radial-gradient(rgba(0,255,136,.35),transparent 70%)}
+.hero small{color:var(--green);letter-spacing:.16em;font-size:11px;font-weight:500}
+.hero h3{margin:6px 0 4px;font-size:22px;font-weight:500;line-height:1.25;position:relative;z-index:1}
+.hero p{margin:0;color:#aab1bd;font-size:14px;position:relative;z-index:1}
+.hs{display:flex;gap:24px;margin-top:16px;position:relative;z-index:1}.hs div{font-size:12px;color:var(--muted)}.hs b{display:block;font-size:20px;color:#fff;font-weight:700}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);background:#101218;border:1px solid var(--line);border-radius:14px;padding:4px;margin:18px 0 14px}
+.seg button{border:0;background:none;color:var(--muted);font:500 13px Roboto,sans-serif;padding:10px 4px;border-radius:11px;cursor:pointer}
+.seg button.on{background:var(--tab);color:var(--green)}
+.fl{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+.fl .chip{padding:8px 14px;font-size:13px}
+.bc{background:#191d27;border:1px solid var(--line);border-radius:20px;padding:16px;margin-top:14px}
+.bt{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.08em;border-radius:8px;padding:5px 9px;background:#2a2e35}
+.tag.g{background:var(--tab);color:var(--green)}
+.cd{font-size:13px;color:#ffd60a;font-weight:500}
+.bc h3{margin:12px 0 2px;font-size:19px;font-weight:500}
+.bc .sub{color:var(--muted);font-size:13px}
+.pz{display:flex;align-items:flex-end;justify-content:space-between;margin-top:14px;gap:10px}
+.pz small{display:block;color:var(--muted);font-size:12px}.pz strong{font-size:28px;color:var(--green);font-weight:700;line-height:1.1}
+.medals{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}.medals span{background:#11131a;border:1px solid var(--line);border-radius:10px;padding:6px 9px;font-size:13px}
+.sl{margin-top:14px;font-size:12px;color:var(--muted);display:flex;justify-content:space-between}
+.pb{height:6px;background:#11131a;border-radius:4px;margin-top:6px;overflow:hidden}.pb i{display:block;height:100%;background:linear-gradient(90deg,#00c46a,var(--green));border-radius:4px}
+.bf{display:flex;align-items:center;gap:10px;margin-top:14px}
+.bf .fee{font-size:12px;color:var(--muted)}.bf .fee b{display:block;font-size:18px;color:#fff;font-weight:500}
+.bf .cta{margin:0;flex:1;width:auto;padding:13px;font-size:15px}
+.cta[disabled]{background:#2a2e35;color:var(--muted);cursor:default}
+.dl{background:none;border:1px solid var(--line);color:#fff;border-radius:14px;padding:12px 14px;font:500 14px Roboto,sans-serif;cursor:pointer}
+.kv{display:flex;justify-content:space-between;padding:12px 0;border-top:1px solid var(--line);font-size:15px}.kv b{font-weight:500}.kv span{color:#b5bac5}
+.ol{margin:6px 0 14px;padding-left:18px;color:#c3c8d2;font-size:14px;line-height:1.65}
+.hd{margin:16px 0 4px;font-size:15px;font-weight:500}
+.lb{display:flex;align-items:center;gap:12px;padding:12px 4px;border-top:1px solid var(--line);cursor:pointer}
+.lb .rk{width:24px;text-align:center;font-weight:700;color:var(--muted)}
+.lb .av{width:42px;height:42px;border:0;font-size:16px;flex:none}
+.lb .nm{flex:1;font-size:15px}.lb .nm small{display:block;color:var(--muted);font-size:12px}
+.lb .am{color:var(--green);font-weight:700}
+.nh input{margin:0;flex:1;padding:11px 14px;font-size:15px}
+.sr{display:flex;align-items:center;gap:12px;padding:10px 16px;cursor:pointer}
+.sr .av{width:46px;height:46px;border:0;font-size:17px;flex:none}
+.sr .nt small{color:var(--muted)}
+.pfh{text-align:center}.pfh .av{width:76px;height:76px;margin:0 auto 10px;border:0;font-size:28px}
+.pfs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0}
+.pfs div{background:#11131a;border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center;font-size:12px;color:var(--muted)}.pfs b{display:block;color:#fff;font-size:17px;font-weight:700}
+.pc{background:#191d27;border:1px solid var(--line);border-radius:20px;overflow:hidden}
+.cover{height:110px}
+.pbody{padding:0 16px 16px}
+.prow{display:flex;justify-content:space-between;align-items:flex-end}
+.pav{width:88px;height:88px;border-radius:50%;border:4px solid #191d27;display:grid;place-items:center;font-size:34px;font-weight:700;margin-top:-44px;box-shadow:0 0 0 2px var(--green)}
+.pn{font-size:22px;font-weight:500;margin-top:10px}
+.pu{color:var(--muted);font-size:13px;margin-top:3px}
+.pbio{margin-top:8px;font-size:14px;color:#c3c8d2}
+.pst{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:16px}
+.pst div{background:#11131a;border:1px solid var(--line);border-radius:12px;padding:10px 4px;text-align:center;font-size:11px;color:var(--muted)}.pst b{display:block;color:#fff;font-size:17px;font-weight:700}
+.wc{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,#0f3d2c,#11131a);border:1px solid #1d5a42;border-radius:16px;padding:14px 16px;margin-top:14px}
+.wc small{color:var(--muted);font-size:12px;display:block}.wc strong{font-size:22px;color:var(--green)}
+.lo{width:100%;margin-top:22px;background:none;border:1px solid #5a2a2a;color:#ff6b6b;border-radius:14px;padding:14px;font:500 15px Roboto,sans-serif;cursor:pointer}
+.cover{position:relative}
+.cb{position:absolute;right:10px;top:10px;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:10px;padding:6px 10px;font:500 12px Roboto,sans-serif;cursor:pointer}
+.pavw{position:relative;cursor:pointer}
+.cam{position:absolute;right:-2px;bottom:2px;width:28px;height:28px;border-radius:50%;background:var(--green);display:grid;place-items:center;font-size:14px;border:2px solid #191d27}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:4px}
+.cv.gt{aspect-ratio:1/1;border-radius:10px;cursor:pointer}
+.cv.pv{aspect-ratio:4/5;border-radius:0;width:100%}
+.cv.mt{aspect-ratio:auto;width:56px;height:70px;border-radius:10px;flex:none}
+#sb .cv.pv{max-width:260px;margin:0 auto;border-radius:14px}
+.up{display:grid;gap:12px;margin-top:14px}
+.upc{display:flex;align-items:center;gap:14px;background:#191d27;border:1px solid var(--line);border-radius:18px;padding:16px;cursor:pointer}
+.upc .ic{width:48px;height:48px;border-radius:14px;background:var(--tab);color:var(--green);display:grid;place-items:center;flex:none}
+.upc b{font-weight:500;font-size:16px}.upc small{display:block;color:var(--muted);font-size:13px;margin-top:3px}
+.mr{display:flex;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+.mr .nm{flex:1;font-size:14px;min-width:0}.mr .nm small{display:block;color:var(--muted);font-size:12px}
+.mr .btn{padding:8px 12px;font-size:13px}
+#se[data-m="post"] .cv,#se[data-m="pedit"] .cv{aspect-ratio:4/5}
+.rg{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
+.rg input{width:100%;margin:2px 0 0;padding:0;accent-color:#00ff88;background:none;border:0}
+#pbar{padding:0 16px calc(14px + env(safe-area-inset-bottom,0px));max-width:480px;width:100%;margin:0 auto}
+#pbar input{margin:0 0 10px}
+#pbar .two .cta{margin:0;padding:14px;font-size:15px}
+.sf{padding:10px 16px calc(14px + env(safe-area-inset-bottom,0px));max-width:480px;width:100%;margin:0 auto}
+.vs{background:none;border:0;color:#fff;font:500 14px Roboto,sans-serif;cursor:pointer;padding:6px 0}
+.lkb{display:grid;place-items:center;width:52px;height:52px;margin:0 auto;border-radius:50%;background:#141821;border:1px solid var(--line);color:#fff;cursor:pointer}
+.lkb svg{width:24px;height:24px}
+.lkb.on svg{fill:#ff4d6d;stroke:#ff4d6d}
+.vr{display:flex;align-items:center;gap:10px;padding:8px 0;font-size:14px}.vr i{margin-left:auto;color:#ff4d6d;font-style:normal}
+#vl{max-height:26vh;overflow:auto;margin-top:6px}
+#cv,#cv .si{touch-action:none}
+.dc{background:linear-gradient(135deg,#0f3d2c,#11131a 70%);border:1px solid #1d5a42;border-radius:22px;padding:18px;display:flex;gap:14px;align-items:center;margin-top:14px}
+.dc .av{width:64px;height:64px;border:0;font-size:24px;flex:none;box-shadow:0 0 0 2px var(--green)}
+.dn{flex:1;min-width:0}.dn b{font-size:18px;font-weight:500}
+.lvl{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-top:8px}
+.dg{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.ds{background:#191d27;border:1px solid var(--line);border-radius:18px;padding:14px}
+.ds span{font-size:20px}.ds b{display:block;font-size:24px;font-weight:700;margin-top:6px}.ds small{color:var(--muted);font-size:12px}
+.ds.g b{color:var(--green)}
+.nx{background:#191d27;border:1px solid var(--line);border-radius:20px;padding:16px;margin-top:14px}
+.nx .t{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.nx h3{margin:10px 0 2px;font-size:18px;font-weight:500}
+.nx .btn{margin-top:12px;width:100%}
+.vipcard{background:linear-gradient(135deg,#4a3a05,#1a1608 70%);border:1px solid #6b5410;border-radius:20px;padding:16px;margin-top:14px;display:flex;align-items:center;gap:14px}
+.vstar{font-size:30px}
+.vipcard b{font-size:16px;font-weight:500;color:#ffd60a}.vipcard small{display:block;color:#bfae6a;font-size:12px;margin-top:2px}
+.vipcard .btn{margin-left:auto;border-color:#ffd60a;color:#ffd60a;flex:none}
+.vbd{display:inline-block;margin-left:6px;background:linear-gradient(135deg,#ffd60a,#ff9f0a);color:#2a1c00;font-size:10px;font-weight:700;letter-spacing:.06em;border-radius:6px;padding:2px 6px;vertical-align:2px}
+.vget{margin-left:8px;background:none;border:1px solid #6b5410;color:#ffd60a;border-radius:8px;padding:3px 9px;font:500 12px Roboto,sans-serif;cursor:pointer}
+.pav.vip{box-shadow:0 0 0 2px #ffd60a}
+.ring.gold{background:linear-gradient(45deg,#ffd60a,#ff9f0a)}
+.qa{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+.qa button{background:#191d27;border:1px solid var(--line);border-radius:16px;padding:12px 4px;color:#fff;font:500 12px Roboto,sans-serif;cursor:pointer}
+.qa span{display:block;font-size:22px;margin-bottom:4px}
+.bgs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.bgi{background:#191d27;border:1px solid var(--line);border-radius:16px;padding:12px 6px;text-align:center;font-size:12px;color:#fff}
+.bgi span{display:block;font-size:26px;margin-bottom:4px}
+.bgi.off{opacity:.4;color:var(--muted)}
+.vipc{display:flex;gap:12px;align-items:center;background:linear-gradient(135deg,#4a3a05,#1a1608);border:1px solid #6b5410;border-radius:16px;padding:14px;margin-bottom:12px}
+.vipc b{color:#ffd60a;font-size:17px;font-weight:500}.vipc small{display:block;color:#bfae6a}
+.vl2{list-style:none;padding:0;margin:0 0 14px}.vl2 li{padding:10px 0;border-top:1px solid var(--line);font-size:15px}.vl2 li b{display:block;font-weight:500}.vl2 li span{color:var(--muted);font-size:13px}
+.cta.gd,.cta.vipb{background:linear-gradient(135deg,#ffd60a,#ff9f0a);color:#2a1c00}
+.pay-h{text-align:center;padding:6px 0 14px}.pay-h small{display:block;color:var(--muted);font-size:13px}.pay-h strong{font-size:34px;color:var(--green);font-weight:700}
+.pmr{display:flex;align-items:center;gap:12px;width:100%;background:#11131a;border:1px solid var(--line);border-radius:14px;padding:12px 14px;color:#fff;font:500 15px Roboto,sans-serif;text-align:left;cursor:pointer;margin-bottom:8px}
+.pmr small{display:block;color:var(--muted);font-size:12px;font-weight:400;margin-top:2px}
+.pmr.on{border-color:var(--green);background:#0f2a21}
+.pmr[disabled]{opacity:.5;cursor:default}
+#sb .cta{margin-top:6px}
+.pmi{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font-weight:700;font-size:16px;color:#fff;flex:none}
+.pay-ok{text-align:center;padding:10px 0 16px}.pay-ok .tick{width:64px;height:64px;border-radius:50%;background:var(--green);color:#04150d;font-size:34px;font-weight:700;display:grid;place-items:center;margin:0 auto 12px}.pay-ok strong{display:block;font-size:30px}.pay-ok small{color:var(--muted)}
+.pyl{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 10px}.pyl span{font-size:11px;color:#b5bac5;border:1px solid var(--line);border-radius:8px;padding:4px 8px}
+.otr{display:flex;gap:12px;margin-bottom:30px}.otr input{margin:0;text-align:center;font-size:22px;padding:14px 0}
+.lnk{background:none;border:0;color:var(--green);font:500 14px Roboto,sans-serif;cursor:pointer;padding:6px 0;margin-bottom:12px}
+.rf{padding:0 16px 40px}
+.rh{border-radius:22px;padding:22px 18px;background:linear-gradient(135deg,#0f3d2c,#11131a 75%);border:1px solid #1d5a42}.rh small{color:var(--green);letter-spacing:.16em;font-size:11px;font-weight:500}.rh h3{margin:8px 0 6px;font-size:24px;font-weight:500;line-height:1.25}.rh p{margin:0;color:#aab1bd;font-size:14px}
+.rcode{display:flex;justify-content:space-between;align-items:center;margin-top:14px;background:#11131a;border:1px dashed #2f6b50;border-radius:16px;padding:14px 16px}.rcode small{display:block;color:var(--muted);font-size:12px}.rcode b{font:700 22px ui-monospace,Menlo,monospace;letter-spacing:.08em;color:var(--green)}
+.rst{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.rst div{background:#191d27;border:1px solid var(--line);border-radius:14px;padding:12px 4px;text-align:center;font-size:11px;color:var(--muted)}.rst b{display:block;color:#fff;font-size:18px;font-weight:700}
+.rpb{height:8px;background:#11131a;border-radius:6px;overflow:hidden;margin:10px 0 6px}.rpb i{display:block;height:100%;background:linear-gradient(90deg,#00c46a,var(--green))}
+.ms{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line);font-size:14px;color:#b5bac5}.ms .ck{width:28px;height:28px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-size:13px;flex:none}.ms.on{color:#fff}.ms.on .ck{background:var(--green);border-color:var(--green);color:#04150d}.ms b{font-weight:500}
+.rsec{margin:22px 0 8px;font-size:17px;font-weight:500}
+.rstep{display:flex;gap:12px;margin:10px 0;font-size:14px;color:#c3c8d2;align-items:center}.rstep span{width:26px;height:26px;border-radius:50%;background:var(--tab);color:var(--green);display:grid;place-items:center;font-weight:700;font-size:13px;flex:none}
+.rtc{margin:8px 0 0;padding-left:18px;color:var(--muted);font-size:12px;line-height:1.7}
+.refc{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,#0f3d2c,#14171f 80%);border:1px solid #1d5a42;border-radius:20px;padding:16px;margin-top:14px}.refc .em{font-size:30px}.refc b{display:block;font-size:16px;font-weight:500}.refc small{color:#aab1bd;font-size:12px}.refc .btn{margin-left:auto;padding:10px 14px}
+.sprof{display:flex;align-items:center;gap:14px;width:100%;background:#191d27;border:1px solid var(--line);border-radius:20px;padding:14px;color:#fff;cursor:pointer;text-align:left;font-family:inherit;margin-bottom:6px}
+.sprof .av{width:52px;height:52px;flex:none;border:0;font-size:20px}.sprof b{font-weight:500;font-size:17px}.sprof small{display:block;color:var(--muted);font-size:13px}.sprof i{margin-left:auto;color:var(--muted);font-style:normal;font-size:22px}
+.sg{margin:20px 0 8px;font-size:11px;letter-spacing:.16em;color:var(--muted);font-weight:500}
+.sbox{background:#191d27;border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.sr2{display:flex;align-items:center;gap:12px;width:100%;background:none;border:0;border-top:1px solid var(--line);padding:14px 16px;color:#fff;font:400 15px Roboto,sans-serif;text-align:left;cursor:pointer}
+.sbox .sr2:first-child{border-top:0}
+.sr2 .si2{width:34px;height:34px;border-radius:10px;background:#11131a;display:grid;place-items:center;font-size:16px;flex:none}
+.sr2 small{display:block;color:var(--muted);font-size:12px;margin-top:2px}.sr2 i{margin-left:auto;color:var(--muted);font-style:normal;font-size:20px}
+.tgl{margin-left:auto;width:44px;height:26px;border-radius:13px;background:#2a2e35;position:relative;flex:none;transition:.2s}.tgl::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.2s}.tgl.on{background:var(--green)}.tgl.on::after{left:21px;background:#04150d}
+.faq b{display:block;font-weight:500;margin:14px 0 4px}.faq p{margin:0;color:#c3c8d2;font-size:14px;line-height:1.55}
+.rs{margin-top:12px;padding:12px 14px;border-radius:14px;background:#11131a;border:1px solid var(--line);font-size:14px;color:#c3c8d2;line-height:1.5}
+.rs.win{border-color:#1d5a42;background:#0f2a21;color:var(--green);font-weight:500}.rs.bad{border-color:#5a2a2a;color:#ff9b9b}
+.bc>.cta,.bc>.btn{margin-top:12px}.bc>.lnk{display:block;margin:10px auto 0}
+.sbm{display:flex;gap:12px;align-items:center;margin-top:12px}
+.sth{width:56px;height:78px;border-radius:10px;object-fit:cover;background:#11131a;border:1px solid var(--line);cursor:pointer;flex:none}
+.sbm b{font-weight:500;font-size:15px}.sbm small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+.subp{height:200px;border-radius:14px;background:#11131a;border:1px dashed var(--line);display:grid;place-items:center;color:var(--muted);font-size:14px;overflow:hidden}.subp img{max-width:100%;max-height:100%;object-fit:contain}
+.hsr{background:#191d27;border:1px solid var(--line);border-radius:18px;padding:14px;margin-top:12px}
+.hfl span{display:inline-block;background:#3a2a05;color:#ffd66b;font-size:11px;border-radius:8px;padding:3px 8px;margin:8px 6px 0 0}
+.hbt{display:flex;gap:8px;margin-top:12px}.hbt .btn{flex:1;padding:11px}.hbt .ok{border-color:var(--green);color:var(--green)}.hbt .no{border-color:#5a2a2a;color:#ff6b6b}
+.hchk{margin-top:16px;background:#191d27;border:1px solid var(--line);border-radius:16px;padding:12px 14px}.hchk summary{cursor:pointer;font-size:15px}.hchk ol{margin:10px 0 0;padding-left:18px;color:#c3c8d2;font-size:14px;line-height:1.7}
+.shotbig{width:100%;max-height:55vh;object-fit:contain;border-radius:12px;background:#11131a;margin-bottom:10px}
+.rm{margin-top:12px;border-radius:16px;padding:14px;background:#11131a;border:1px solid var(--line)}
+.rmh{display:flex;align-items:center;gap:12px}.rmi{font-size:22px}.rmh b{font-weight:500;font-size:15px}.rmh small{display:block;color:var(--muted);font-size:12px;margin-top:2px}.rmt{margin-left:auto;color:#ffd66b;font-weight:700;font-size:15px}
+.rm.live{background:linear-gradient(135deg,#0f3d2c,#11131a 80%);border:1.5px solid var(--green);animation:rmp 1.8s infinite}
+@keyframes rmp{0%{box-shadow:0 0 0 0 rgba(0,255,136,.5)}70%{box-shadow:0 0 0 10px rgba(0,255,136,0)}100%{box-shadow:0 0 0 0 rgba(0,255,136,0)}}
+.live-b{display:inline-block;background:var(--green);color:#04150d;font-size:11px;font-weight:700;letter-spacing:.1em;border-radius:6px;padding:3px 8px}
+.rmr{display:flex;align-items:center;gap:10px;margin-top:12px;background:#0b0d12;border:1px solid #1d5a42;border-radius:12px;padding:10px 12px}.rmr small{display:block;color:var(--muted);font-size:11px;letter-spacing:.12em}.rmr b{font:700 24px ui-monospace,Menlo,monospace;letter-spacing:.08em;color:#fff}.rmr .btn{margin-left:auto;padding:9px 14px}
+.stp{margin:10px 0 0;color:#aab1bd;font-size:12px;line-height:1.5}
+.rsb{display:flex;align-items:center;gap:12px;margin-top:12px;background:#11131a;border:1px solid var(--line);border-radius:14px;padding:12px 14px}.rsb b{font-weight:500;font-size:14px}.rsb small{display:block;color:var(--muted);font-size:12px;margin-top:2px}.rsb .btn{margin-left:auto;padding:9px 14px}
+.dmr{margin-top:10px;text-align:center}.dmr .btn{padding:8px 14px;font-size:13px;border-style:dashed;color:var(--muted)}
+.rs.hl{border-color:var(--green);color:#fff}
+#rbn{position:sticky;top:66px;z-index:4}
+.rbb{display:flex;align-items:center;gap:12px;width:100%;border:0;border-bottom:1px solid #1d5a42;background:linear-gradient(90deg,#0f3d2c,#0b2a20);color:#fff;padding:11px 16px;font-family:inherit;cursor:pointer;text-align:left}
+.rbb.sub{background:linear-gradient(90deg,#3a2a05,#241a05);border-bottom-color:#8a6a1a}
+.rbb b{display:block;font-weight:500;font-size:14px}.rbb small{display:block;color:#b9c4bf;font-size:12px;margin-top:1px}.rbb i{margin-left:auto;font-style:normal;font-size:20px;color:var(--green)}
+.rdot{width:10px;height:10px;border-radius:50%;background:var(--green);flex:none;animation:rmp 1.4s infinite}
+select{width:100%;background:var(--field) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%237d8492' stroke-width='2'/></svg>") no-repeat right 16px center;border:1px solid var(--line);border-radius:12px;padding:13px 16px;color:var(--text);font:400 15px Roboto,sans-serif;margin-bottom:18px;-webkit-appearance:none;appearance:none}
+select:focus{outline:2px solid var(--green);outline-offset:1px;border-color:var(--green)}
+option{background:#1d212b;color:#fff}
+input[type=date]{color-scheme:dark}
+.chk{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:#b5bac5;line-height:1.5;margin:0 0 16px}
+.chk input{width:20px;height:20px;margin:2px 0 0;padding:0;flex:none;accent-color:var(--green)}
+.lnk2{background:none;border:0;color:var(--green);font:inherit;padding:0;cursor:pointer;text-decoration:underline}
+.lg h4{margin:22px 0 6px;font-size:16px;font-weight:500}
+.lg p{margin:0 0 8px;color:#c3c8d2;font-size:14px;line-height:1.65}
+.blk{padding:40px 20px;text-align:center}.blk .bi{font-size:56px;margin-bottom:12px}.blk h2{font-size:22px;font-weight:500;margin:0 0 10px;line-height:1.3}.blk p{color:#c3c8d2;font-size:14px;line-height:1.6;margin:0 0 14px}.blk .btn,.blk .cta{width:100%;margin-top:10px}
+.gchips{margin:4px 0 18px}.gchips span{display:inline-block;background:#3a1a1a;color:#ff9b9b;border:1px solid #5a2a2a;border-radius:10px;padding:6px 10px;margin:4px 3px 0;font-size:13px}
+@media(prefers-reduced-motion:reduce){.beam{display:none}.word{animation:pop .4s 1.5s both!important}}
+@media(max-width:380px){h1{font-size:27px}}
+</style>
+</head>
+<body>
+<div id="intro" aria-label="Gamerzone intro">
+  <div class="beam"></div>
+  <div class="ibox">
+    <div class="boot" id="boot"></div>
+    <div class="logo ilogo">GZ</div>
+    <div class="word">GAMER<b>ZONE</b></div>
+    <div class="tag">ENTER THE ARENA</div>
+    <div class="bar"><span></span></div>
+  </div>
+  <div class="skip">Tap to skip</div>
+</div>
+<main class="card">
+  <div class="logo">GZ</div>
+  <div class="tabs" role="tablist">
+    <button id="t-up" class="on" role="tab" type="button">Sign up</button>
+    <button id="t-in" role="tab" type="button">Log in</button>
+  </div>
+
+  <section id="signup">
+    <div class="step"><i></i>STEP 1 OF 2</div>
+    <h1>Create your arena ID.</h1>
+    <p class="sub">Set up your player profile, then verify your number.</p>
+    <label for="name">Gamer Name / In-Game ID</label>
+    <input id="name" placeholder="e.g. NeonNinja" autocomplete="nickname">
+    <label for="phone">WhatsApp / Phone Number</label>
+    <input id="phone" type="tel" placeholder="+91 00000 00000" autocomplete="tel">
+    <label for="pass">Create Password</label>
+    <input id="pass" type="password" placeholder="Minimum 4 characters" autocomplete="new-password">
+    <label for="dob">Date of birth</label>
+    <input id="dob" type="date" min="1920-01-01" autocomplete="bday">
+    <label for="ste">Your state</label>
+    <select id="ste"></select>
+    <label class="chk"><input type="checkbox" id="agr"><span>I am 18 or older. I agree to the <button type="button" class="lnk2" data-a="lgl" data-k="terms">Terms &amp; Conditions</button>, <button type="button" class="lnk2" data-a="lgl" data-k="privacy">Privacy Policy</button> and <button type="button" class="lnk2" data-a="lgl" data-k="refund">Refund &amp; Cancellation Policy</button>.</span></label>
+    <button type="button" class="lnk" id="rcb">Have a referral code?</button><input id="rc" placeholder="Referral code (optional)" autocomplete="off" hidden style="text-transform:uppercase">
+    <div class="err" id="err" role="alert"></div>
+    <button class="cta" id="go" type="button">Continue to WhatsApp OTP <span aria-hidden="true">→</span></button>
+    <div class="note" id="ok" hidden>Details saved. OTP step coming next.</div>
+    <p class="mut" id="sgf" style="text-align:center;font-size:12px;margin:14px 0 0"></p>
+  </section>
+
+    <section id="otp" hidden>
+    <div class="step"><i></i>STEP 2 OF 2</div>
+    <h1>Verify your number.</h1>
+    <p class="sub" id="otpsub">Enter the 4-digit code we sent on WhatsApp.</p>
+    <div class="otr"><input class="ob" inputmode="numeric" maxlength="1" aria-label="Digit 1"><input class="ob" inputmode="numeric" maxlength="1" aria-label="Digit 2"><input class="ob" inputmode="numeric" maxlength="1" aria-label="Digit 3"><input class="ob" inputmode="numeric" maxlength="1" aria-label="Digit 4"></div>
+    <div class="err" id="oerr" role="alert"></div>
+    <button class="cta" id="otpgo" type="button">Verify &amp; continue <span aria-hidden="true">→</span></button>
+    <div class="note" style="color:var(--muted);font-size:14px" id="otpn"></div>
+    <button type="button" class="lnk" id="otpback" style="display:block;margin:6px auto 0">Change number</button>
+  </section>
+
+  <section id="login" hidden>
+    <div class="step"><i></i>WELCOME BACK</div>
+    <h1>Log in to the arena.</h1>
+    <p class="sub">Use your phone number and password.</p>
+    <label for="lphone">WhatsApp / Phone Number</label>
+    <input id="lphone" type="tel" placeholder="+91 00000 00000" autocomplete="tel">
+    <label for="lpass">Password</label>
+    <input id="lpass" type="password" placeholder="Your password" autocomplete="current-password">
+    <button class="cta" id="lgo" type="button">Log in <span aria-hidden="true">→</span></button>
+  </section>
+</main>
+<div id="app">
+  <header class="top">
+    <div class="brand">GAMER<b>ZONE</b> 🎮</div>
+    <div class="tools"><button class="ib" id="bs" data-ic="search" aria-label="Search players"></button><button class="ib" id="bn" aria-label="Notifications"></button></div>
+  </header>
+  <div id="rbn"></div>
+
+  <section class="view on" id="v-home">
+    <div class="sech"><div><div class="eye"><i></i>GAMER STORIES</div><h2>Squad updates</h2></div><a>See all</a></div>
+    <div class="stories" id="stories"></div>
+
+    <div id="feed"></div>
+  </section>
+</div>
+<nav id="nav"></nav>
+<div id="sbg"><div id="sb"></div></div>
+<div id="toast" role="status"></div>
+<div id="nv"><div class="nwrap" id="nwrap"></div></div>
+<div id="se">
+  <div class="sbar"><button class="x" data-a="sclose" aria-label="Close">✕</button><b id="set">New story</b><button class="fol on" id="sshare" data-a="sshare">Share</button></div>
+  <div class="cw"><div class="cv" id="cv"></div></div>
+  <div class="tl"><button class="tb" data-a="pm" data-m="bg">Background</button><button class="tb" data-a="photo">Photo</button><button class="tb" data-a="pm" data-m="fl">Filter</button><button class="tb" data-a="pm" data-m="ad">Adjust</button><button class="tb" data-a="pm" data-m="tx">Text</button><button class="tb" data-a="pm" data-m="em">Stickers</button><button class="tb" data-a="undo">Undo</button></div>
+  <div id="sp"></div>
+  <div id="pbar" hidden><input id="pcap" maxlength="200" placeholder="Write a caption..."><div class="two"><button class="cta" data-a="pshare">Share post</button><button class="btn" data-a="pstory">Add to story</button></div></div>
+  <input type="file" id="sf" accept="image/*" hidden>
+</div>
+<div id="sv"></div>
+<input type="file" id="sfile" accept="image/*" hidden><input type="file" id="pfi" accept="image/*" hidden><input type="file" id="pci" accept="image/*" hidden><input type="file" id="upi" accept="image/*" hidden>
+
+<script>
+const $=id=>document.getElementById(id);
+function tab(up){$('t-up').classList.toggle('on',up);$('t-in').classList.toggle('on',!up);$('signup').hidden=!up;$('login').hidden=up;$('otp').hidden=true}
+const intro=$('intro');let done=false;
+function endIntro(){if(done)return;done=true;intro.classList.add('out');setTimeout(()=>intro.remove(),700)}
+intro.onclick=endIntro;setTimeout(endIntro,4800);
+const lines=['> BOOTING ARENA...','> LOADING PLAYERS...','> CONNECTING...','> READY.'];let li=0;
+const bt=setInterval(()=>{if(done||li>=lines.length)return clearInterval(bt);$('boot').textContent=lines[li++]},420);
+const IC={home:'M3 11l9-8 9 8v10H3zM9 21v-6h6v6',reels:'M8 5v14l11-7z',dashboard:'M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z',upload:'M12 5v14M5 12h14',battles:'M5 4l14 14M19 4L5 18M4 7l3-3M20 7l-3-3',profile:'M12 4a4 4 0 100 8 4 4 0 000-8zM4 21c0-4 4-6 8-6s8 2 8 6',settings:'M12 9a3 3 0 100 6 3 3 0 000-6zM12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2',search:'M11 5a6 6 0 100 12 6 6 0 000-12zM16 16l5 5',heart:'M12 21s-8-5-8-11a4.5 4.5 0 018-3 4.5 4.5 0 018 3c0 6-8 11-8 11z',comment:'M4 5h16v11H9l-5 4z',share:'M5 19L19 5M9 5h10v10',save:'M6 3h12v18l-6-4-6 4z'};
+const svg=k=>'<svg class="i" viewBox="0 0 24 24"><path d="'+IC[k]+'"/></svg>';
+document.querySelectorAll('[data-ic]').forEach(e=>e.innerHTML=svg(e.dataset.ic));
+const ST=[];
+const TABS=[['home','Home'],['battles','Battles',''],['dashboard','Dashboard','Your stats, rank and match history will show here.'],['upload','Upload','Post clips, screenshots and stories from here.'],['profile','Profile','Your player profile and posts will show here.'],['settings','Settings','Account, privacy and notifications.']];
+TABS.slice(1).forEach(t=>{const v=document.createElement('section');v.className='view';v.id='v-'+t[0];v.innerHTML='<div class="empty"><div class="ic">'+svg(t[0])+'</div><h2>'+t[1]+'</h2><p>'+t[2]+'</p></div>';$('app').appendChild(v)});
+$('nav').innerHTML=TABS.map(t=>'<button data-t="'+t[0]+'">'+svg(t[0])+t[1]+'</button>').join('');
+function show(k){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id==='v-'+k));document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.t===k));if(k==='profile')renderP();if(k==='upload')renderU();if(k==='dashboard')renderD();if(k==='settings')renderS();window.scrollTo(0,0)}
+document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>show(b.dataset.t));
+function enterApp(n){ME=n;document.body.classList.add('in');document.querySelector('.card').classList.add('gone');PF.name=n;PF.phone=($('phone').value||$('lphone').value).trim();PF.since=new Date().toLocaleDateString('en-IN',{month:'short',year:'numeric'});genRef(n);renderStories();show('home')}
+$('lgo').onclick=()=>{const p=$('lphone').value.replace(/\D/g,''),w=$('lpass').value;if(p.length<10){$('lphone').focus();return}if(w.length<4){$('lpass').focus();return}if(!PF.ver){toast('No account found. Please sign up first.');return}enterApp(PF.name||'player')};
+let ME='you';
+Object.assign(IC,{edit:'M4 20h4L19 9l-4-4L4 16zM14 6l4 4',trash:'M5 7h14M9 7V4h6v3M7 7l1 13h8l1-13'});
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let POSTS=[];
+let NT=[
+{g:'#5b6cf0,#c026d3',i:'K',b:'KiraOP',r:'liked your post.',a:'2m',d:'Today',ty:'like',th:['#15563f,#1a7f55','🏆'],n:1},
+{g:'#14b8a6,#2563eb',i:'M',b:'MambaX',r:'commented: "Nice clutch!"',a:'15m',d:'Today',ty:'comment',th:['#15563f,#1a7f55','🏆'],n:1},
+{g:'#fbbf24,#f97316',i:'R',b:'RogueFox',r:'started following you.',a:'1h',d:'Today',ty:'follow',msg:1,n:1},
+{g:'#f97316,#c026d3',i:'V',b:'ViperLive, MambaX',r:'and 2 others just shared posts.',a:'44m',d:'Today',ty:'ppl',th:['#3b3f9c,#8a2a78','🎮'],n:0},
+{g:'#818cf8,#c026d3',i:'N',b:'NovaX',r:'added to their story.',a:'51m',d:'Today',ty:'ppl',th:['#f97316,#c026d3','🔥'],n:0},
+{g:'#f97316,#c026d3',i:'V',b:'ViperLive',r:'saved your post.',a:'1d',d:'Yesterday',ty:'like',th:['#15563f,#1a7f55','🏆'],n:0},
+{g:'#5b6cf0,#c026d3',i:'K',b:'KiraOP',r:'replied to your comment: "GG!"',a:'1d',d:'Yesterday',ty:'comment',n:0},
+{g:'#fbbf24,#f97316',i:'R',b:'RogueFox',r:'liked your comment.',a:'3d',d:'Last 7 days',ty:'like',n:0},
+{g:'#818cf8,#c026d3',i:'N',b:'NovaX',r:'started following you.',a:'5d',d:'Last 7 days',ty:'follow',msg:1,n:0}];
+const fp=id=>POSTS.find(p=>p.id==id);
+function feed(){$('feed').innerHTML=POSTS.length?POSTS.map(p=>'<article class="post" data-id="'+p.id+'"><div class="ph">'+pav(p)+'<div class="who"><b>'+esc(p.u)+(p.v?'<span class="vf"></span>':'')+(p.mine?vipB():'')+'</b><small>'+esc(p.sub)+' · '+p.t+'</small></div>'+(p.mine?'':'<button class="fol'+(p.fol?' on':'')+'" data-a="fol">'+(p.fol?'Following':'Follow')+'</button>')+'<button class="more" data-a="more" aria-label="Post options">•••</button></div>'+(p.k=='u'?'<div class="cv pv" data-pc="'+p.id+'"></div>':p.k=='win'?'<div class="media"><div><small>VICTORY</small><strong>8</strong><small>FINAL ROUND</small></div></div>':'<div class="media vm"><div><small>▶</small><strong style="font-size:44px">TOP 5</strong><small>PLAYS</small><button class="watch" data-a="watch" style="margin-top:14px">Watch video</button></div></div>')+'<div class="acts"><button class="'+(p.liked?'liked':'')+'" data-a="like" aria-label="Like">'+svg('heart')+'</button><button data-a="cm" aria-label="Comments">'+svg('comment')+'</button><button data-a="share" aria-label="Share">'+svg('share')+'</button><span class="sp"></span><button class="'+(p.saved?'saved':'')+'" data-a="save" aria-label="Save">'+svg('save')+'</button></div><div class="lc">'+p.likes.toLocaleString()+' likes</div><div class="cap"><b>'+esc(p.u)+'</b> '+esc(p.cap)+'</div><div class="vc" data-a="cm" style="cursor:pointer">'+(p.total?'View all '+p.total+' comments':'Add a comment')+'</div></article>').join(''):'<div class="empty"><p>No posts in your feed.</p></div>';paintAll()}
+function sheet(t,h){$('sb').innerHTML='<div class="sh-h"><b>'+t+'</b><button class="x" data-a="x" aria-label="Close">✕</button></div>'+h;$('sbg').classList.add('on')}
+function closeSheet(){$('sbg').classList.remove('on')}
+let tt;function toast(m){const e=$('toast');e.textContent=m;e.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>e.classList.remove('on'),1900)}
+function badge(){const c=NT.filter(n=>n.n).length;$('bn').innerHTML=svg('heart')+(c?'<span class="bdg">'+c+'</span>':'')}
+function openCm(p){sheet('Comments ('+p.total+')',(p.cm.map(c=>'<div class="cm"><div class="av sm">'+esc(c.u[0].toUpperCase())+'</div><div><b>'+esc(c.u)+'</b><p>'+esc(c.t)+'</p></div></div>').join('')||'<p class="mut">No comments yet. Start the conversation.</p>')+'<div class="cin"><input id="ci" maxlength="200" placeholder="Add a comment"><button class="btn" data-a="addcm" data-id="'+p.id+'">Post</button></div>');$('ci').focus()}
+function doShare(p){const url=location.href,text=p.u+': '+p.cap;if(navigator.share){navigator.share({title:'GAMERZONE',text:text,url:url}).catch(()=>{})}else if(navigator.clipboard){navigator.clipboard.writeText(text+' '+url).then(()=>toast('Link copied'),()=>toast('Could not copy the link'))}else toast('Sharing is not supported here')}
+document.addEventListener('click',e=>{
+ if(e.target.id==='sbg')return closeSheet();
+ const b=e.target.closest('[data-a]');if(!b)return;
+ if(ext(b.dataset.a,b))return;const a=b.dataset.a,pe=b.closest('.post'),p=fp(b.dataset.id||(pe&&pe.dataset.id));
+ if(a==='x')closeSheet();
+ else if(a==='like'&&p){p.liked=p.liked?0:1;p.likes+=p.liked?1:-1;feed()}
+ else if(a==='save'&&p){p.saved=p.saved?0:1;feed();toast(p.saved?'Saved to your collection':'Removed from saved')}
+ else if(a==='fol'&&p){p.fol=p.fol?0:1;const q=PL.find(x=>x.n===p.u);if(q)q.fol=p.fol;feed();toast(p.fol?'Following '+p.u:'Unfollowed '+p.u)}
+ else if(a==='cm'&&p)openCm(p);
+ else if(a==='addcm'&&p){const i=$('ci'),t=i.value.trim();if(!t){i.focus();return}p.cm.push({u:ME,t:t});p.total++;feed();openCm(p);toast('Comment posted')}
+ else if(a==='share'&&p)doShare(p);
+ else if(a==='watch')toast('Video player is coming soon');
+ else if(a==='more'&&p)sheet('Post options','<button class="opt" data-a="edit" data-id="'+p.id+'">'+svg('edit')+'Edit post</button><button class="opt" data-a="shr" data-id="'+p.id+'">'+svg('share')+'Share post</button><button class="opt dng" data-a="delq" data-id="'+p.id+'">'+svg('trash')+'Delete post</button>');
+ else if(a==='shr'&&p){closeSheet();doShare(p)}
+ else if(a==='edit'&&p){sheet('Edit post','<textarea id="ed" maxlength="200">'+esc(p.cap)+'</textarea><button class="cta" data-a="saveedit" data-id="'+p.id+'">Save changes</button>'+(p.mine?'<button class="opt" data-a="pedtimg" data-id="'+p.id+'" style="margin-top:10px">Edit photo, filter &amp; stickers</button>':''));$('ed').focus()}
+ else if(a==='saveedit'&&p){const t=$('ed').value.trim();if(!t){toast('Caption cannot be empty');return}p.cap=t;closeSheet();feed();renderP();renderU();toast('Post updated')}
+ else if(a==='delq'&&p)sheet('Delete this post?','<p class="mut">This post will be removed from your feed.</p><div class="two"><button class="btn" data-a="x">Cancel</button><button class="btn dng" data-a="del" data-id="'+p.id+'">Delete</button></div>');
+ else if(a==='del'&&p){POSTS=POSTS.filter(x=>x.id!==p.id);closeSheet();feed();renderP();renderU();toast('Post deleted')}
+});
+$('sb').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='ci'){const b=$('sb').querySelector('[data-a=addcm]');if(b)b.click()}});
+$('bn').onclick=openNt;
+feed();badge();
+IC.back='M19 12H5M11 6l-6 6 6 6';
+const BG=['#0f2f2b,#1a7f55','#3b3f9c,#8a2a78','#f97316,#c026d3','#14b8a6,#2563eb','#111827,#374151','#ff2d96,#7c3aed'];
+const bgOf=i=>'linear-gradient(160deg,'+BG[i]+')';
+let MY=null,ED=null,editing=0,tcol='#ffffff',tsz=9,svt,drag=null;
+const clamp=v=>Math.max(4,Math.min(96,v));
+function rowH(n){return '<div class="nr'+(n.show?' u':'')+'"><div class="av" style="background:linear-gradient(135deg,'+n.g+')">'+n.i+'</div><div class="nt"><b>'+esc(n.b)+'</b> '+esc(n.r)+' <span class="tm">'+n.a+'</span>'+(n.msg?'<a data-a="nmsg">Message</a>':'')+'</div>'+(n.th?'<div class="nth" style="background:linear-gradient(135deg,'+n.th[0]+')">'+n.th[1]+'</div>':'')+'</div>'}
+function nlist(f){document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c.dataset.f===f));const L=NT.filter(n=>f==='all'||n.ty===f);$('nl').innerHTML=['Today','Yesterday','Last 7 days'].map(g=>{const r=L.filter(n=>n.d===g);return r.length?'<div class="ng">'+g+'</div>'+r.map(rowH).join(''):''}).join('')||'<p class="mut" style="padding:30px 16px">Nothing here yet.</p>'}
+function openNt(){NT.forEach(n=>{n.show=n.n;n.n=0});badge();$('nwrap').innerHTML='<div class="nh"><button data-a="nback" aria-label="Back">'+svg('back')+'</button><b>Notifications</b></div><div class="chips">'+[['all','All'],['ppl','People you follow'],['comment','Comments'],['like','Likes']].map(c=>'<button class="chip" data-f="'+c[0]+'" data-a="nf">'+c[1]+'</button>').join('')+'</div><div id="nl"></div>';nlist('all');$('nv').classList.add('on');$('nv').scrollTop=0}
+
+function closeEd(){$('se').classList.remove('on')}
+
+function closeSv(){clearTimeout(svt);$('sv').classList.remove('on');$('sv').innerHTML=''}
+function ext(a,b){const d=b.dataset;
+ if(a==='nback'){$('nv').classList.remove('on');return 1}
+ if(a==='nf'){nlist(d.f);return 1}
+ if(a==='nmsg'){toast('Messages are coming soon');return 1}
+ if(a==='sadd'||(a==='sme'&&!MY)){openEd(0);return 1}
+ if(a==='sme'){openSv('me');return 1}
+ if(a==='sv'){openSv(+d.k);return 1}
+ if(a==='svclose'){closeSv();return 1}
+ if(a==='sedit'){closeSv();openEd(1);return 1}
+ if(a==='sdel'){if(d.c!=='1'){b.dataset.c='1';b.textContent='Tap again to delete';return 1}MY=null;closeSv();renderStories();toast('Story deleted');return 1}
+ if(a==='sclose'){closeEd();return 1}
+ if(a==='sshare'){doTop();return 1}
+ if(a==='pm'){panel(d.m);return 1}
+ if(a==='photo'){$('sf').click();return 1}
+ if(a==='undo'){ED.items.pop();paint($('cv'),ED);return 1}
+ if(a==='bg'){ED.bgi=+d.i;ED.img=null;paint($('cv'),ED);b.parentNode.querySelectorAll('i').forEach(i=>i.classList.toggle('on',i===b));return 1}
+ if(a==='tc'){tcol=d.c;b.parentNode.querySelectorAll('i').forEach(i=>i.classList.toggle('on',i===b));return 1}
+ if(a==='tz'){tsz=Math.max(5,Math.min(16,tsz+ +d.d));toast('Text size '+tsz);return 1}
+ if(a==='tadd'){const i=$('sti'),t=i.value.trim();if(!t){i.focus();return 1}ED.items.push({k:'t',v:t,c:tcol,s:tsz,x:50,y:45+ED.items.length%5*6});i.value='';paint($('cv'),ED);return 1}
+ if(a==='em'){ED.items.push({k:'e',v:d.e,c:'#fff',s:16,x:40+Math.random()*20,y:40+Math.random()*20});paint($('cv'),ED);return 1}
+ return ext2(a,b)}
+const cvE=$('cv');
+cvE.addEventListener('pointerdown',e=>{const t=e.target.closest('.si');if(!t)return;drag=t;t.setPointerCapture(e.pointerId);e.preventDefault()});
+cvE.addEventListener('pointermove',e=>{if(!drag)return;const r=cvE.getBoundingClientRect(),it=ED.items[drag.dataset.i];it.x=clamp((e.clientX-r.left)/r.width*100);it.y=clamp((e.clientY-r.top)/r.height*100);drag.style.left=it.x+'%';drag.style.top=it.y+'%'});
+['pointerup','pointercancel'].forEach(n=>cvE.addEventListener(n,()=>{drag=null}));
+const PL=[];
+const MD=['🥇','🥈','🥉'],WAL={b:0,bn:0},JN=new Set(),JI={};
+let UID='',BS='c',BF='all';
+var LBL=function(){return []},OPENA=function(){return CS.filter(c=>c.status==='upcoming'&&phase(c)==='up')},OPENC=function(){return OPENA().filter(c=>BF==='all'||c.mode===BF)};
+const NOW=Date.now();
+const CS=[];
+const pad=n=>String(n).padStart(2,'0');
+function fmt(ms){const s=Math.floor(ms/1000),h=Math.floor(s/3600),m=Math.floor(s%3600/60);return h?h+'h '+pad(m)+'m':pad(m)+':'+pad(s%60)}
+setInterval(tick,1000);
+const pool=c=>c.pz.reduce((a,b)=>a+b,0);
+function renderB(){const tot=OPENA().reduce((a,c)=>a+pool(c),0),mine=CS.filter(c=>JN.has(c.id));let body;
+if(BS==='c'){body='<div class="fl">'+[['all','All'],['SOLO','Solo'],['1V1','1v1']].map(f=>'<button class="chip'+(BF===f[0]?' on':'')+'" data-a="bf" data-f="'+f[0]+'">'+f[1]+'</button>').join('')+'</div>'+(OPENC().length?OPENC().map(cardH).join(''):'<p class="mut" style="padding:30px 0;text-align:center">No open contests right now. Check back soon.</p>')+'<p class="mut" style="margin:16px 0 0;text-align:center;font-size:12px">18+ only · Play responsibly</p>'}
+else if(BS==='m'){body=mine.length?mine.map(myH).join(''):'<div class="empty" style="padding:50px 20px"><h2>No battles yet</h2><p>Join a contest to see your room details here.</p><button class="cta" data-a="bseg" data-s="c" style="margin-top:18px;max-width:220px;margin-left:auto;margin-right:auto">Browse contests</button></div>'}
+else{body='<p class="mut" style="margin:0 0 6px;font-size:13px">Top players by winnings</p>'+(LBL().length?LBL().map((p,i)=>[p,i]).map((x,r)=>'<div class="lb"><span class="rk">'+(MD[r]||r+1)+'</span><div class="av" style="background:linear-gradient(135deg,'+x[0].g+')">'+x[0].i+'</div><div class="nm">'+esc(x[0].n)+'<small>'+x[0].w+' wins</small></div><span class="am">₹'+x[0].e+'</span></div>').join(''):'<p class="mut" style="padding:20px 0">No winners yet. Be the first!</p>')}
+$('v-battles').innerHTML='<div class="sech"><div><div class="eye"><i></i>BATTLE ARENA</div><h2>Battles</h2></div><button class="wal" data-a="wal">Wallet <b>₹'+WAL.b+'</b></button></div><div class="hero"><small>LIVE CONTESTS</small><h3>Join a contest. Win the prize pool.</h3><p>Pick a room, pay the entry fee and play.</p><div class="hs"><div><b>'+OPENA().length+'</b>Contests</div><div><b>₹'+tot+'</b>Total prizes</div><div><b>'+mine.length+'</b>Joined</div></div></div><div class="seg">'+[['c','Contests'],['m','My battles'],['l','Leaderboard']].map(s=>'<button class="'+(BS===s[0]?'on':'')+'" data-a="bseg" data-s="'+s[0]+'">'+s[1]+'</button>').join('')+'</div>'+body;tick()}
+function detSheet(c){sheet(esc(c.name),'<div class="kv"><span>Game</span><b>'+(c.g==='BGMI'?'BGMI':'Free Fire')+'</b></div><div class="kv"><span>Format</span><b>'+c.mode+'</b></div><div class="kv"><span>Entry fee</span><b>₹'+c.fee+'</b></div><div class="kv"><span>Slots</span><b>'+c.j+'/'+c.slots+'</b></div><div class="kv"><span>Prize pool</span><b>₹'+pool(c)+'</b></div>'+c.pz.map((p,i)=>'<div class="kv"><span>'+MD[i]+' '+['1st','2nd','3rd'][i]+' place</span><b>₹'+p+'</b></div>').join('')+'<div class="hd">How it works</div><ol class="ol"><li>Join with your Free Fire UID and pay the entry fee.</li><li>Room ID and password appear in My battles 10 minutes before start.</li><li>Enter the room on time and play fair.</li><li>Winners are verified and prizes are credited to the wallet.</li></ol><div class="hd">Rules</div><ol class="ol"><li>Use your own UID. One account per player.</li><li>Hacks, teaming or emulator abuse means disqualification, no refund.</li>'+(c.minp?'<li>This contest starts only if '+c.minp+'+ players join, otherwise entry fees are refunded.</li>':'')+'</ol>')}
+function joinSheet(c){sheet('Join '+esc(c.name),'<div class="kv"><span>Entry fee</span><b>₹'+c.fee+'</b></div><div class="kv"><span>Wallet balance</span><b>₹'+WAL.b+'</b></div><label for="uid" style="margin-top:14px">'+(c.g==='BGMI'?'BGMI Character ID':'Free Fire UID')+'</label><input id="uid" inputmode="numeric" maxlength="12" placeholder="e.g. 5827361904" value="'+esc(c.g==='BGMI'?UIDB:UID)+'"><label for="ign">In-game name</label><input id="ign" maxlength="20" placeholder="Your in-game name" value="'+esc(ME==='you'?'':ME)+'"><div class="err" id="jerr" role="alert"></div><button class="cta" data-a="bpay" data-id="'+c.id+'">Pay ₹'+c.fee+' &amp; Join</button><p class="mut" style="margin:12px 0 0;text-align:center;font-size:12px">18+ only. Play responsibly.</p>')}
+function profSheet(i){const p=PL[i];sheet('Player profile','<div class="pfh"><div class="av" style="background:linear-gradient(135deg,'+p.g+')">'+p.i+'</div><b style="font-size:18px;font-weight:500">'+esc(p.n)+'</b>'+(p.v?'<span class="vf"></span>':'')+'<div class="mut" style="margin:4px 0 0">Free Fire ID: '+p.id+'</div></div><div class="pfs"><div><b>'+p.fl+'</b>Followers</div><div><b>'+p.b+'</b>Battles</div><div><b>'+p.w+'</b>Wins</div></div><div class="two"><button class="btn" data-a="pfol" data-n="'+i+'" style="'+(p.fol?'color:#00ff88;border-color:#00ff88':'')+'">'+(p.fol?'Following':'Follow')+'</button><button class="btn" data-a="nmsg">Message</button></div><p class="mut" style="margin:12px 0 0;text-align:center;font-size:12px">Demo profile data</p>')}
+function srow(p,i){return '<div class="sr" data-a="pf" data-n="'+i+'"><div class="av" style="background:linear-gradient(135deg,'+p.g+')">'+p.i+'</div><div class="nt"><b>'+esc(p.n)+'</b>'+(p.v?'<span class="vf"></span>':'')+'<br><small>ID: '+p.id+' · '+p.fl+' followers</small></div><button class="fol'+(p.fol?' on':'')+'" data-a="pfol" data-n="'+i+'">'+(p.fol?'Following':'Follow')+'</button></div>'}
+function sres(q){q=q.trim().toLowerCase();const L=PL.map((p,i)=>[p,i]).filter(x=>!q||x[0].n.toLowerCase().includes(q)||x[0].id.includes(q));$('sl2').innerHTML=(q?'':'<div class="ng">Suggested players</div>')+(L.map(x=>srow(x[0],x[1])).join('')||'<p class="mut" style="padding:30px 16px">'+(q?'No player found for "'+esc(q)+'".':'No players to show yet. Players you can follow will appear here.')+'</p>')}
+function openSearch(){$('nwrap').innerHTML='<div class="nh"><button data-a="nback" aria-label="Back">'+svg('back')+'</button><input id="sq" placeholder="Search players by name or ID" autocomplete="off"></div><div id="sl2"></div>';$('nv').classList.add('on');$('nv').scrollTop=0;const i=$('sq');i.oninput=()=>sres(i.value);sres('');i.focus()}
+function ext2(a,b){const d=b.dataset,c=CS.find(x=>x.id==d.id);
+ if(a==='bseg'){BS=d.s;renderB();return 1}
+ if(a==='bf'){BF=d.f;renderB();return 1}
+ if(a==='bdet'&&c){detSheet(c);return 1}
+ if(a==='bjoin'&&c){if(JN.has(c.id))return 1;if(c.st<=Date.now()){toast('Registration closed, match has started');return 1}if(!canJoin(c)){if(c.j<c.slots)vipSheet();else toast('This contest is full');return 1}joinSheet(c);return 1}
+ if(a==='bpay'&&c){const u=$('uid').value.trim(),n=$('ign').value.trim(),er=$('jerr');
+  if(!/^\d{8,12}$/.test(u)){er.textContent='Enter a valid '+(c.g==='BGMI'?'BGMI Character ID':'Free Fire UID')+' (8-12 digits).';return 1}
+  if(!n){er.textContent='Enter your in-game name.';return 1}
+  if(!canJoin(c)){er.textContent='This contest just filled up.';return 1}
+  payFlow({title:'Entry fee · '+c.name,kind:'Entry fee',amt:c.fee,wallet:true,done:pa=>{c.j++;if(isVip()&&c.vj<c.vip)c.vj++;JN.add(c.id);JI[c.id]={uid:u,ign:n,paid:pa};if(c.g==='BGMI'){UIDB=u;if(!PF.bid)PF.bid=u}else{UID=u;if(!PF.uid)PF.uid=u}toast('You joined '+c.name)}});return 1}
+ if(a==='wal'){walSheet();return 1}
+  if(a==='pf'){profSheet(+d.n);return 1}
+ if(a==='pfol'){const p=PL[+d.n];p.fol=p.fol?0:1;POSTS.forEach(x=>{if(x.u===p.n)x.fol=p.fol});feed();if(b.closest('#sb'))profSheet(+d.n);if($('sq')&&$('nv').classList.contains('on'))sres($('sq').value);toast(p.fol?'Following '+p.n:'Unfollowed '+p.n);return 1}
+ return ext3(a,b)}
+let PF={name:'',bio:'Free Fire & BGMI player',uid:'',phone:'',avi:0,bid:''},PT='p',PAV=0;
+
+function logout(){document.body.classList.remove('in');document.querySelector('.card').classList.remove('gone');closeSheet();$('pass').value='';tab(true);window.scrollTo(0,0)}
+function ext3(a,b){const d=b.dataset;
+ if(a==='ptab'){PT=d.s;renderP();return 1}
+ if(a==='pedit'){editPf();return 1}
+ if(a==='pav'){PAV=+d.i;b.parentNode.querySelectorAll('i').forEach(i=>i.classList.toggle('on',i===b));return 1}
+ if(a==='psave'){const n=$('pn').value.trim(),u=$('pu').value.trim(),er=$('perr');if(!n){er.textContent='Enter a gamer name.';return 1}if(u&&!/^\d{8,12}$/.test(u)){er.textContent='Free Fire UID must be 8-12 digits.';return 1}const bg=$('pbg').value.trim();if(bg&&!/^\d{8,12}$/.test(bg)){er.textContent='BGMI ID must be 8-12 digits.';return 1}PF.bid=bg;if(bg)UIDB=bg;PF.name=n;PF.bio=$('pb').value.trim();PF.uid=u;PF.avi=PAV;ME=n;if(u)UID=u;closeSheet();renderP();toast('Profile updated');return 1}
+ if(a==='plo'){logout();return 1}
+ return ext4(a,b)}
+const FL=[['Normal',''],['Vivid','saturate(1.5) contrast(1.1)'],['Mono','grayscale(1) contrast(1.1)'],['Noir','grayscale(1) contrast(1.45) brightness(.9)'],['Warm','sepia(.35) saturate(1.3) brightness(1.05)'],['Cool','hue-rotate(-25deg) saturate(1.2) brightness(1.05)'],['Fade','contrast(.85) brightness(1.1) saturate(.8)'],['Neon','saturate(2) contrast(1.2) hue-rotate(15deg)']];
+let svMe=0,LS=new Set(),SID=0,EM='story',EPID=0;
+function fltOf(s){const a=s.adj||{b:100,c:100,s:100};return ((FL[s.fi||0]||FL[0])[1]+' brightness('+a.b+'%) contrast('+a.c+'%) saturate('+a.s+'%)').trim()}
+function paint(el,s){el.style.background='#000';el.innerHTML='<div style="position:absolute;inset:0;background:'+(s.img?'url(\''+s.img+'\') center/cover':bgOf(s.bgi))+';filter:'+fltOf(s)+'"></div>'+s.items.map((it,i)=>'<div class="si" data-i="'+i+'" style="left:'+it.x+'%;top:'+it.y+'%;font-size:'+it.s+'cqw;color:'+it.c+'">'+esc(it.v)+'</div>').join('')}
+function paintAll(){document.querySelectorAll('[data-pc]').forEach(e=>{const p=POSTS.find(x=>x.id==e.dataset.pc);if(p&&p.s)paint(e,p.s)})}
+function readImg(f,max,cb){const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const k=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);cb(c.toDataURL('image/jpeg',.85))};im.onerror=()=>toast('Could not read that image');im.src=r.result};r.readAsDataURL(f)}
+function pav(p){const pic=p.mine&&PF.pic;return '<div class="av" style="background:'+(pic?'#000 url(\''+PF.pic+'\') center/cover':'linear-gradient(135deg,'+p.g+')')+'">'+(pic?'':p.i)+'</div>'}
+function avH(sm){const bg=PF.pic?'#000 url(\''+PF.pic+'\') center/cover':bgOf(PF.avi);return '<div class="av'+(sm?' sm':'')+'" style="background:'+bg+'">'+(PF.pic?'':esc((PF.name||'G')[0].toUpperCase()))+'</div>'}
+function renderStories(){$('stories').innerHTML='<button class="st" data-a="sme"><div class="ring'+(MY?'':' me')+(isVip()?' gold':'')+'">'+avH(0)+'<span class="plus" data-a="sadd">+</span></div>Your story</button>'+ST.map((s,i)=>'<button class="st" data-a="sv" data-k="'+i+'"><div class="ring'+(s.seen?' me':'')+'"><div class="av" style="background:linear-gradient(135deg,'+s[2]+')">'+s[0]+'</div></div>'+s[1]+'</button>').join('')}
+function ago(t){const m=Math.floor((Date.now()-t)/60000);return m<1?'Just now':m+'m ago'}
+function panel(m){document.querySelectorAll('#se .tb[data-m]').forEach(b=>b.classList.toggle('on',b.dataset.m===m));const sp=$('sp');
+if(m==='bg')sp.innerHTML='<div class="sw">'+BG.map((c,i)=>'<i data-a="bg" data-i="'+i+'" class="'+(!ED.img&&ED.bgi===i?'on':'')+'" style="background:'+bgOf(i)+'"></i>').join('')+'</div>';
+else if(m==='fl')sp.innerHTML='<div class="fl">'+FL.map((f,i)=>'<button class="chip'+(ED.fi===i?' on':'')+'" data-a="fi" data-i="'+i+'">'+f[0]+'</button>').join('')+'</div>';
+else if(m==='ad')sp.innerHTML=[['b','Brightness'],['c','Contrast'],['s','Saturation']].map(x=>'<label class="rg">'+x[1]+'<input type="range" min="50" max="150" value="'+ED.adj[x[0]]+'" data-adj="'+x[0]+'"></label>').join('')+'<button class="btn" data-a="adr" style="padding:6px 12px;font-size:12px">Reset</button>';
+else if(m==='tx')sp.innerHTML='<div class="trow"><input id="sti" maxlength="60" placeholder="Type your text"><button class="btn" data-a="tadd">Add</button></div><div class="sw">'+['#ffffff','#00ff88','#ffd60a','#ff4d9d','#38bdf8','#111111'].map(c=>'<i data-a="tc" data-c="'+c+'" class="'+(tcol===c?'on':'')+'" style="background:'+c+'"></i>').join('')+'<button class="btn" data-a="tz" data-d="-1">A−</button><button class="btn" data-a="tz" data-d="1">A+</button></div>';
+else sp.innerHTML='<div class="emo">'+['🎮','🔥','🏆','💀','😂','⚡','👑','🎯','❤️','🚀'].map(e=>'<button data-a="em" data-e="'+e+'">'+e+'</button>').join('')+'</div>'}
+function openEd(edit,mode,img,pid){editing=edit;EM=mode||'story';EPID=pid||0;
+ ED=EM==='pedit'?JSON.parse(JSON.stringify(fp(pid).s)):(edit&&EM==='story')?JSON.parse(JSON.stringify(MY)):{bgi:0,img:img||null,items:[]};
+ ED.fi=ED.fi||0;ED.adj=ED.adj||{b:100,c:100,s:100};
+ $('se').dataset.m=EM;$('set').textContent=EM==='post'?'New post':EM==='pedit'?'Edit post':edit?'Edit story':'New story';
+ $('sshare').textContent=EM==='pedit'?'Save':'Share';$('sshare').hidden=EM==='post';$('pbar').hidden=EM!=='post';
+ if(EM==='post')$('pcap').value='';
+ paint($('cv'),ED);panel(img?'fl':'bg');$('se').classList.add('on')}
+function empty(){return !ED.img&&!ED.items.length}
+function doTop(){if(EM==='pedit'){const p=fp(EPID);p.s=ED;closeEd();feed();renderP();renderU();toast('Post updated');return}
+ if(empty()){toast('Add a photo, text or sticker first');return}pubStory(ED,editing)}
+function pubStory(s,up){const o=MY;MY=s;if(up&&o){s.views=o.views||[];s.likes=o.likes||[];s.t=o.t}else{s.views=[];s.likes=[];s.t=Date.now();simStory()}renderStories();closeEd();toast(up?'Story updated':'Added to your story')}
+function simStory(){}
+function pubPost(){if(empty()){toast('Add a photo, text or sticker first');return}
+ const p={id:Date.now(),u:PF.name||ME,i:(PF.name||ME||'G')[0].toUpperCase(),g:BG[PF.avi],v:0,t:'now',sub:'You',k:'u',mine:1,cap:$('pcap').value.trim(),s:ED,likes:0,liked:0,saved:0,fol:0,total:0,cm:[]};
+ POSTS.unshift(p);closeEd();feed();renderP();renderU();show('home');toast('Post shared');simPost(p)}
+function simPost(p){}
+function openSv(k){const me=k==='me';svMe=me;let s,nm,tm,av,foot;
+ if(me){s=MY;nm='Your story';tm=ago(MY.t);av=avH(1);foot='<div class="sf"><button class="vs" data-a="vlist" id="vstat"></button><div id="vl" hidden></div><div class="tl" style="padding:6px 0 0"><button class="btn" data-a="sedit">Edit story</button><button class="btn dng" data-a="sdel">Delete</button></div></div>'}
+ else{const q=ST[k];s={bgi:k%6,img:null,fi:k%4,adj:{b:100,c:100,s:100},items:[{k:'e',v:'🎮',c:'#fff',s:22,x:50,y:38},{k:'t',v:q[1]+' is in the arena',c:'#fff',s:8,x:50,y:62}]};nm=q[1];tm='1h';av='<div class="av sm" style="background:linear-gradient(135deg,'+q[2]+')">'+q[0]+'</div>';q.seen=1;renderStories();foot='<div class="sf"><button class="lkb'+(LS.has(k)?' on':'')+'" data-a="slike" data-k="'+k+'" aria-label="Like story">'+svg('heart')+'</button></div>'}
+ $('sv').innerHTML='<div class="sbar" style="padding-bottom:0"><div class="pg">'+(me?'':'<i></i>')+'</div></div><div class="sbar"><div class="who2">'+av+'<div><b>'+esc(nm)+'</b>'+(me?vipB():'')+'<small>'+tm+'</small></div></div><button class="x" data-a="svclose" aria-label="Close">✕</button></div><div class="cw"><div class="cv" id="svc"></div></div>'+foot;
+ paint($('svc'),s);$('sv').classList.add('on');clearTimeout(svt);if(!me)svt=setTimeout(closeSv,8000);updSv()}
+function updSv(){if(!svMe||!MY||!$('vstat'))return;$('vstat').textContent='👁 '+MY.views.length+' views · ♥ '+MY.likes.length+' likes';const l=$('vl');if(!l.hidden)l.innerHTML=(MY.views.map(v=>{const p=PL[v.n];return '<div class="vr"><div class="av sm" style="background:linear-gradient(135deg,'+p.g+')">'+p.i+'</div><span>'+esc(p.n)+'</span><i>'+(MY.likes.includes(v.n)?'♥':'')+'</i></div>'}).join('')||'<p class="mut" style="margin:6px 0">No views yet. Players will show up here.</p>')+'<p class="mut" style="font-size:11px;margin:8px 0 0">Demo viewers until the backend is connected.</p>'}
+function postSheet(p){sheet('Your post','<div class="cv pv" data-pc="'+p.id+'"></div><div class="cap" style="padding:12px 0 4px">'+esc(p.cap||'No caption')+'</div><div class="mut" style="margin:0 0 12px">'+p.likes+' likes · '+p.total+' comments</div><button class="opt" data-a="edit" data-id="'+p.id+'">'+svg('edit')+'Edit post</button><button class="opt" data-a="shr" data-id="'+p.id+'">'+svg('share')+'Share post</button><button class="opt dng" data-a="delq" data-id="'+p.id+'">'+svg('trash')+'Delete post</button>');paintAll()}
+function renderU(){const my=POSTS.filter(p=>p.mine);$('v-upload').innerHTML='<div class="sech"><div><div class="eye"><i></i>CREATE</div><h2>Upload</h2></div></div><div class="up"><div class="upc" data-a="upnew"><div class="ic">'+svg('upload')+'</div><div><b>New post</b><small>Photo with filters, text, stickers and a caption</small></div></div><div class="upc" data-a="upstory"><div class="ic">'+svg('reels')+'</div><div><b>New story</b><small>Players can view and like it from the home screen</small></div></div><div class="upc" data-a="uptxt"><div class="ic">'+svg('edit')+'</div><div><b>Text or colour post</b><small>No photo needed</small></div></div></div><div class="hd" style="margin-top:22px">Your posts</div>'+(my.length?my.map(p=>'<div class="mr"><div class="cv mt" data-pc="'+p.id+'"></div><div class="nm">'+esc(p.cap||'No caption')+'<small>'+p.likes+' likes · '+p.total+' comments</small></div><button class="btn" data-a="edit" data-id="'+p.id+'">Edit</button><button class="btn dng" data-a="delq" data-id="'+p.id+'">Delete</button></div>').join(''):'<p class="mut">Your posts will appear here, with edit and delete options.</p>');paintAll()}
+function renderP(){const ini=(PF.name||'G')[0].toUpperCase(),fl=PL.filter(p=>p.fol).length,mine=CS.filter(c=>JN.has(c.id)),sv=POSTS.filter(p=>p.saved),my=POSTS.filter(p=>p.mine);
+const em=(h,t,btn)=>'<div class="empty" style="padding:40px 20px"><h2>'+h+'</h2><p>'+t+'</p>'+(btn||'')+'</div>';let body;
+if(PT==='p')body=my.length?'<div class="grid3">'+my.map(p=>'<div class="cv gt" data-pc="'+p.id+'" data-a="pview" data-id="'+p.id+'"></div>').join('')+'</div>':em('No posts yet','Share your first photo from the Upload tab.','<button class="cta" data-a="gou" style="max-width:220px;margin:18px auto 0">Create a post</button>');
+else if(PT==='b')body=mine.length?mine.map(c=>'<div class="lb" style="cursor:default"><div class="nm">'+esc(c.name)+'<small>Entry ₹'+c.fee+' · <span data-cd="'+c.st+'"></span></small></div><span class="am">Joined</span></div>').join(''):em('No battles yet','Join a contest from the Battles tab.');
+else body=sv.length?sv.map(p=>'<div class="lb" style="cursor:default"><div class="av" style="background:linear-gradient(135deg,'+p.g+')">'+p.i+'</div><div class="nm">'+esc(p.u)+'<small>'+esc(p.cap)+'</small></div></div>').join(''):em('Nothing saved','Tap the bookmark on a post to save it.');
+const cv=PF.cover?'#000 url(\''+PF.cover+'\') center/cover':bgOf((PF.avi+1)%6),av=PF.pic?'#000 url(\''+PF.pic+'\') center/cover':bgOf(PF.avi);
+$('v-profile').innerHTML='<div class="pc"><div class="cover" style="background:'+cv+'"><button class="cb" data-a="pfcov">📷 Cover</button></div><div class="pbody"><div class="prow"><div class="pavw" data-a="pfpic"><div class="pav'+(isVip()?' vip':'')+'" style="background:'+av+'">'+(PF.pic?'':esc(ini))+'</div><span class="cam">📷</span></div><div class="two" style="grid-template-columns:auto auto"><button class="btn" data-a="pedit">Edit profile</button><button class="btn" data-a="pshr">Share</button></div></div><div class="pn">'+esc(PF.name||'Player')+(isVip()?vipB():'<button class="vget" data-a="vipopen">⭐ Get VIP</button>')+'</div><div class="pu">Free Fire ID: '+(PF.uid?esc(PF.uid):'not added yet')+'</div><div class="pu">BGMI ID: '+(PF.bid?esc(PF.bid):'not added yet')+'</div>'+(PF.state?'<div class="pu">State: '+esc(PF.state)+'</div>':'')+'<div class="pu">'+(PF.phone?'WhatsApp '+esc(PF.phone)+(PF.since?' · ':''):'')+(PF.since?'Joined '+esc(PF.since):'')+'</div><div class="pbio">'+esc(PF.bio)+'</div><div class="pst"><div><b>'+my.length+'</b>Posts</div><div><b>'+mine.length+'</b>Battles</div><div><b>0</b>Followers</div><div><b>'+fl+'</b>Following</div></div></div></div><div class="wc"><div><small>Wallet balance</small><strong>₹'+WAL.b+'</strong></div><button class="btn" data-a="wal">Add money</button></div><div class="seg">'+[['p','Posts ('+my.length+')'],['b','Battles ('+mine.length+')'],['s','Saved ('+sv.length+')']].map(s=>'<button class="'+(PT===s[0]?'on':'')+'" data-a="ptab" data-s="'+s[0]+'">'+s[1]+'</button>').join('')+'</div>'+body+'<button class="lo" data-a="plo">Log out</button>';paintAll();tick()}
+function editPf(){PAV=PF.avi;sheet('Edit profile','<div class="two" style="margin-bottom:14px"><button class="btn" data-a="pfpic">Change photo</button><button class="btn" data-a="pfcov">Change cover</button></div>'+(PF.pic?'<button class="opt dng" data-a="pfrm" style="border-top:0;padding:0 0 14px">Remove photo</button>':'')+'<label for="pn">Gamer name</label><input id="pn" maxlength="20" value="'+esc(PF.name)+'"><label for="pb">Bio</label><input id="pb" maxlength="80" placeholder="Tell players about you" value="'+esc(PF.bio)+'"><label for="pu">Free Fire UID</label><input id="pu" inputmode="numeric" maxlength="12" placeholder="e.g. 5827361904" value="'+esc(PF.uid)+'"><label for="pbg">BGMI Character ID</label><input id="pbg" inputmode="numeric" maxlength="12" placeholder="e.g. 5123456789" value="'+esc(PF.bid)+'"><label>Avatar colour</label><div class="sw" style="margin-bottom:18px">'+BG.map((c,i)=>'<i data-a="pav" data-i="'+i+'" class="'+(PF.avi===i?'on':'')+'" style="background:'+bgOf(i)+'"></i>').join('')+'</div><div class="err" id="perr" role="alert"></div><button class="cta" data-a="psave">Save changes</button>')}
+function shareProfile(){const text=(PF.name||'Player')+' on GAMERZONE',url=location.href;if(navigator.share){navigator.share({title:'GAMERZONE',text:text,url:url}).catch(()=>{})}else if(navigator.clipboard){navigator.clipboard.writeText(text+' '+url).then(()=>toast('Profile link copied'),()=>toast('Could not copy the link'))}else toast('Sharing is not supported here')}
+function ext4(a,b){const d=b.dataset;
+ if(a==='upnew'){$('upi').click();return 1}
+ if(a==='upstory'){openEd(0,'story');return 1}
+ if(a==='uptxt'){openEd(0,'post');return 1}
+ if(a==='pshare'){pubPost();return 1}
+ if(a==='pstory'){if(empty()){toast('Add a photo, text or sticker first');return 1}pubStory(JSON.parse(JSON.stringify(ED)),false);return 1}
+ if(a==='fi'){ED.fi=+d.i;paint($('cv'),ED);b.parentNode.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c===b));return 1}
+ if(a==='adr'){ED.adj={b:100,c:100,s:100};paint($('cv'),ED);panel('ad');return 1}
+ if(a==='pview'){const p=fp(d.id);if(p)postSheet(p);return 1}
+ if(a==='pedtimg'){closeSheet();openEd(1,'pedit',null,d.id);return 1}
+ if(a==='gou'){show('upload');return 1}
+ if(a==='pfpic'){$('pfi').click();return 1}
+ if(a==='pfcov'){$('pci').click();return 1}
+ if(a==='pfrm'){PF.pic=null;closeSheet();renderP();renderStories();feed();toast('Photo removed');return 1}
+ if(a==='pshr'){shareProfile();return 1}
+ if(a==='vlist'){const l=$('vl');l.hidden=!l.hidden;updSv();return 1}
+ if(a==='slike'){const k=+d.k;if(LS.has(k))LS.delete(k);else LS.add(k);b.classList.toggle('on',LS.has(k));return 1}
+ return ext5(a,b)}
+$('sf').onchange=e=>{const f=e.target.files[0];e.target.value='';if(f)readImg(f,1080,u=>{ED.img=u;paint($('cv'),ED);panel('fl')})};
+$('pfi').onchange=e=>{const f=e.target.files[0];e.target.value='';if(f)readImg(f,720,u=>{PF.pic=u;renderP();renderStories();feed();toast('Profile photo updated')})};
+$('pci').onchange=e=>{const f=e.target.files[0];e.target.value='';if(f)readImg(f,1280,u=>{PF.cover=u;renderP();toast('Cover photo updated')})};
+$('upi').onchange=e=>{const f=e.target.files[0];e.target.value='';if(f)readImg(f,1080,u=>openEd(0,'post',u))};
+document.addEventListener('input',e=>{const k=e.target.dataset&&e.target.dataset.adj;if(!k)return;ED.adj[k]=+e.target.value;paint($('cv'),ED)});
+renderStories();
+var VIP;function vs(){return VIP||(VIP={on:0,until:0})}
+function isVip(){const v=vs();return !!v.on&&v.until>Date.now()}
+function vipB(){return isVip()?'<span class="vbd">⭐ VIP</span>':''}
+function vdate(){return new Date(vs().until).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})}
+const regLeft=c=>Math.max(0,(c.slots-c.vip)-(c.j-c.vj));
+const canJoin=c=>c.j<c.slots&&(isVip()||regLeft(c)>0);
+function cardH(c){const full=c.j>=c.slots,jn=JN.has(c.id),free=c.slots-c.j,rl=regLeft(c),vo=Math.max(0,free-rl),left=isVip()?free:rl,gate=!full&&!isVip()&&rl===0;
+return '<div class="bc"><div class="bt"><div><span class="tag g">'+c.g+'</span> <span class="tag">'+c.mode+'</span></div><span class="cd" data-cd="'+c.st+'"></span></div><h3>'+c.name+'</h3><div class="sub">'+c.sub+'</div><div class="pz"><div><small>Prize pool</small><strong>₹'+pool(c)+'</strong></div><div class="medals">'+c.pz.map((p,i)=>'<span>'+MD[i]+' ₹'+p+'</span>').join('')+'</div></div><div class="sl"><span>'+c.j+'/'+c.slots+' joined</span><span>'+left+' left'+(!isVip()&&vo?' · ⭐ '+vo+' VIP only':'')+'</span></div><div class="pb"><i style="width:'+c.j/c.slots*100+'%"></i></div><div class="bf"><div class="fee">Entry<b>₹'+c.fee+'</b></div><button class="dl" data-a="bdet" data-id="'+c.id+'">Details</button><button class="cta'+(gate?' gd':'')+'" data-a="'+(gate?'vipopen':'bjoin')+'" data-id="'+c.id+'"'+(full||jn?' disabled':'')+'>'+(jn?'Joined ✓':full?'Full':gate?'Full · Get VIP':'Join · ₹'+c.fee+(isVip()&&rl===0?' · VIP slot':''))+'</button></div></div>'}
+function vipSheet(){const on=isVip();sheet('Top VIP Player','<div class="vipc"><div class="vstar">⭐</div><div><b>Top VIP Player</b><small>₹49 / month</small></div></div><ul class="vl2"><li><b>Priority slot</b><span>Reserved VIP spots in every contest, even when regular slots are full.</span></li><li><b>Exclusive VIP badge</b><span>Gold badge on your profile, posts and story.</span></li></ul>'+(on?'<div class="kv"><span>Status</span><b style="color:#ffd60a">Active</b></div><div class="kv"><span>Valid until</span><b>'+vdate()+'</b></div>':'<div class="kv"><span>Wallet balance</span><b>₹'+WAL.b+'</b></div>')+'<div class="err" id="verr" role="alert"></div><button class="cta vipb" data-a="vipbuy">'+(on?'Extend 30 days · ₹49':'Get VIP · ₹49 / month')+'</button><p class="mut" style="margin:12px 0 0;text-align:center;font-size:12px">Paid from your wallet. 18+ only.</p>')}
+function renderD(){const my=POSTS.filter(p=>p.mine),mine=CS.filter(c=>JN.has(c.id)),fl=PL.filter(p=>p.fol).length,vp=isVip();
+const xp=mine.length*100+my.length*30+(MY?20:0)+fl*5+(vp?100:0),lv=Math.floor(xp/100)+1,pr=xp%100,nxt=mine.filter(c=>!c.rf&&c.st+c.dur*6e4>Date.now()).sort((a,b)=>a.st-b.st)[0];
+const bd=[['🎮','Battle Ready',mine.length>0],['📸','First Post',my.length>0],['✨','Storyteller',!!MY],['🤝','Social',fl>=3],['⭐','VIP',vp],['🏆','Champion',false]],un=bd.filter(x=>x[2]).length;
+$('v-dashboard').innerHTML='<div class="sech"><div><div class="eye"><i></i>YOUR ARENA</div><h2>Dashboard</h2></div></div>'+
+'<div class="dc">'+avH(0)+'<div class="dn"><b>'+esc(PF.name||'Player')+'</b>'+vipB()+'<div class="lvl"><span>Level '+lv+'</span><span>'+pr+'/100 XP</span></div><div class="pb"><i style="width:'+pr+'%"></i></div></div></div>'+
+'<div class="dg"><div class="ds g"><span>💰</span><b>₹'+WAL.b+'</b><small>Wallet</small></div><div class="ds"><span>🎮</span><b>'+mine.length+'</b><small>Battles joined</small></div><div class="ds"><span>🏆</span><b>'+WIN.cnt+'</b><small>Wins</small></div><div class="ds g"><span>💸</span><b>₹'+WIN.amt+'</b><small>Winnings</small></div></div>'+
+(nxt?'<div class="nx"><div class="t"><span class="tag g">NEXT MATCH</span><span class="cd" data-cd="'+nxt.st+'"></span></div><h3>'+esc(nxt.name)+'</h3><div class="sub" style="color:var(--muted);font-size:13px">'+(nxt.g==='BGMI'?'BGMI':'Free Fire')+' · '+nxt.mode+' · Entry paid ₹'+nxt.fee+'</div>'+roomBox(nxt)+'<button class="btn" data-a="dgo" data-g="mine" style="margin-top:12px">Open my battles</button></div>':'<div class="nx"><div class="t"><span class="tag">NEXT MATCH</span></div><h3>No match scheduled</h3><div class="sub" style="color:var(--muted);font-size:13px">Join a contest to see your countdown here.</div><button class="btn" data-a="dgo" data-g="battles">Browse battles</button></div>')+
+(vp?'<div class="vipcard"><div class="vstar">⭐</div><div><b>VIP active</b><small>Valid until '+vdate()+'</small></div><button class="btn" data-a="vipopen">Manage</button></div>':'<div class="vipcard"><div class="vstar">⭐</div><div><b>Top VIP Player · ₹49/month</b><small>Priority slot + exclusive badge</small></div><button class="btn" data-a="vipopen">Get VIP</button></div>')+
+'<div class="qa"><button data-a="dgo" data-g="battles"><span>⚔️</span>Battles</button><button data-a="dgo" data-g="upload"><span>📸</span>New post</button><button data-a="wal"><span>💰</span>Add money</button><button data-a="refopen"><span>🎁</span>Refer &amp; earn</button></div>'+
+refCard()+walletSec()+'<div class="sech" style="margin-top:24px"><div><div class="eye"><i></i>ACHIEVEMENTS</div><h2>'+un+'/'+bd.length+' unlocked</h2></div></div><div class="bgs">'+bd.map(x=>'<div class="bgi'+(x[2]?'':' off')+'"><span>'+(x[2]?x[0]:'🔒')+'</span>'+x[1]+'</div>').join('')+'</div>'+
+'<div class="sech" style="margin-top:24px"><div><div class="eye"><i></i>TOP PLAYERS</div><h2>This week</h2></div></div>'+(LBL().length?LBL().slice(0,3).map((p,i)=>[p,i]).map((x,r)=>'<div class="lb"><span class="rk">'+MD[r]+'</span><div class="av" style="background:linear-gradient(135deg,'+x[0].g+')">'+x[0].i+'</div><div class="nm">'+esc(x[0].n)+'<small>'+x[0].w+' wins</small></div><span class="am">₹'+x[0].e+'</span></div>').join(''):'<p class="mut">No winners yet. Be the first!</p>');tick()}
+function ext5(a,b){const d=b.dataset;
+ if(a==='vipopen'){vipSheet();return 1}
+ if(a==='vipbuy'){payFlow({title:'VIP badge · 30 days',kind:'VIP badge',amt:49,wallet:true,done:()=>{vs().on=1;vs().until=Math.max(Date.now(),vs().until)+30*864e5;toast('VIP active until '+vdate())}});return 1}
+ if(a==='dgo'){if(d.g==='mine'){BS='m';renderB();show('battles')}else{if(d.g==='battles'){BS='c';renderB()}show(d.g)}return 1}
+ if(a==='dsearch'){openSearch();return 1}
+ return ext6(a,b)}
+let PX=null,TX=[],UPIID='',UIDB='';
+const PM=[['gpay','Google Pay','#4285f4','G','#fff'],['phonepe','PhonePe','#5f259f','P','#fff'],['paytm','Paytm','#00baf2','P','#fff'],['upi','Any UPI ID','#00ff88','@','#04150d']];
+const bnU=o=>o.kind==='Entry fee'?Math.min(WAL.bn,Math.floor(o.amt/2),20):0;
+const payAmt=o=>o.amt-(o.useB?bnU(o):0);
+function payFlow(o){if(RST.includes(PF.state)){openBlock('geo',PF.state);return}PX=o;o.useB=bnU(o)>0;o.m=(o.wallet!==false&&WAL.b>=payAmt(o))?'wallet':'gpay';payView()}
+function payView(){const o=PX,wl=o.wallet!==false,pa=payAmt(o),low=WAL.b<pa,ub=bnU(o);
+sheet('Pay ₹'+pa,'<div class="pay-h"><small>'+esc(o.title)+'</small><strong>₹'+pa+'</strong>'+(o.useB?'<small>₹'+o.amt+' − ₹'+ub+' bonus</small>':'')+'</div>'+(ub>0?'<button class="pmr'+(o.useB?' on':'')+'" data-a="bnuse"><span class="pmi" style="background:#8a6a1a">🎁</span><div>Use bonus balance<small>Save ₹'+ub+' · bonus ₹'+WAL.bn+'</small></div>'+(o.useB?'<i style="margin-left:auto;color:var(--green);font-style:normal;font-size:18px">✓</i>':'')+'</button>':'')+(wl?'<button class="pmr'+(o.m==='wallet'?' on':'')+'" data-a="pmsel" data-m="wallet"'+(low?' disabled':'')+'><span class="pmi" style="background:#1d5a42">₹</span><div>Wallet<small>Balance ₹'+WAL.b+(low?' · not enough':'')+'</small></div></button>':'')+PM.map(x=>'<button class="pmr'+(o.m===x[0]?' on':'')+'" data-a="pmsel" data-m="'+x[0]+'"><span class="pmi" style="background:'+x[2]+';color:'+x[4]+'">'+x[3]+'</span><div>'+x[1]+'<small>'+(x[0]==='upi'?'Enter your UPI ID':'Pay with the app')+'</small></div></button>').join('')+(o.m==='upi'?'<input id="upiid" placeholder="yourname@upi" autocomplete="off" value="'+esc(UPIID)+'">':'')+'<div class="err" id="payerr" role="alert"></div><button class="cta" data-a="paygo">Pay ₹'+pa+'</button><p class="mut" style="margin:12px 0 0;text-align:center;font-size:12px">18+ only. Demo payment: no real money moves. Real UPI payments connect through a payment gateway later.</p>')}
+function walSheet(){sheet('Wallet','<div class="kv"><span>Balance</span><b>₹'+WAL.b+'</b></div>'+(WAL.bn?'<div class="kv"><span>Bonus balance</span><b>₹'+WAL.bn+'</b></div>':'')+'<label for="wamt" style="margin-top:14px">Add money</label><div class="fl" style="margin-bottom:12px">'+[50,100,200,500].map(n=>'<button class="chip" data-a="wamt" data-n="'+n+'">₹'+n+'</button>').join('')+'</div><input id="wamt" inputmode="numeric" maxlength="5" placeholder="Enter amount" value="100"><div class="err" id="werr" role="alert"></div><button class="cta" data-a="wadd">Add money</button><p class="mut" style="margin:12px 0 0;text-align:center;font-size:12px">Pay with Google Pay, PhonePe, Paytm or any UPI ID. Demo mode.</p>')}
+function walletSec(){return '<div class="sech" style="margin-top:24px"><div><div class="eye"><i></i>WALLET &amp; PAYMENTS</div><h2>₹'+WAL.b+(WAL.bn?' <small style="font-size:13px;color:#ffd66b;font-weight:400">+ ₹'+WAL.bn+' bonus</small>':'')+'</h2></div><button class="btn" data-a="wal">Add money</button></div><div class="pyl"><span>UPI</span><span>Google Pay</span><span>PhonePe</span><span>Paytm</span></div>'+(TX.length?TX.slice(0,5).map(t=>'<div class="lb" style="cursor:default"><div class="nm">'+esc(t.k)+'<small>'+esc(t.d)+' · '+t.m+' · '+ago(t.t)+'</small></div><span class="am" style="color:'+(t.a>0?'var(--green)':'#ff6b6b')+'">'+(t.a>0?'+':'−')+'₹'+Math.abs(t.a)+'</span></div>').join(''):'<p class="mut">No payments yet. Entry fees, top-ups and VIP purchases will show here.</p>')}
+function ext6(a,b){const d=b.dataset;
+ if(a==='pmsel'){if(b.disabled)return 1;const u=$('upiid');if(u)UPIID=u.value;PX.m=d.m;payView();return 1}
+ if(a==='wamt'){$('wamt').value=d.n;return 1}
+ if(a==='wadd'){const n=Math.floor(+$('wamt').value);if(!(n>=10&&n<=10000)){$('werr').textContent='Enter an amount between ₹10 and ₹10,000.';return 1}payFlow({title:'Add money to wallet',kind:'Wallet top-up',amt:n,wallet:false,credit:1,done:()=>{WAL.b+=n}});return 1}
+ if(a==='paygo'){const o=PX;if(o.m==='upi'){const v=$('upiid').value.trim();if(!/^[\w.\-]{2,}@[a-zA-Z]{2,}$/.test(v)){$('payerr').textContent='Enter a valid UPI ID, like name@upi.';return 1}UPIID=v}
+  b.disabled=true;b.textContent='Processing…';
+  setTimeout(()=>{const pa=payAmt(o),ub=o.useB?bnU(o):0;
+   if(o.m==='wallet'){if(WAL.b<pa){payView();$('payerr').textContent='Not enough balance.';return}WAL.b-=pa}
+   WAL.bn-=ub;
+   const id='GZ'+Math.floor(1e9+Math.random()*9e9),mn=o.m==='wallet'?'Wallet':PM.find(x=>x[0]===o.m)[1];
+   TX.unshift({t:Date.now(),k:o.kind,d:o.title+(ub?' (₹'+ub+' bonus used)':''),a:o.credit?pa:-pa,m:mn,id:id});
+   if(o.done)o.done(pa);
+   let gr=0;if(o.kind==='Entry fee'&&REF.by&&!REF.got){REF.got=1;gr=20;WAL.bn+=20;TX.unshift({t:Date.now(),k:'Referral bonus',d:'Welcome bonus for using a code',a:20,m:'Bonus',id:id+'B'})}
+   sheet('Payment successful','<div class="pay-ok"><div class="tick">✓</div><strong>₹'+pa+'</strong><small>'+esc(o.title)+'</small></div><div class="kv"><span>Paid with</span><b>'+mn+'</b></div>'+(ub?'<div class="kv"><span>Bonus used</span><b>₹'+ub+'</b></div>':'')+(gr?'<div class="kv"><span>Referral bonus</span><b>+₹20</b></div>':'')+'<div class="kv"><span>Transaction ID</span><b>'+id+'</b></div><button class="cta" data-a="x" style="margin-top:14px">Done</button>');
+   renderB();renderD();renderP();feed();renderStories()},1400);return 1}
+ if(a==='bnuse'){PX.useB=!PX.useB;if(PX.m==='wallet'&&WAL.b<payAmt(PX))PX.m='gpay';payView();return 1}
+ return ext7(a,b)}
+const REF={code:'',by:'',got:0,earn:0,friends:[],rew:{}},SET={push:1,remind:1,sound:1},MS=[[3,'₹30 bonus'],[5,'1 month VIP free'],[10,'₹100 bonus']];
+const DF=['ShadowKing','AceRaj','PixelQueen','TurboVik','HeadshotHari','NightOwl','ZeroLag','BlazeKid','IronFist','LoneWolf'];
+function genRef(n){if(REF.code)return;REF.code='GZ'+(n.replace(/[^A-Za-z]/g,'').toUpperCase().slice(0,4)||'GAME')+(100+Math.floor(Math.random()*900))}
+function refMsg(){return 'Join me on GAMERZONE! Use my code '+REF.code+' and get ₹20 bonus on your first contest. '+location.href}
+function refReward(){const n=REF.friends.length;MS.forEach(m=>{if(n>=m[0]&&!REF.rew[m[0]]){REF.rew[m[0]]=1;if(m[0]===5){vs().on=1;vs().until=Math.max(Date.now(),vs().until)+30*864e5}else{const v=m[0]===3?30:100;WAL.bn+=v;REF.earn+=v;TX.unshift({t:Date.now(),k:'Referral bonus',d:m[0]+'-friend milestone',a:v,m:'Bonus',id:'GZM'+m[0]})}toast('Milestone unlocked: '+m[1])}})}
+function refCard(){return '<div class="refc"><span class="em">🎁</span><div><b>Refer &amp; Earn</b><small>Invite friends, earn ₹20 each</small></div><button class="btn" data-a="refopen">Invite</button></div>'}
+function openRef(keep){const n=REF.friends.length,nx=MS.find(m=>n<m[0]),pv=[...MS].reverse().find(m=>n>=m[0]),p0=pv?pv[0]:0,pct=nx?Math.round((n-p0)/(nx[0]-p0)*100):100;
+$('nwrap').innerHTML='<div class="nh"><button data-a="nback" aria-label="Back">'+svg('back')+'</button><b>Refer &amp; Earn</b></div><div class="rf"><div class="rh"><small>INVITE FRIENDS</small><h3>Earn ₹20 for every friend who plays</h3><p>Your friend gets ₹20 bonus too.</p></div><div class="rcode"><div><small>Your referral code</small><b>'+REF.code+'</b></div><button class="btn" data-a="rcopy">Copy</button></div><div class="two" style="margin-top:10px"><button class="cta" data-a="rwa" style="margin:0;padding:13px;font-size:15px">Share on WhatsApp</button><button class="btn" data-a="rsh">More options</button></div><div class="rst"><div><b>'+n+'</b>Friends joined</div><div><b>₹'+REF.earn+'</b>Bonus earned</div><div><b>₹'+WAL.bn+'</b>Bonus balance</div></div><div class="rsec">Milestone rewards</div><div class="rpb"><i style="width:'+pct+'%"></i></div><div class="mut" style="font-size:12px;margin:0 0 6px">'+(nx?(nx[0]-n)+' more friend'+(nx[0]-n>1?'s':'')+' to unlock '+nx[1]:'All rewards unlocked')+'</div>'+MS.map(m=>'<div class="ms'+(n>=m[0]?' on':'')+'"><span class="ck">'+(n>=m[0]?'✓':'')+'</span><div><b>'+m[0]+' friends</b> · '+m[1]+'</div></div>').join('')+'<div class="rsec">How it works</div><div class="rstep"><span>1</span><div>Share your code with friends.</div></div><div class="rstep"><span>2</span><div>They sign up with your code.</div></div><div class="rstep"><span>3</span><div>When they play their first paid contest, you both get ₹20 bonus.</div></div><div class="rsec">Your referrals</div>'+(n?REF.friends.map(f=>'<div class="lb" style="cursor:default"><div class="av" style="background:#2b3140">'+f.n[0]+'</div><div class="nm">'+esc(f.n)+'<small>Played first contest</small></div><span class="am">+₹20</span></div>').join(''):'<p class="mut">No referrals yet. Share your code to start earning.</p>')+'<div class="rsec">Terms</div><ul class="rtc"><li>Bonus balance works only on contest entry fees, up to 50% of each entry (maximum ₹20). It cannot be withdrawn.</li><li>Rewards are given after your friend’s first paid entry.</li><li>One reward per phone number. Self-referrals and fake accounts are not rewarded.</li><li>GAMERZONE may change or stop this offer at any time.</li></ul></div>';
+$('nv').classList.add('on');if(!keep)$('nv').scrollTop=0}
+const LG={terms:['Terms of use','By using GAMERZONE you agree to follow the contest rules, play fairly and use only your own game account. GAMERZONE may remove accounts or disqualify players who break the rules.'],privacy:['Privacy policy','We store your gamer name, phone number, photos and in-app activity to run the app. We do not sell your personal data.'],refund:['Refund &amp; cancellation','Entry fees are refunded in full if a contest is cancelled or does not reach its minimum players. Once the room ID is shared, the entry fee is not refundable. Bonus balance cannot be withdrawn or refunded.'],fair:['Fair play rules','One account per player. No hacks, emulator abuse, teaming or account sharing. Breaking these rules means disqualification without refund.']};
+const FAQ=[['How do I join a contest?','Open Battles, pick a contest, enter your game ID and pay the entry fee.'],['When do I get the room ID and password?','Ten minutes before the match, in My battles.'],['What if a contest is cancelled?','If the minimum players do not join, your entry fee is refunded.'],['How are prizes paid?','Winners are verified and prizes are credited to the wallet. Withdrawals will open when payments go live.'],['What does VIP give me?','₹49/month gives reserved priority slots in every contest and an exclusive VIP badge.'],['How does Refer &amp; Earn work?','Share your code. When a friend plays their first paid contest, you both get ₹20 bonus.']];
+function sbox(r){return '<div class="sbox">'+r.join('')+'</div>'}
+function sra(ic,t,sub,a,x){return '<button class="sr2" data-a="'+a+'" '+(x||'')+'><span class="si2">'+ic+'</span><div>'+t+(sub?'<small>'+sub+'</small>':'')+'</div><i>›</i></button>'}
+function srt(ic,t,sub,k){return '<button class="sr2" data-a="stog" data-k="'+k+'"><span class="si2">'+ic+'</span><div>'+t+'<small>'+sub+'</small></div><span class="tgl'+(SET[k]?' on':'')+'"></span></button>'}
+function renderS(){const ini=(PF.name||'G')[0].toUpperCase();
+$('v-settings').innerHTML='<div class="sech"><div><div class="eye"><i></i>YOUR ACCOUNT</div><h2>Settings</h2></div></div><button class="sprof" data-a="pedit"><div class="av" style="background:'+(PF.pic?'url(\''+PF.pic+'\') center/cover':bgOf(PF.avi))+'">'+(PF.pic?'':esc(ini))+'</div><div><b>'+esc(PF.name||'Player')+'</b><small>'+(PF.phone?'+91 '+esc(PF.phone):'Phone not added')+'</small></div><i>›</i></button><div class="sg">ACCOUNT</div>'+sbox([sra('👤','Edit profile','Name, bio, game IDs, photos','pedit'),sra('💰','Wallet &amp; payments','Add money, payment history','dgo','data-g="dashboard"'),sra('🎁','Refer &amp; Earn','Invite friends, earn ₹20 each','refopen'),sra('⭐','VIP membership','₹49/month · priority slot and badge','vipopen')])+'<div class="sg">PREFERENCES</div>'+sbox([srt('🔔','Push notifications','Likes, comments and followers','push'),srt('⏰','Match reminders','Alert before your contest starts','remind'),srt('🔊','Sound effects','App sounds and haptics','sound')])+'<div class="sg">SUPPORT</div>'+sbox([sra('❓','Help center','Answers to common questions','shelp'),sra('💬','Contact support','Chat or email us','scon')])+'<div class="sg">LEGAL</div>'+sbox([sra('📄','Terms &amp; Conditions','','lgl','data-k="terms"'),sra('🔒','Privacy Policy','','lgl','data-k="privacy"'),sra('↩️','Refund &amp; Cancellation Policy','','lgl','data-k="refund"'),sra('🔞','18+ &amp; Responsible play','','lgl','data-k="age"'),sra('📍','Restricted states','Not available in '+RST.length+' states','lgl','data-k="geo"'),sra('🛡️','Fair play rules','','sleg','data-k="fair"')])+'<p class="mut" style="text-align:center;font-size:12px;margin:16px 0 0">18+ only · Play responsibly · Not available in '+RST.join(', ')+'</p><p class="mut" style="text-align:center;font-size:12px;margin:20px 0 0">GAMERZONE v0.9 · demo build</p><button class="lo" data-a="plo">Log out</button>'}
+function ext7(a,b){const d=b.dataset;
+ if(a==='refopen'){openRef();return 1}
+ if(a==='rcopy'){if(navigator.clipboard)navigator.clipboard.writeText(REF.code).then(()=>toast('Code copied'),()=>toast('Could not copy'));else toast('Copy is not supported here');return 1}
+ if(a==='rwa'){window.open('https://wa.me/?text='+encodeURIComponent(refMsg()),'_blank');return 1}
+ if(a==='rsh'){const m=refMsg();if(navigator.share)navigator.share({title:'GAMERZONE',text:m}).catch(()=>{});else if(navigator.clipboard)navigator.clipboard.writeText(m).then(()=>toast('Invite message copied'),()=>toast('Could not copy'));return 1}
+ if(a==='stog'){SET[d.k]=!SET[d.k];renderS();return 1}
+ if(a==='shelp'){sheet('Help center','<div class="faq">'+FAQ.map(f=>'<b>'+f[0]+'</b><p>'+f[1]+'</p>').join('')+'</div>');return 1}
+ if(a==='scon'){sheet('Contact support','<p class="mut">Write to us at <a href="mailto:GAMERZONE.HELP@gmail.com" style="color:var(--green)">GAMERZONE.HELP@gmail.com</a> with your contest name, date and transaction ID. We reply within 3 working days.</p><p class="mut" style="font-size:12px">Grievance Officer: Samarsingh, <a href="mailto:samarsingh0839@gmail.com" style="color:var(--green)">samarsingh0839@gmail.com</a></p><a class="cta" href="mailto:GAMERZONE.HELP@gmail.com" style="display:block;text-align:center;text-decoration:none">Email support</a>');return 1}
+ if(a==='sleg'){const l=LG[d.k];sheet(l[0],'<p style="color:#c3c8d2;font-size:14px;line-height:1.6;margin:0 0 14px">'+l[1]+'</p><p class="mut" style="font-size:12px;margin:0">Draft summary. Get your final Terms, Privacy and Refund policy written or reviewed by a lawyer before launch.</p>');return 1}
+ return ext8(a,b)}
+function startOtp(n){const dob=$('dob').value,ste=$('ste').value,er=$('err'),ag=ageOf(dob);
+if(!dob){er.textContent='Enter your date of birth.';return}
+if(ag<0||ag>110){er.textContent='Enter a valid date of birth.';return}
+if(ag<18){er.textContent='You must be 18 or older to use GAMERZONE.';openBlock('age');return}
+if(!ste){er.textContent='Select your state.';return}
+if(RST.includes(ste)){er.textContent='GAMERZONE is not available in '+ste+'.';openBlock('geo',ste);return}
+if(!$('agr').checked){er.textContent='Please confirm you are 18 or older and accept the Terms, Privacy Policy and Refund Policy.';return}
+PD={dob:dob,state:ste};const rc=$('rc').value.trim();if(rc&&!/^GZ[A-Z0-9]{4,10}$/i.test(rc)){$('err').textContent='That referral code looks wrong. Check it or leave it blank.';return}
+ OTPN=n;$('signup').hidden=true;$('otp').hidden=false;$('otpsub').textContent='Enter the 4-digit code we sent on WhatsApp to +91 •••••'+$('phone').value.replace(/\D/g,'').slice(-4)+'. Demo code: 1234';
+ OB.forEach(i=>i.value='');$('oerr').textContent='';OB[0].focus();otpTimer()}
+function otpTimer(){let s=30;clearInterval(otpT);const e=$('otpn');e.textContent='Resend code in '+s+'s';otpT=setInterval(()=>{s--;if(s>0)e.textContent='Resend code in '+s+'s';else{clearInterval(otpT);e.innerHTML='<button type="button" class="lnk" id="rsd">Resend code</button>';$('rsd').onclick=()=>{toast('New code sent (demo: 1234)');otpTimer()}}},1000)}
+let OTPN='',otpT=null;const OB=[...document.querySelectorAll('.ob')];
+OB.forEach((i,k)=>{i.oninput=()=>{i.value=i.value.replace(/\D/g,'').slice(0,1);if(i.value&&OB[k+1])OB[k+1].focus()};i.onkeydown=e=>{if(e.key==='Backspace'&&!i.value&&OB[k-1]){OB[k-1].focus()}if(e.key==='Enter')$('otpgo').click()}});
+$('otpgo').onclick=()=>{if(OB.map(i=>i.value).join('')!=='1234'){$('oerr').textContent='Wrong code. The demo code is 1234.';return}clearInterval(otpT);const rc=$('rc').value.trim().toUpperCase();$('otp').hidden=true;PF.dob=PD.dob;PF.state=PD.state;PF.ver=1;enterApp(OTPN);if(rc){REF.by=rc;toast('Code '+rc+' applied. ₹20 bonus after your first paid entry.')}};
+$('otpback').onclick=()=>{clearInterval(otpT);$('otp').hidden=true;$('signup').hidden=false};
+$('rcb').onclick=()=>{$('rc').hidden=!$('rc').hidden;if(!$('rc').hidden)$('rc').focus()};
+const SUB=[],WIN={cnt:0,amt:0},SS={pending:['Under review','#ffd66b'],approved:['Approved','#00ff88'],rejected:['Rejected','#ff6b6b']},RSN=['Screenshot is blurry or cropped','In-game ID does not match','Wrong match or time','Looks edited or reused'];
+let SUBIMG='',HC=1;
+const phase=c=>{const n=Date.now();return n<c.st?'up':n<c.st+c.dur*6e4?'live':'end'};
+const canc=c=>c.status==='cancelled'||(c.status!=='completed'&&phase(c)!=='up'&&c.j<c.minp);
+const subOf=c=>SUB.find(x=>x.cid===c.id&&x.me);
+const winOf=c=>c.res&&c.res.find(r=>r.me);
+const hsh=u=>{let h=5381;for(let i=0;i<u.length;i++)h=((h<<5)+h+u.charCodeAt(i))|0;return u.length+':'+h};
+function settle(c){return false}
+function subH(sb,c){const S=SS[sb.st];return '<div class="sbm"><img class="sth" src="'+sb.img+'" data-a="shot" data-sid="'+sb.id+'" alt="Your screenshot"><div><b style="color:'+S[1]+'">'+S[0]+'</b><small>Rank #'+sb.rank+' · '+sb.kills+' kills</small>'+(sb.st==='rejected'&&sb.why?'<small>Reason: '+esc(sb.why)+'</small>':'')+(sb.st==='pending'?'<small>The host is checking your screenshot.</small>':'')+(sb.st==='approved'?'<small>Winners will be announced soon.</small>':'')+'</div></div>'+(sb.st!=='approved'?'<button class="btn" data-a="subopen" data-id="'+c.id+'" style="width:100%;margin-top:12px">'+(sb.st==='rejected'?'Resubmit screenshot':'Replace screenshot')+'</button>':'')}
+function subSheet(c){const o=subOf(c);SUBIMG=o?o.img:'';sheet('Submit result','<p class="mut" style="margin:0 0 12px">Upload a screenshot of your result screen. It must clearly show your in-game name, rank and kills.</p><div id="subp" class="subp">'+(SUBIMG?'<img src="'+SUBIMG+'" alt="Screenshot preview">':'<span>No screenshot yet</span>')+'</div><button class="btn" data-a="subpick" style="width:100%;margin:10px 0 14px">'+(SUBIMG?'Change screenshot':'Choose screenshot')+'</button><div class="two"><div><label for="srk">Your rank</label><input id="srk" inputmode="numeric" maxlength="2" placeholder="e.g. 3" value="'+(o?o.rank:'')+'"></div><div><label for="skl">Kills</label><input id="skl" inputmode="numeric" maxlength="2" placeholder="e.g. 5" value="'+(o?o.kills:'')+'"></div></div><div class="err" id="suberr" role="alert"></div><button class="cta" data-a="subgo" data-id="'+c.id+'">Submit for review</button><p class="mut" style="margin:12px 0 0;font-size:12px;text-align:center">Fake or edited screenshots mean disqualification with no refund.</p>')}
+$('sfile').onchange=e=>{const f=e.target.files[0];e.target.value='';if(!f)return;readImg(f,1280,u=>{SUBIMG=u;const sp=$('subp');if(sp)sp.innerHTML='<img src="'+u+'" alt="Screenshot preview">'})};
+function ext8(a,b){const d=b.dataset,c=CS.find(x=>x.id==d.id),x=SUB.find(y=>y.id==d.sid);
+ if(a==='subopen'&&c){if(c.res){toast('Results are already out');return 1}if(Date.now()>c.st+c.dur*6e4+36e5){toast('Submission window closed');return 1}subSheet(c);return 1}
+ if(a==='subpick'){$('sfile').click();return 1}
+ if(a==='shot'&&x){sheet('Result screenshot','<img class="shotbig" src="'+x.img+'" alt="Result screenshot"><div class="kv"><span>Player</span><b>'+esc(x.n)+'</b></div><div class="kv"><span>ID</span><b>'+esc(x.uid)+'</b></div><div class="kv"><span>Claimed rank</span><b>#'+x.rank+'</b></div><div class="kv"><span>Kills</span><b>'+x.kills+'</b></div><div class="kv"><span>Submitted</span><b>'+ago(x.t)+'</b></div>');return 1}
+ return ext9(a,b)}
+const ROOMM=10;let RK='';
+const hm=t=>new Date(t).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+function copyTxt(t,msg){const ok=()=>toast(msg||'Copied'),bad=()=>toast('Could not copy. Please copy it by hand.'),fb=()=>{try{const a=document.createElement('textarea');a.value=t;a.style.cssText='position:fixed;opacity:0';document.body.appendChild(a);a.select();const r=document.execCommand('copy');a.remove();r?ok():bad()}catch(e){bad()}};if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(ok,fb);else fb()}
+const rBoth=c=>'Room ID: '+c.room.id+'\nPassword: '+c.room.pw;
+function roomBox(c){const now=Date.now(),ra=c.st-ROOMM*6e4,r=c.room;
+if(now<ra)return '<div class="rm"><div class="rmh"><span class="rmi">🔒</span><div><b>Room ID &amp; password</b><small>Unlocks 10 min before the match, at '+hm(ra)+'</small></div><span class="rmt" data-rv="'+ra+'"></span></div><p class="stp">You will get a notification the moment it unlocks.</p></div>';
+const rows='<div class="rmr"><div><small>ROOM ID</small><b>'+(r?r.id:'')+'</b></div><button class="btn" data-a="rcp" data-id="'+c.id+'" data-k="id">Copy</button></div><div class="rmr"><div><small>PASSWORD</small><b>'+(r?esc(r.pw):'')+'</b></div><button class="btn" data-a="rcp" data-id="'+c.id+'" data-k="pw">Copy</button></div>';
+return '<div class="rm live"><div class="rmh"><span class="live-b">ROOM IS LIVE</span><span class="rmt" style="color:#fff" data-cd="'+c.st+'"></span></div>'+(!r?'<p class="stp">The host will share the room details shortly.</p>':c.rvl?rows+'<button class="cta" data-a="rcpb" data-id="'+c.id+'" style="margin:12px 0 0;padding:12px;font-size:15px">Copy both</button>':'<div class="rmr"><div><small>ROOM ID</small><b>••••••••</b></div></div><div class="rmr"><div><small>PASSWORD</small><b>••••••</b></div></div><button class="cta" data-a="rvl" data-id="'+c.id+'" style="margin:12px 0 0">🔑 Reveal &amp; copy</button>')+'<p class="stp">Open '+(c.g==='BGMI'?'BGMI':'Free Fire')+' → Custom room → enter the Room ID and password.</p></div>'}
+function roomSheet(c){const r=c.room;sheet('Room details','<div class="rm live" style="margin-top:0"><div class="rmh"><span class="live-b">LIVE</span><div><b>'+esc(c.name)+'</b><small>Starts at '+hm(c.st)+'</small></div></div>'+(r?'<div class="rmr"><div><small>ROOM ID</small><b>'+r.id+'</b></div><button class="btn" data-a="rcp" data-id="'+c.id+'" data-k="id">Copy</button></div><div class="rmr"><div><small>PASSWORD</small><b>'+esc(r.pw)+'</b></div><button class="btn" data-a="rcp" data-id="'+c.id+'" data-k="pw">Copy</button></div>':'<p class="stp">The host will share the room details shortly.</p>')+'</div>'+(r?'<button class="cta" data-a="rcpb" data-id="'+c.id+'" style="margin-top:14px">Copy both</button>':'')+'<p class="mut" style="margin:12px 0 0;font-size:13px;line-height:1.5">Open '+(c.g==='BGMI'?'BGMI':'Free Fire')+' → Custom room → enter the Room ID and password. Join before the match starts. Do not share these details.</p>')}
+function roomTick(){const now=Date.now(),mine=CS.filter(c=>JN.has(c.id)&&!c.rf);let ch=false;
+mine.forEach(c=>{if(now>=c.st-ROOMM*6e4&&now<c.st+c.dur*6e4&&!c.rn){c.rn=1;ch=true;if(SET.remind){NT.unshift({g:'#00c46a,#00ff88',i:'🔑',b:c.name,r:'Room ID and password are live. Tap to copy.',a:'now',d:'Today',ty:'like',n:1});badge();toast('🔑 Room is live: '+c.name);if(navigator.vibrate&&SET.sound)try{navigator.vibrate([200,100,200])}catch(e){}}}});
+if(ch){renderB();renderD()}
+const live=mine.filter(c=>now>=c.st-ROOMM*6e4&&now<c.st+c.dur*6e4),pend=mine.filter(c=>phase(c)==='end'&&!c.res&&!subOf(c)),key=live.map(c=>'r'+c.id).concat(pend.map(c=>'s'+c.id)).join(),el=$('rbn');
+if(key!==RK){RK=key;el.innerHTML=live.map(c=>'<button class="rbb" data-a="rmopen" data-id="'+c.id+'"><span class="rdot"></span><div><b>🔑 Room is live · '+esc(c.name)+'</b><small>Tap to reveal &amp; copy · <span data-rc="'+c.st+'"></span></small></div><i>›</i></button>').join('')+pend.map(c=>'<button class="rbb sub" data-a="subopen" data-id="'+c.id+'"><div><b>📸 Submit your result · '+esc(c.name)+'</b><small>Upload your result screenshot</small></div><i>›</i></button>').join('')}
+el.querySelectorAll('[data-rc]').forEach(e=>{const d=+e.dataset.rc-now;e.textContent=d>0?'starts in '+fmt(d):'match is live'});
+document.querySelectorAll('[data-rv]').forEach(e=>{const d=+e.dataset.rv-now;e.textContent=d>0?fmt(d):''})}
+function tick(){if(CS.map(settle).some(Boolean)){renderB();renderD()}document.querySelectorAll('[data-cd]').forEach(e=>{const d=+e.dataset.cd-Date.now(),c=CS.find(x=>String(x.st)===e.dataset.cd);e.textContent=d>0?'Starts in '+fmt(d):(c&&Date.now()>c.st+c.dur*6e4?'Match ended':'● LIVE')});roomTick()}
+function myH(c){const j=JI[c.id],ph=phase(c),sb=subOf(c),w=winOf(c);let st;
+if(c.rf)st='<div class="rs bad">Contest cancelled. Your entry fee is refunded to your wallet.</div>';
+else if(ph!=='end')st=roomBox(c)+'<div class="rsb"><div><b>📸 Result screenshot</b><small>Opens when the match ends</small></div><button class="btn" disabled>Locked</button></div>';
+else if(c.res)st=w?'<div class="rs win">'+MD[w.place-1]+' You placed #'+w.place+' · ₹'+w.prize+' added to your wallet</div>':'<div class="rs">Results are out. Thanks for playing!</div>'+(sb?subH(sb,c).replace(/<button.*<\/button>/,''):'');
+else if(sb)st=subH(sb,c);
+else st='<div class="rs hl">Match ended. Upload your result screenshot within 60 minutes.</div><button class="cta" data-a="subopen" data-id="'+c.id+'">📸 Submit result screenshot</button>';
+return '<div class="bc"><div class="bt"><div><span class="tag g">'+c.g+'</span> <span class="tag">'+c.mode+'</span></div><span class="cd" data-cd="'+c.st+'"></span></div><h3>'+c.name+'</h3><div class="kv" style="margin-top:12px"><span>Your '+(c.g==='BGMI'?'Character ID':'UID')+'</span><b>'+esc(j.uid)+'</b></div><div class="kv"><span>Entry paid</span><b>₹'+c.fee+'</b></div>'+st+'</div>'}
+function ext9(a,b){const d=b.dataset,c=CS.find(x=>x.id==d.id);
+ if(a==='rvl'&&c&&c.room){c.rvl=1;copyTxt(rBoth(c),'Room ID & password copied');renderB();renderD();return 1}
+ if(a==='rcp'&&c&&c.room){copyTxt(d.k==='id'?c.room.id:c.room.pw,(d.k==='id'?'Room ID':'Password')+' copied');return 1}
+ if(a==='rcpb'&&c&&c.room){copyTxt(rBoth(c),'Room ID & password copied');return 1}
+ if(a==='rmopen'&&c){c.rvl=1;if(c.room)copyTxt(rBoth(c),'Room ID & password copied');roomSheet(c);renderB();renderD();return 1}
+ return ext10(a,b)}
+const RST=['Telangana','Andhra Pradesh','Assam','Odisha','Nagaland','Sikkim'];
+const STS=['Andaman and Nicobar Islands','Andhra Pradesh','Arunachal Pradesh','Assam','Bihar','Chandigarh','Chhattisgarh','Dadra and Nagar Haveli and Daman and Diu','Delhi','Goa','Gujarat','Haryana','Himachal Pradesh','Jammu and Kashmir','Jharkhand','Karnataka','Kerala','Ladakh','Lakshadweep','Madhya Pradesh','Maharashtra','Manipur','Meghalaya','Mizoram','Nagaland','Odisha','Puducherry','Punjab','Rajasthan','Sikkim','Tamil Nadu','Telangana','Tripura','Uttar Pradesh','Uttarakhand','West Bengal'];
+const LEGAL_DRAFT=true,UPD=new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});let PD={};
+$('ste').innerHTML='<option value="">Select your state</option>'+STS.map(x=>'<option>'+x+'</option>').join('');
+$('dob').max=new Date().toISOString().slice(0,10);
+$('sgf').textContent='18+ only · Not available in '+RST.join(', ')+'.';
+function ageOf(d){const b=new Date(d);if(!d||isNaN(b))return -1;const n=new Date();let a=n.getFullYear()-b.getFullYear();const m=n.getMonth()-b.getMonth();if(m<0||(m===0&&n.getDate()<b.getDate()))a--;return a}
+const LEG={
+terms:{t:'Terms &amp; Conditions',s:[
+['1. About GAMERZONE',[`GAMERZONE (“we”, “us”, “the app”) is run by GAMERZONE, Jaipur, Rajasthan, India. By creating an account or using the app you agree to these Terms &amp; Conditions, our Privacy Policy and our Refund &amp; Cancellation Policy.`,`GAMERZONE is not affiliated with, endorsed by or sponsored by Garena (Free Fire), Krafton (BGMI) or any game publisher. Game names belong to their owners.`]],
+['2. Who can use the app',[`You must be 18 years or older. We ask for your date of birth when you sign up and may ask for ID proof (KYC) before withdrawals or if we doubt your age.`,`The app is not available in {STATES}. You must give your real state of residence and must not use a VPN or false details to get around this.`,`One person, one account. We may close accounts that use false information.`]],
+['3. Your account',[`Keep your password and OTP private. You are responsible for everything done through your account. Use only your own game ID, and tell us at once if you think someone else has used your account.`]],
+['4. Contests',[`Each contest shows its game, format, entry fee, prize pool, number of slots, minimum players and start time. Read the details before you join.`,`A contest runs only if the minimum number of players join. If not, it is cancelled and cash entry fees are refunded as set out in the Refund &amp; Cancellation Policy.`,`Room ID and password are shown in the app 10 minutes before the match. You must join the room on time and must not share them with anyone.`,`VIP members may use the reserved slots shown in the app.`]],
+['5. Results and prizes',[`After a match, players upload a screenshot of their result within 60 minutes. We check each result and may ask for a screen recording or other proof, especially from winners.`,`Prizes are paid to the winner’s wallet after verification. If two players claim the same place, or a result looks edited or reused, we may hold the prize while we check. Our decision after review is final, subject to the dispute window in the Refund &amp; Cancellation Policy.`]],
+['6. Wallet, payments and bonus',[`You can add money using UPI, Google Pay, PhonePe, Paytm or other methods we offer. Payments are processed by our payment partners. We do not see or store your UPI PIN or card details.`,`Wallet balance can be used for entry fees and VIP. Bonus balance (for example from Refer &amp; Earn) can only be used for entry fees, up to 50% of an entry (maximum ₹20), and cannot be withdrawn.`,`Withdrawals, when available, need completed KYC and may have minimum amounts and processing times shown in the app.`]],
+['7. Taxes',[`Winnings may be subject to tax under Indian law. We may deduct tax at source where the law requires it. You are responsible for your own tax filings.`]],
+['8. Refer &amp; Earn',[`You and your friend each get ₹20 bonus after your friend’s first paid entry using your code. Milestone rewards are shown in the app. Self-referrals, fake accounts and repeat accounts on the same phone number get no reward. We can change or stop the programme at any time.`]],
+['9. VIP membership',[`VIP costs ₹49 for 30 days and gives reserved priority slots and a VIP badge. Benefits may change. VIP is not refundable once activated, except where the law requires.`]],
+['10. Fair play',[`Not allowed: hacks, cheats or tools banned by the game, teaming up with other players, sharing or selling accounts, more than one account, fake or edited screenshots, abusing the referral programme, and abusive or threatening behaviour.`,`If you break these rules we may disqualify you, cancel prizes, close your account and keep your wallet balance where the law allows. No refund is given in such cases.`]],
+['11. Your content',[`You own the photos, posts and stories you upload. You allow us to show them in the app. Do not upload anything illegal, adult, hateful, harassing or that belongs to someone else. We may remove content or accounts that break this rule.`]],
+['12. Suspension and closing your account',[`We may suspend or close an account to protect the app and other players or to follow the law. You can ask us to close your account at any time from Settings, Contact support.`]],
+['13. Limits of liability',[`The app is provided “as is”. We are not responsible for game server problems, internet or device problems on your side, or the actions of other players. To the extent the law allows, our liability for any contest is limited to the entry fee you paid for it.`]],
+['14. Changes',[`We may update these Terms. If a change is important we will tell you in the app. Using the app after a change means you accept it.`]],
+['15. Law and disputes',[`These Terms are governed by the laws of India. Courts of Jaipur, Rajasthan, India have jurisdiction, subject to any rights you have under law.`]],
+['16. Grievance and contact',[`Grievance Officer: Samarsingh, GAMERZONE, Jaipur, Rajasthan, India. Email: <a href="mailto:samarsingh0839@gmail.com" style="color:var(--green)">samarsingh0839@gmail.com</a>. For general support, write to <a href="mailto:GAMERZONE.HELP@gmail.com" style="color:var(--green)">GAMERZONE.HELP@gmail.com</a>. We aim to acknowledge complaints within 24 hours and resolve them within 15 days.`]]]},
+privacy:{t:'Privacy Policy',s:[
+['1. What we collect',[`Account details: name, phone number, date of birth, state, gamer name, game IDs and bio.`,`Content you add: profile and cover photos, posts, stories, comments and result screenshots.`,`Activity: contests joined, results, referrals, wallet and payment history (transaction references only).`,`Device and location: IP address, device type and approximate location, used to check state eligibility and prevent fraud.`]],
+['2. Why we use it',[`To create your account, check your age and state, run contests and verify results, process payments and refunds, send room details and alerts, prevent cheating and fraud, give support, and follow the law.`]],
+['3. Who we share it with',[`Service providers that help us run the app: payment partners, OTP and messaging providers, cloud hosting and database services. They may use your data only to provide their service to us.`,`Other players see your gamer name, photo, bio and public posts. The host sees your game ID and result screenshot to run the contest.`,`We share data with authorities when the law requires it. We do not sell your personal data.`]],
+['4. Result screenshots',[`Screenshots are kept to verify results and settle disputes, normally for up to 180 days.`]],
+['5. Keeping your data',[`We keep your data while your account is active, and afterwards for as long as the law or a dispute requires.`]],
+['6. Security',[`We use secure connections and access controls. No system is completely safe, so please keep your password and OTP private.`]],
+['7. Your choices and rights',[`You can see and correct your details in Edit profile. You can ask us to delete your data, close your account or withdraw your consent by writing to us. We may need to keep some records for legal reasons or open disputes.`]],
+['8. Children',[`GAMERZONE is only for people aged 18 and above. If we learn that an account belongs to someone under 18, we will close it.`]],
+['9. Notifications and local storage',[`With your permission we send alerts such as room details and results. The app also stores small pieces of data on your device to keep you signed in.`]],
+['10. Changes and contact',[`We may update this policy and will tell you about important changes. Contact: GAMERZONE, Jaipur, Rajasthan, India, <a href="mailto:GAMERZONE.HELP@gmail.com" style="color:var(--green)">GAMERZONE.HELP@gmail.com</a>. Grievance Officer: Samarsingh, <a href="mailto:samarsingh0839@gmail.com" style="color:var(--green)">samarsingh0839@gmail.com</a>.`]]]},
+refund:{t:'Refund &amp; Cancellation Policy',s:[
+['1. If a contest is cancelled',[`If a contest does not reach its minimum players, or we cancel it, your cash entry fee is refunded to your GAMERZONE wallet automatically and straight away. You will see it in your payment history and notifications.`,`Bonus balance used on an entry is not refunded.`]],
+['2. When you do not get a refund',[`Once the room ID and password are shared, the entry fee is not refundable if you do not join, join late, leave early, lose connection, or lose because of your own device or internet. Entry fees are also not refunded if you are disqualified for breaking the rules.`,`A player cannot cancel an entry after joining a contest at the moment.`]],
+['3. Problems on our side',[`If the room details are wrong, the host does not start the match, or another problem on our side stops a fair match, we will refund your entry fee to your wallet.`]],
+['4. Failed or double payments',[`If money was taken from your bank but your wallet, entry or VIP was not updated, the amount is usually reversed by your bank or payment partner in 5 to 7 working days. If not, contact support with the transaction ID and we will help.`]],
+['5. Wallet top-ups',[`Money added to the wallet stays in the wallet for contests and VIP. It is not sent back to your bank or UPI account, except for failed or duplicate payments. Withdrawals, when available, follow the rules shown in the app.`]],
+['6. VIP membership',[`VIP is not refundable once activated. You can turn off renewal at any time and keep VIP until the 30 days end.`]],
+['7. Prize and result disputes',[`If you disagree with a result, contact support within 24 hours of the result being announced. Share the contest name and your result screenshot or recording.`]],
+['8. How to ask for a refund',[`Go to Settings, Contact support, or email <a href="mailto:GAMERZONE.HELP@gmail.com" style="color:var(--green)">GAMERZONE.HELP@gmail.com</a>. Send the contest name, date and transaction ID. We reply within 3 working days.`]],
+['9. How long refunds take',[`Refunds to the wallet are instant. Refunds to a bank or UPI account, where allowed, take 5 to 7 working days.`]]]},
+age:{t:'18+ &amp; Responsible play',s:[
+['18+ only',[`GAMERZONE is only for people aged 18 and above. Minors are not allowed to create an account, add money or join contests.`]],
+['How we check',[`At sign-up you give your date of birth and confirm that you are 18 or older. Before any withdrawal we will ask for ID proof (KYC). If we find a false age, we will close the account.`]],
+['Parents and guardians',[`If you think a minor is using the app, please write to <a href="mailto:GAMERZONE.HELP@gmail.com" style="color:var(--green)">GAMERZONE.HELP@gmail.com</a>. We will close the account and refund any unused wallet balance.`]],
+['Play responsibly',[`Play for fun. Only spend what you can afford to lose and set a budget before you play.`,`Never chase your losses and take regular breaks.`,`If gaming is affecting your studies, work, money or relationships, talk to someone you trust or a mental-health professional.`,`You can ask us to close your account at any time.`]]]},
+geo:{t:'Restricted states',s:[
+['Where GAMERZONE is not available',[`GAMERZONE is not available in {STATES}. People living in these states cannot sign up, add money, buy VIP or join contests.`,'{CHIPS}']],
+['How we check',[`We ask for your state at sign-up and may also check your IP address and device location when you join a contest or make a payment. Using a VPN or giving a false state breaks our Terms and can lead to account closure.`]],
+['If the list changes',[`State laws can change. We may add or remove states at any time and will update this page.`]],
+['Moved or travelling?',[`If you live in a state where we are available but are travelling in a restricted state, paid features stay off until you are back. Contact support if you think a block is wrong.`]]]}};
+function openLegal(k){const L=LEG[k],ch='<div class="gchips">'+RST.map(x=>'<span>'+x+'</span>').join('')+'</div>';
+$('nwrap').innerHTML='<div class="nh"><button data-a="nback" aria-label="Back">'+svg('back')+'</button><b>'+L.t+'</b></div><div class="rf lg"><p class="mut" style="font-size:12px;margin:0">Last updated: '+UPD+'</p>'+(LEGAL_DRAFT?'<div class="rs" style="margin:10px 0 0;font-size:12px">Draft. Have a lawyer review this before launch.</div>':'')+L.s.map(s=>'<h4>'+s[0]+'</h4>'+s[1].map(p=>p==='{CHIPS}'?ch:'<p>'+p.replace(/\{STATES\}/g,RST.join(', '))+'</p>').join('')).join('')+'</div>';
+$('nv').classList.add('on');$('nv').scrollTop=0}
+function openBlock(t,st){const g=t==='geo';
+$('nwrap').innerHTML='<div class="nh"><button data-a="nback" aria-label="Back">'+svg('back')+'</button><b>'+(g?'Not available':'18+ only')+'</b></div><div class="blk"><div class="bi">'+(g?'🚫':'🔞')+'</div><h2>'+(g?'GAMERZONE is not available in '+esc(st):'You must be 18 or older')+'</h2><p>'+(g?'Contests with entry fees are not allowed in your state, so we cannot let you sign up, add money, buy VIP or join contests.':'GAMERZONE is only for people aged 18 and above. Please come back when you turn 18.')+'</p>'+(g?'<div class="gchips">'+RST.map(x=>'<span>'+x+'</span>').join('')+'</div>':'')+'<button class="btn" data-a="lgl" data-k="'+(g?'geo':'age')+'">Read the full notice</button><button class="cta" data-a="nback">Back</button></div>';
+$('nv').classList.add('on');$('nv').scrollTop=0}
+function ext10(a,b){if(a==='lgl'){openLegal(b.dataset.k);return 1}return 0}
+$('bs').onclick=openSearch;
+renderB();
+$('t-up').onclick=()=>tab(true);$('t-in').onclick=()=>tab(false);
+$('go').onclick=()=>{
+  const n=$('name').value.trim(),p=$('phone').value.replace(/[^\d+]/g,''),w=$('pass').value;
+  $('ok').hidden=true;
+  if(!n)return $('err').textContent='Enter your gamer name.';
+  if(p.replace(/\D/g,'').length<10)return $('err').textContent='Enter a valid phone number.';
+  if(w.length<4)return $('err').textContent='Password needs at least 4 characters.';
+  $('err').textContent='';startOtp(n);
+};
+</script>
+<script>
+/* =====================================================================
+   GAMERZONE DATA LAYER  (this exact block is inside BOTH GAMERZONE.html
+   and admin.html, so the app and the admin panel talk to the same data)
+
+   BACKEND 'local'    : data is kept in this browser (localStorage). The app and the
+                        admin panel share it when both pages are opened from the same
+                        place (same folder / same website) in the same browser.
+                        Use this to test everything before you add services.
+   BACKEND 'firebase' : data is kept in your Firebase Realtime Database, so every
+                        phone and the admin panel see the same live data.
+                        To switch: set BACKEND to 'firebase' and fill in FIREBASE below.
+                        Do this in BOTH files.
+
+   DATA SHAPE
+     users/{id}            name, phone, state, dob, wallet, bonus, status('active'|'blocked'),
+                           joinedAt, earned, wins, battles, refCode, referredBy
+     auth/{id}             hash            (password check; replace with Firebase Auth later)
+     matches/{id}          name, game('FREE FIRE'|'BGMI'), mode, fee, prizes[], slots, minPlayers,
+                           startAt, durationMin, vipSlots, joined, vipJoined, roomId, roomPass,
+                           status('upcoming'|'completed'|'cancelled'), results[], createdAt
+     entries/{match}/{id}  name, ign, gameUid, paid, joinedAt, refunded, vip     (admin view)
+     myEntries/{id}/{match}  same record, for the player's own app
+     payments/{id}         uid, type('deposit'|'withdrawal'), amount, method, ref, status, createdAt,
+                           handledAt, note
+     utr/{utr}             payment id   (stops one UTR being used twice)
+     submissions/{match}_{id}  matchId, uid, name, gameUid, rank, kills, imgId, status, why, createdAt
+     img/{imgId}           screenshot as a data URL
+     leaderboard/{id}      n, earned, wins
+     referrals/{id}/{friend}   name, paid
+     refCodes/{code}       user id
+     config/payment        upiId, upiName, minDeposit, minWithdraw, supportEmail
+     userState/{id}        the player's own app data (profile, posts, history)
+   ===================================================================== */
+const GZ_CONFIG = {
+  BACKEND: 'firebase',
+  FIREBASE: {
+    apiKey: 'AIzaSyAr2IKLImYwVgwKe0vV1_9uJNWVwkPsiU4',
+    authDomain: 'gamerzone-30d34.firebaseapp.com',
+    databaseURL: 'https://gamerzone-30d34-default-rtdb.asia-southeast1.firebasedatabase.app',
+    projectId: 'gamerzone-30d34',
+    storageBucket: 'gamerzone-30d34.firebasestorage.app',
+    messagingSenderId: '345682890290',
+    appId: '1:345682890290:web:30c0bc67ccff3315e0362b'
+  },
+  FIREBASE_SDK: 'https://www.gstatic.com/firebasejs/10.12.2/'
+};
+
+const DB = (() => {
+  const useFb = GZ_CONFIG.BACKEND === 'firebase' && !/YOUR_/.test(Object.values(GZ_CONFIG.FIREBASE).join(' '));
+  const parts = p => String(p).split('/').filter(Boolean);
+  const newId = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+  const filt = (v, f, x) => {
+    if (!v || typeof v !== 'object') return null;
+    const o = {};
+    Object.keys(v).forEach(k => { if (v[k] && v[k][f] === x) o[k] = v[k]; });
+    return o;
+  };
+
+  /* ---------------- local (browser) backend ---------------- */
+  const LOCAL = (() => {
+    const P = 'gzdb:', SPLIT = {userState: 1, img: 1};
+    const watchers = [];
+    const keyOf = (top, id) => P + top + (SPLIT[top] && id != null ? ':' + id : '');
+    const rd = k => { try { const r = localStorage.getItem(k); return r == null ? undefined : JSON.parse(r); } catch (e) { return undefined; } };
+    const wr = (k, v) => {
+      try { if (v === undefined) localStorage.removeItem(k); else localStorage.setItem(k, JSON.stringify(v)); return true; }
+      catch (e) { return false; }
+    };
+    function get(path) {
+      const a = parts(path); if (!a.length) return undefined;
+      let node, rest;
+      if (SPLIT[a[0]]) { if (a.length < 2) return undefined; node = rd(keyOf(a[0], a[1])); rest = a.slice(2); }
+      else { node = rd(keyOf(a[0])); rest = a.slice(1); }
+      for (const k of rest) { if (node == null || typeof node !== 'object') return undefined; node = node[k]; }
+      return node;
+    }
+    function set(path, val) {
+      const a = parts(path); let key, rest;
+      if (SPLIT[a[0]]) { key = keyOf(a[0], a[1]); rest = a.slice(2); } else { key = keyOf(a[0]); rest = a.slice(1); }
+      if (val === null) val = undefined;
+      if (!rest.length) { if (!wr(key, val)) throw new Error('Browser storage is full. Clear some data and try again.'); return; }
+      let root = rd(key); if (root == null || typeof root !== 'object') root = {};
+      let o = root;
+      for (let i = 0; i < rest.length - 1; i++) { if (o[rest[i]] == null || typeof o[rest[i]] !== 'object') o[rest[i]] = {}; o = o[rest[i]]; }
+      const last = rest[rest.length - 1];
+      if (val === undefined) delete o[last]; else o[last] = val;
+      if (!wr(key, root)) throw new Error('Browser storage is full. Clear some data and try again.');
+    }
+    function notify() {
+      watchers.slice().forEach(w => {
+        let v = get(w.path);
+        if (w.field !== undefined) v = filt(v, w.field, w.val);
+        const s = JSON.stringify(v === undefined ? null : v);
+        if (s !== w.last) { w.last = s; try { w.cb(v === undefined ? null : JSON.parse(s)); } catch (e) { console.error(e); } }
+      });
+    }
+    const later = () => Promise.resolve().then(notify);
+    addEventListener('storage', e => { if (e.key && e.key.indexOf(P) === 0) notify(); });
+    return {
+      async init() {},
+      async get(p) { const v = get(p); return v === undefined ? null : JSON.parse(JSON.stringify(v)); },
+      async set(p, v) { set(p, v); later(); },
+      async update(p, o) { Object.keys(o).forEach(k => set(p + '/' + k, o[k])); later(); },
+      async inc(p, d, o) {
+        o = o || {};
+        const min = o.min == null ? -Infinity : o.min, max = o.max == null ? Infinity : o.max;
+        const n = (Number(get(p)) || 0) + d;
+        if (n < min || n > max) return false;
+        set(p, n); later(); return true;
+      },
+      async claim(p, from, to) {
+        const c = get(p);
+        if (from === null ? c != null : c !== from) return false;
+        set(p, to); later(); return true;
+      },
+      watch(p, cb, field, val) {
+        const w = {path: p, cb, field, val, last: undefined};
+        watchers.push(w);
+        Promise.resolve().then(() => {
+          let v = get(p); if (field !== undefined) v = filt(v, field, val);
+          w.last = JSON.stringify(v === undefined ? null : v);
+          cb(v === undefined ? null : JSON.parse(w.last));
+        });
+        return () => { const i = watchers.indexOf(w); if (i >= 0) watchers.splice(i, 1); };
+      },
+      async wipe() {
+        const rm = [];
+        for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k && k.indexOf(P) === 0) rm.push(k); }
+        rm.forEach(k => localStorage.removeItem(k)); later();
+      }
+    };
+  })();
+
+  /* ---------------- Firebase backend (needs the config above) ---------------- */
+  const FB = (() => {
+    let db = null;
+    const load = src => new Promise((res, rej) => {
+      const s = document.createElement('script'); s.src = src; s.onload = res;
+      s.onerror = () => rej(new Error('Could not load ' + src)); document.head.appendChild(s);
+    });
+    return {
+      async init() {
+        await load(GZ_CONFIG.FIREBASE_SDK + 'firebase-app-compat.js');
+        await load(GZ_CONFIG.FIREBASE_SDK + 'firebase-database-compat.js');
+        if (!firebase.apps.length) firebase.initializeApp(GZ_CONFIG.FIREBASE);
+        db = firebase.database();
+      },
+      async get(p) { return (await db.ref(p).get()).val(); },
+      async set(p, v) { await db.ref(p).set(v === undefined ? null : v); },
+      async update(p, o) { await db.ref(p).update(o); },
+      async inc(p, d, o) {
+        o = o || {};
+        const min = o.min == null ? -Infinity : o.min, max = o.max == null ? Infinity : o.max;
+        const r = await db.ref(p).transaction(c => { const n = (Number(c) || 0) + d; return (n < min || n > max) ? undefined : n; });
+        return r.committed;
+      },
+      async claim(p, from, to) {
+        const r = await db.ref(p).transaction(c => {
+          if (c === null) return to;                 /* first pass can be empty: Firebase re-checks with the real value */
+          return (from === null ? false : c === from) ? to : undefined;
+        });
+        return r.committed && (from !== null || r.snapshot.val() === to);
+      },
+      watch(p, cb, field, val) {
+        const ref = field !== undefined ? db.ref(p).orderByChild(field).equalTo(val) : db.ref(p);
+        const fn = s => cb(s.val());
+        ref.on('value', fn);
+        return () => ref.off('value', fn);
+      },
+      async wipe() { await db.ref().set(null); }
+    };
+  })();
+
+  const B = useFb ? FB : LOCAL;
+  const ready = (async () => { await B.init(); })();
+
+  /* ---------------- sample matches (first run only) ---------------- */
+  function sampleMatches() {
+    const N = Date.now(), M = 6e4;
+    return {
+      m1: {name: 'Solo Clash', game: 'FREE FIRE', mode: 'SOLO', fee: 20, prizes: [100, 40], slots: 48, minPlayers: 25, startAt: N + 25 * M, durationMin: 30, vipSlots: 4, joined: 31, vipJoined: 0, roomId: '', roomPass: '', status: 'upcoming', createdAt: N},
+      m2: {name: '1v1 Stadium', game: 'FREE FIRE', mode: '1V1', fee: 50, prizes: [200, 100], slots: 16, minPlayers: 12, startAt: N + 90 * M, durationMin: 60, vipSlots: 2, joined: 9, vipJoined: 0, roomId: '', roomPass: '', status: 'upcoming', createdAt: N},
+      m3: {name: 'Mega Solo', game: 'BGMI', mode: 'SOLO', fee: 200, prizes: [3000, 1500, 600], slots: 48, minPlayers: 48, startAt: N + 180 * M, durationMin: 40, vipSlots: 4, joined: 44, vipJoined: 0, roomId: '', roomPass: '', status: 'upcoming', createdAt: N}
+    };
+  }
+
+
+  /* ---------- DEMO DATA (local test mode only) ----------
+     Fake players, entries, payments and screenshots so you can watch the admin panel
+     and the app work together. It is written ONLY when BACKEND is 'local'. With
+     BACKEND 'firebase' none of this is ever written, so going live starts clean.
+     Demo logins: phone 9876500001 to 9876500005, password demo123 (signup OTP is 1234). */
+  function demoData() {
+    const N = Date.now(), M = 6e4, HR = 36e5, DAY = 864e5;
+    const shot = (rank, kills, who) => 'data:image/svg+xml;utf8,' + encodeURIComponent(
+      '<svg xmlns="http://www.w3.org/2000/svg" width="360" height="640" viewBox="0 0 360 640"><rect width="360" height="640" fill="#0b1210"/>' +
+      '<text x="180" y="120" fill="#00ff88" font-family="Arial" font-size="26" font-weight="700" text-anchor="middle">MATCH RESULT</text>' +
+      '<text x="180" y="260" fill="#fff" font-family="Arial" font-size="84" font-weight="700" text-anchor="middle">#' + rank + '</text>' +
+      '<text x="180" y="330" fill="#9fb3aa" font-family="Arial" font-size="22" text-anchor="middle">RANK</text>' +
+      '<text x="180" y="420" fill="#fff" font-family="Arial" font-size="56" font-weight="700" text-anchor="middle">' + kills + '</text>' +
+      '<text x="180" y="456" fill="#9fb3aa" font-family="Arial" font-size="22" text-anchor="middle">KILLS</text>' +
+      '<text x="180" y="560" fill="#00c46a" font-family="Arial" font-size="20" text-anchor="middle">' + who + ' (demo screenshot)</text></svg>');
+    const mk = (n, g, mode, fee, prizes, slots, minP, off, dur, vip, joined, extra) => Object.assign({name: n, game: g, mode, fee, prizes, slots, minPlayers: minP, startAt: N + off, durationMin: dur, vipSlots: vip, joined, vipJoined: 0, roomId: '', roomPass: '', status: 'upcoming', createdAt: N - DAY}, extra || {});
+    const ent = (name, ign, uid, paid, ago, vip) => ({name, ign, gameUid: uid, paid, joinedAt: N - ago, refunded: false, vip: !!vip});
+    const mine = e => { const o = Object.assign({}, e); delete o.name; return o; };
+    const E = {
+      m1: {u9876500001: ent('Rahul Sharma', 'RahulYT', '512345678', 20, 3 * HR), u9876500002: ent('Priya Verma', 'PriyaGG', '523456789', 20, 2 * HR), u9876500004: ent('Vikram Singh', 'VikramOP', '534567890', 20, HR)},
+      m2: {u9876500004: ent('Vikram Singh', 'VikramOP', '534567890', 50, 40 * M)},
+      m3: {u9876500002: ent('Priya Verma', 'PriyaGG', '5112233445', 200, HR)},
+      m4: {u9876500001: ent('Rahul Sharma', 'RahulYT', '512345678', 20, 2 * HR + 50 * M), u9876500002: ent('Priya Verma', 'PriyaGG', '523456789', 20, 2 * HR + 40 * M), u9876500004: ent('Vikram Singh', 'VikramOP', '534567890', 20, 2 * HR + 30 * M), u9876500005: ent('Neha Gupta', 'NehaQueen', '545678901', 20, 2 * HR + 20 * M)},
+      m5: {u9876500001: ent('Rahul Sharma', 'RahulYT', '512345678', 20, DAY + 5 * HR), u9876500004: ent('Vikram Singh', 'VikramOP', '534567890', 20, DAY + 4 * HR)}
+    };
+    const ME = {};
+    Object.keys(E).forEach(m => Object.keys(E[m]).forEach(u => { (ME[u] = ME[u] || {})[m] = mine(E[m][u]); }));
+    const sub = (matchId, matchName, uid, name, gameUid, ign, rank, kills, status, why, ago) => ({matchId, matchName, uid, name, gameUid, ign, rank, kills, imgId: 'demo_' + matchId + '_' + uid, status, why: why || '', createdAt: N - ago});
+    const S = {
+      ['m4_u9876500001']: sub('m4', 'Evening Solo', 'u9876500001', 'Rahul Sharma', '512345678', 'RahulYT', 2, 6, 'pending', '', 12 * M),
+      ['m4_u9876500002']: sub('m4', 'Evening Solo', 'u9876500002', 'Priya Verma', '523456789', 'PriyaGG', 1, 12, 'pending', '', 10 * M),
+      ['m4_u9876500004']: sub('m4', 'Evening Solo', 'u9876500004', 'Vikram Singh', '534567890', 'VikramOP', 9, 1, 'pending', '', 8 * M),
+      ['m4_u9876500005']: sub('m4', 'Evening Solo', 'u9876500005', 'Neha Gupta', '545678901', 'NehaQueen', 4, 3, 'rejected', 'Screenshot is blurry or cropped', 6 * M),
+      ['m5_u9876500004']: sub('m5', 'Morning Clash', 'u9876500004', 'Vikram Singh', '534567890', 'VikramOP', 1, 9, 'approved', '', DAY + 2 * HR),
+      ['m5_u9876500001']: sub('m5', 'Morning Clash', 'u9876500001', 'Rahul Sharma', '512345678', 'RahulYT', 2, 5, 'approved', '', DAY + 2 * HR)
+    };
+    const IMGS = {};
+    Object.keys(S).forEach(k => { const s = S[k]; IMGS[s.imgId] = shot(s.rank, s.kills, s.name); });
+    const usr = (name, phone, state, dob, wallet, bonus, status, joinedDays, earned, wins, battles, refCode, extra) => Object.assign({name, phone, state, dob, wallet, bonus, status, joinedAt: N - joinedDays * DAY, earned, wins, battles, refCode}, extra || {});
+    return {
+      users: {
+        u9876500001: usr('Rahul Sharma', '9876500001', 'Rajasthan', '2002-04-12', 340, 0, 'active', 30, 40, 0, 3, 'GZRAHU101'),
+        u9876500002: usr('Priya Verma', '9876500002', 'Maharashtra', '2001-09-03', 120, 0, 'active', 21, 0, 0, 3, 'GZPRIY202', {referredBy: 'u9876500001'}),
+        u9876500003: usr('Aman Khan', '9876500003', 'Delhi', '2000-01-25', 0, 0, 'blocked', 15, 0, 0, 0, 'GZAMAN303'),
+        u9876500004: usr('Vikram Singh', '9876500004', 'Punjab', '1999-11-18', 560, 0, 'active', 10, 100, 1, 4, 'GZVIKR404'),
+        u9876500005: usr('Neha Gupta', '9876500005', 'Uttar Pradesh', '2003-06-30', 75, 0, 'active', 4, 0, 0, 1, 'GZNEHA505', {referredBy: 'u9876500001'})
+      },
+      auth: {u9876500001: {hash: '0a705584e9b97e052773a6856e17d9d085c98e611627274faa2054e6670d0e3d'}, u9876500002: {hash: '0face9b6d9075e43cc0c5908e8a3ab2d30ffb01031b7fcedefa9e0fccfa258ba'}, u9876500003: {hash: '9d34a6fe6e0322376c02bbb855dcd074f2f0c6badc9faec1b20d55199a7259e2'}, u9876500004: {hash: '37322df5c1d598ab7ff5db7bed1d900cf07d2c4aa318d93a6a09d00589995182'}, u9876500005: {hash: 'b0f0c5e41e6c409a7e7b806a79aa9189bfe9f0bfa8cc59d866f51ebbc1452595'}},
+      refCodes: {GZRAHU101: 'u9876500001', GZPRIY202: 'u9876500002', GZAMAN303: 'u9876500003', GZVIKR404: 'u9876500004', GZNEHA505: 'u9876500005'},
+      referrals: {u9876500001: {u9876500002: {name: 'Priya Verma', paid: true}, u9876500005: {name: 'Neha Gupta', paid: false}}},
+      matches: {
+        m1: mk('Solo Clash', 'FREE FIRE', 'SOLO', 20, [100, 40], 48, 25, 25 * M, 30, 4, 31),
+        m2: mk('1v1 Stadium', 'FREE FIRE', '1V1', 50, [200, 100], 16, 12, 90 * M, 60, 2, 9),
+        m3: mk('Mega Solo', 'BGMI', 'SOLO', 200, [3000, 1500, 600], 48, 48, 180 * M, 40, 4, 44),
+        m4: mk('Evening Solo', 'FREE FIRE', 'SOLO', 20, [100, 40], 48, 25, -50 * M, 30, 4, 30, {roomId: '78451236', roomPass: 'gz2026'}),
+        m5: mk('Morning Clash', 'FREE FIRE', 'SOLO', 20, [100, 40], 48, 25, -DAY - 3 * HR, 30, 4, 28, {roomId: '66120098', roomPass: 'clash9', status: 'completed', completedAt: N - DAY - 2 * HR,
+          results: [{place: 1, uid: 'u9876500004', name: 'Vikram Singh', prize: 100}, {place: 2, uid: 'u9876500001', name: 'Rahul Sharma', prize: 40}]}),
+        m6: mk('BGMI Quick Solo', 'BGMI', 'SOLO', 50, [400, 150], 48, 30, -10 * M, 40, 4, 41, {roomId: '90017733', roomPass: 'bgmi77'})
+      },
+      entries: E, myEntries: ME, submissions: S, img: IMGS,
+      payments: {
+        p1: {uid: 'u9876500005', type: 'deposit', amount: 200, method: 'UPI', ref: '412398765432', status: 'pending', createdAt: N - 15 * M},
+        p2: {uid: 'u9876500001', type: 'withdrawal', amount: 300, method: 'UPI', ref: 'rahul@okaxis', status: 'pending', createdAt: N - 40 * M},
+        p3: {uid: 'u9876500002', type: 'deposit', amount: 500, method: 'UPI', ref: '398712345678', status: 'approved', createdAt: N - 2 * DAY, handledAt: N - 2 * DAY + 20 * M},
+        p4: {uid: 'u9876500004', type: 'withdrawal', amount: 150, method: 'UPI', ref: 'vikram@oksbi', status: 'rejected', note: 'UPI ID is not valid', createdAt: N - DAY, handledAt: N - DAY + HR},
+        p5: {uid: 'u9876500001', type: 'deposit', amount: 100, method: 'UPI', ref: '455512349876', status: 'pending', createdAt: N - 5 * M}
+      },
+      utr: {'412398765432': 'p1', '398712345678': 'p3', '455512349876': 'p5'},
+      leaderboard: {u9876500004: {n: 'Vikram Singh', earned: 100, wins: 1}, u9876500001: {n: 'Rahul Sharma', earned: 40, wins: 0}},
+      config: {payment: {upiId: 'gamerzone@okicici', upiName: 'GAMERZONE', minDeposit: 10, maxDeposit: 10000, minWithdraw: 100, maxWithdraw: 10000, supportEmail: 'GAMERZONE.HELP@gmail.com'}}
+    };
+  }
+  async function putDemo() {
+    const d = demoData();
+    for (const top of Object.keys(d)) {
+      if (top === 'img') { for (const id of Object.keys(d.img)) await B.set('img/' + id, d.img[id]); }
+      else await B.set(top, d[top]);
+    }
+    await B.set('meta/demo', true);
+  }
+
+  return {
+    mode: useFb ? 'firebase' : 'local',
+    ready, newId,
+    get: async (p) => { await ready; return B.get(p); },
+    set: async (p, v) => { await ready; return B.set(p, v); },
+    update: async (p, o) => { await ready; return B.update(p, o); },
+    inc: async (p, d, o) => { await ready; return B.inc(p, d, o); },
+    claim: async (p, a, b) => { await ready; return B.claim(p, a, b); },
+    watch(p, cb) { let off = null, dead = false; ready.then(() => { if (!dead) off = B.watch(p, cb); }); return () => { dead = true; if (off) off(); }; },
+    watchWhere(p, f, v, cb) { let off = null, dead = false; ready.then(() => { if (!dead) off = B.watch(p, cb, f, v); }); return () => { dead = true; if (off) off(); }; },
+    putImage: (id, data) => DB.set('img/' + id, data),
+    getImage: (id) => DB.get('img/' + id),
+    /* make sample matches the first time anything opens */
+    async ensureSeed() {
+      await ready;
+      if (await B.get('meta/seeded')) return;
+      await B.set('meta/seeded', true);
+      if (useFb) return;                       /* live database starts clean: no demo data */
+      await putDemo();
+    },
+    /* kind 'demo': wipe and restore sample matches. kind 'fresh': wipe everything (use before launch). */
+    async reset(kind) {
+      await ready; await B.wipe();
+      await B.set('meta/seeded', true);
+      if (kind === 'demo' && !useFb) await putDemo();
+    }
+  };
+})();
+
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+/* =====================================================================
+   GAMERZONE LIVE LAYER
+   Connects the app screens above to the shared database (see DB block).
+   Everything the admin panel does (matches, room details, payments,
+   blocking, results) reaches the app through this layer.
+
+   CFG below holds the fallbacks. The admin panel (Settings tab) saves the
+   real UPI ID and limits in the database, and those win over CFG.
+   ===================================================================== */
+(function () {
+'use strict';
+const CFG = {
+  SUPPORT_EMAIL: 'GAMERZONE.HELP@gmail.com',
+  UPI_ID: '',            /* set in admin > Settings (or here) */
+  UPI_NAME: 'GAMERZONE',
+  MIN_DEPOSIT: 10, MAX_DEPOSIT: 10000,
+  MIN_WITHDRAW: 100, MAX_WITHDRAW: 10000,
+  REFERRAL_BONUS: 20
+};
+const SKEY = 'gz_session';
+let ACC = '', U = null, OFF = [], MATCHES = {}, ENTR = {}, PAYS = {}, MSUB = {}, LBD = {}, CONF = {}, IMG = {};
+let SEEN = {pay: {}, sub: {}, win: {}, ref: {}}, _b = 0, _bn = 0, lastSnap = '', ready = false;
+const POSTS0 = JSON.parse(JSON.stringify(POSTS));
+const tryLs = f => { try { return f(); } catch (e) { return null; } };
+const inr = n => '₹' + Number(n || 0).toLocaleString('en-IN');
+const support = () => CONF.supportEmail || CFG.SUPPORT_EMAIL;
+const blocked = () => !!(U && U.status === 'blocked');
+
+/* ---------- SHA-256 (works on every address, http or https) ---------- */
+function sha256(ascii) {
+  const rr = (v, a) => (v >>> a) | (v << (32 - a)), mp = Math.pow, mw = mp(2, 32);
+  let result = '', i, j; const words = [], bl = ascii.length * 8;
+  let hash = sha256.h = sha256.h || [], k = sha256.k = sha256.k || [], pc = k.length; const comp = {};
+  for (let cand = 2; pc < 64; cand++) {
+    if (!comp[cand]) { for (i = 0; i < 313; i += cand) comp[i] = cand; hash[pc] = (mp(cand, .5) * mw) | 0; k[pc++] = (mp(cand, 1 / 3) * mw) | 0; }
+  }
+  ascii += '\x80'; while (ascii.length % 64 - 56) ascii += '\x00';
+  for (i = 0; i < ascii.length; i++) { j = ascii.charCodeAt(i); words[i >> 2] |= j << ((3 - i) % 4) * 8; }
+  words[words.length] = (bl / mw) | 0; words[words.length] = bl;
+  for (j = 0; j < words.length;) {
+    const w = words.slice(j, j += 16), old = hash; hash = hash.slice(0, 8);
+    for (i = 0; i < 64; i++) {
+      const w15 = w[i - 15], w2 = w[i - 2], a = hash[0], e = hash[4];
+      const t1 = hash[7] + (rr(e, 6) ^ rr(e, 11) ^ rr(e, 25)) + ((e & hash[5]) ^ (~e & hash[6])) + k[i] +
+        (w[i] = (i < 16) ? w[i] : (w[i - 16] + (rr(w15, 7) ^ rr(w15, 18) ^ (w15 >>> 3)) + w[i - 7] + (rr(w2, 17) ^ rr(w2, 19) ^ (w2 >>> 10))) | 0);
+      const t2 = (rr(a, 2) ^ rr(a, 13) ^ rr(a, 22)) + ((a & hash[1]) ^ (a & hash[2]) ^ (hash[1] & hash[2]));
+      hash = [(t1 + t2) | 0].concat(hash); hash[4] = (hash[4] + t1) | 0;
+    }
+    for (i = 0; i < 8; i++) hash[i] = (hash[i] + old[i]) | 0;
+  }
+  for (i = 0; i < 8; i++) for (j = 3; j + 1; j--) { const b = (hash[i] >> (j * 8)) & 255; result += (b < 16 ? 0 : '') + b.toString(16); }
+  return result;
+}
+const pwHash = (id, pw) => sha256(unescape(encodeURIComponent('gz|' + id + '|' + pw)));
+window.__gzSha = sha256;
+
+/* ---------- wallet: reads and writes go to the database ---------- */
+Object.defineProperty(WAL, 'b', {
+  get: () => _b,
+  set: v => { const d = v - _b; _b = v; if (ACC && d) DB.inc('users/' + ACC + '/wallet', d, {min: 0}); }
+});
+Object.defineProperty(WAL, 'bn', {
+  get: () => _bn,
+  set: v => { const d = v - _bn; _bn = v; if (ACC && d) DB.inc('users/' + ACC + '/bonus', d, {min: 0}); }
+});
+
+/* ---------- small helpers ---------- */
+function note(b, r, ic) {
+  NT.unshift({g: '#00c46a,#00ff88', i: ic || '🔔', b, r, a: 'now', d: 'Today', ty: 'like', n: 1});
+  badge();
+}
+function ui() { try { renderB(); renderD(); renderP(); } catch (e) { console.error(e); } }
+const dateShort = t => new Date(t).toLocaleDateString('en-IN', {day: 'numeric', month: 'short'});
+
+/* ---------- save / restore this player's own app data ---------- */
+function snap() {
+  return {PF, POSTS, NT, TX, REF, SET, VIP: VIP || null, MY: MY || null, UID, UIDB, UPIID, SEEN, fol: PL.map(p => p.fol)};
+}
+async function saveState(force) {
+  if (!ACC || !ready) return;
+  let s; try { s = JSON.stringify(snap()); } catch (e) { return; }
+  if (!force && s === lastSnap) return;
+  lastSnap = s;
+  try { await DB.set('userState/' + ACC, JSON.parse(s)); }
+  catch (e) { if (!saveState.warned) { saveState.warned = 1; toast('Storage is full. Remove some photos from your posts.'); } }
+}
+function resetState() {
+  PF = {name: '', bio: 'Free Fire & BGMI player', uid: '', phone: '', avi: 0, bid: ''};
+  POSTS = JSON.parse(JSON.stringify(POSTS0)); NT = []; TX.length = 0;
+  Object.assign(REF, {code: '', by: '', got: 0, earn: 0, friends: [], rew: {}});
+  Object.assign(SET, {push: 1, remind: 1, sound: 1});
+  VIP = null; MY = null; UID = ''; UIDB = ''; UPIID = '';
+  SEEN = {pay: {}, sub: {}, win: {}, ref: {}};
+  PL.forEach(p => p.fol = 0);
+  JN.clear(); Object.keys(JI).forEach(k => delete JI[k]);
+  SUB.length = 0; CS.length = 0; WIN.cnt = 0; WIN.amt = 0; _b = 0; _bn = 0;
+  ENTR = {}; PAYS = {}; MSUB = {}; lastSnap = '';
+}
+function applyState(st) {
+  if (st.PF) PF = Object.assign({name: '', bio: 'Free Fire & BGMI player', uid: '', phone: '', avi: 0, bid: ''}, st.PF);
+  if (st.POSTS) POSTS = st.POSTS;
+  if (st.NT) NT = st.NT;
+  if (st.TX) { TX.length = 0; st.TX.forEach(t => TX.push(t)); }
+  if (st.REF) Object.assign(REF, st.REF);
+  if (st.SET) Object.assign(SET, st.SET);
+  VIP = st.VIP || null; MY = st.MY || null;
+  UID = st.UID || ''; UIDB = st.UIDB || ''; UPIID = st.UPIID || '';
+  if (st.SEEN) SEEN = Object.assign({pay: {}, sub: {}, win: {}, ref: {}}, st.SEEN);
+  if (st.fol) PL.forEach((p, i) => p.fol = st.fol[i] || 0);
+}
+
+/* ---------- contests: built from what the admin saves ---------- */
+const subText = m => (m.mode === '1V1' ? '1v1 knockout bracket' : 'Solo custom room') + ' · ' +
+  (+m.minPlayers >= +m.slots ? 'starts when all ' + m.slots + ' slots fill' : 'starts at ' + m.minPlayers + '+ players');
+function rebuildCS() {
+  const old = {}; CS.forEach(c => old[c.id] = c);
+  const arr = [];
+  Object.keys(MATCHES).forEach(id => {
+    const m = MATCHES[id]; if (!m) return;
+    const c = {
+      id, name: m.name, g: String(m.game).toUpperCase() === 'BGMI' ? 'BGMI' : 'FREE FIRE', mode: m.mode, sub: subText(m),
+      fee: +m.fee, pz: (m.prizes || []).filter(x => x > 0), slots: +m.slots, j: +m.joined || 0, minp: +m.minPlayers,
+      st: +m.startAt, dur: +m.durationMin || 30, vip: +m.vipSlots || 0, vj: +m.vipJoined || 0,
+      room: m.roomId ? {id: String(m.roomId), pw: String(m.roomPass || '')} : null,
+      status: m.status, done: m.status === 'completed'
+    };
+    if (m.results && m.results.length) c.res = m.results.filter(Boolean).map(r => ({n: r.name, place: r.place, prize: r.prize, me: r.uid === ACC}));
+    const o = old[id]; if (o) { c.rn = o.rn; c.rvl = o.rvl; c.rf = o.rf; }
+    if (JI[id] && JI[id].refunded) c.rf = 1;
+    const mine = JN.has(id);
+    if (!mine && (m.status === 'cancelled' || phase(c) !== 'up')) return;
+    arr.push(c);
+  });
+  arr.sort((a, b) => a.st - b.st);
+  CS.length = 0; arr.forEach(c => CS.push(c));
+  let amt = 0, cnt = 0;
+  Object.values(MATCHES).forEach(m => (m && m.results || []).forEach(r => { if (r && r.uid === ACC) { amt += r.prize; if (r.place === 1) cnt++; } }));
+  WIN.amt = amt; WIN.cnt = cnt;
+}
+function checkWins() {
+  Object.keys(MATCHES).forEach(mid => {
+    const m = MATCHES[mid]; if (!m || !m.results || SEEN.win[mid]) return;
+    const r = m.results.filter(Boolean).find(x => x.uid === ACC); if (!r) return;
+    SEEN.win[mid] = 1;
+    TX.unshift({t: Date.now(), k: 'Prize', d: m.name + ' · place ' + r.place, a: r.prize, m: 'Prize', id: 'GZP' + mid.slice(-4) + r.place});
+    note('You won ' + inr(r.prize), 'in ' + m.name + ' (place ' + r.place + '). Added to your wallet.', '🏆');
+    toast('🏆 You won ' + inr(r.prize) + '!');
+  });
+}
+
+/* refund for a contest that was cancelled or did not reach its minimum players */
+window.settle = function (c) {
+  if (!ACC || !canc(c) || c.rf || !JN.has(c.id)) return false;
+  const j = JI[c.id] || {};
+  if (j.refunded) { c.rf = 1; return false; }
+  c.rf = 1;
+  DB.claim('myEntries/' + ACC + '/' + c.id + '/refunded', false, true).then(ok => {
+    if (!ok) return;
+    DB.set('entries/' + c.id + '/' + ACC + '/refunded', true);
+    const p = j.paid || 0;
+    if (p) { WAL.b += p; TX.unshift({t: Date.now(), k: 'Refund', d: c.name + ' cancelled', a: p, m: 'Wallet', id: 'GZR' + String(c.id).slice(-4)}); }
+    note(c.name, 'was cancelled. Your entry fee is back in your wallet.', '₹');
+    ui();
+  });
+  return true;
+};
+
+/* ---------- leaderboard (real winners) ---------- */
+window.LBL = function () {
+  return Object.keys(LBD).map(k => ({n: LBD[k].n || 'Player', i: String(LBD[k].n || '?')[0].toUpperCase(), g: '#5b6cf0,#c026d3', w: LBD[k].wins || 0, e: LBD[k].earned || 0}))
+    .filter(x => x.e > 0).sort((a, b) => b.e - a.e).slice(0, 20);
+};
+
+/* ---------- account suspended screen ---------- */
+function blockUI(on) {
+  let el = $('gzblk');
+  if (!on) { if (el) el.remove(); return; }
+  if (el) return;
+  el = document.createElement('div'); el.id = 'gzblk';
+  el.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#050d0b;display:grid;place-items:center;padding:24px;text-align:center';
+  el.innerHTML = '<div style="max-width:340px"><div style="font-size:46px">🚫</div><h2 style="font-weight:500;margin:12px 0 8px">Account suspended</h2>' +
+    '<p class="mut" style="margin:0 0 18px">Your account is blocked, so you cannot join contests, add money or withdraw. If you think this is a mistake, write to <b>' + esc(support()) + '</b>.</p>' +
+    '<button class="cta" id="gzblkout">Log out</button></div>';
+  document.body.appendChild(el);
+  $('gzblkout').onclick = () => logout();
+}
+
+/* ---------- watchers ---------- */
+function stopWatch() { OFF.forEach(f => { try { f(); } catch (e) {} }); OFF = []; }
+function startWatch() {
+  OFF.push(DB.watch('config/payment', v => { CONF = v || {}; }));
+  OFF.push(DB.watch('users/' + ACC, v => {
+    if (!v) { if (ready) { forceLogout('Your account was removed.'); } return; }
+    U = v; _b = +v.wallet || 0; _bn = +v.bonus || 0;
+    blockUI(v.status === 'blocked'); ui();
+  }));
+  OFF.push(DB.watch('matches', v => { MATCHES = v || {}; rebuildCS(); checkWins(); ui(); }));
+  OFF.push(DB.watch('myEntries/' + ACC, v => {
+    ENTR = v || {}; JN.clear(); Object.keys(JI).forEach(k => delete JI[k]);
+    Object.keys(ENTR).forEach(id => { const e = ENTR[id]; JN.add(id); JI[id] = {uid: e.gameUid, ign: e.ign, paid: e.paid, refunded: !!e.refunded}; });
+    rebuildCS(); ui();
+  }));
+  OFF.push(DB.watchWhere('payments', 'uid', ACC, v => {
+    PAYS = v || {};
+    Object.keys(PAYS).forEach(id => {
+      const p = PAYS[id], prev = SEEN.pay[id];
+      if (prev === p.status) return;
+      SEEN.pay[id] = p.status;
+      if (prev !== 'pending' || p.status === 'pending') return;
+      if (p.type === 'deposit' && p.status === 'approved') {
+        TX.unshift({t: Date.now(), k: 'Wallet top-up', d: 'Deposit approved', a: p.amount, m: 'UPI', id: 'GZD' + String(id).slice(-5)});
+        note(inr(p.amount) + ' added', 'to your wallet. Your deposit was approved.', '💰'); toast(inr(p.amount) + ' added to your wallet');
+      } else if (p.type === 'deposit') {
+        note('Deposit of ' + inr(p.amount), 'was rejected' + (p.note ? ': ' + p.note : '') + '.', '!');
+      } else if (p.status === 'approved') {
+        note('Withdrawal of ' + inr(p.amount), 'was approved. The money is on its way to your UPI ID.', '✓'); toast('Withdrawal approved');
+      } else {
+        TX.unshift({t: Date.now(), k: 'Refund', d: 'Withdrawal rejected', a: p.amount, m: 'Wallet', id: 'GZW' + String(id).slice(-5)});
+        note('Withdrawal of ' + inr(p.amount), 'was rejected' + (p.note ? ': ' + p.note : '') + '. The money is back in your wallet.', '!');
+      }
+    });
+    ui();
+  }));
+  OFF.push(DB.watchWhere('submissions', 'uid', ACC, v => {
+    MSUB = v || {};
+    SUB.length = 0;
+    Object.keys(MSUB).forEach(id => {
+      const s = MSUB[id];
+      SUB.push({id, cid: s.matchId, n: s.name, uid: s.gameUid, rank: s.rank, kills: s.kills, img: IMG[s.imgId] || '', t: s.createdAt, st: s.status, why: s.why || '', me: 1, imgId: s.imgId});
+      if (s.imgId && !IMG[s.imgId]) DB.getImage(s.imgId).then(u => { if (u) { IMG[s.imgId] = u; const x = SUB.find(y => y.id === id); if (x) x.img = u; ui(); } });
+      const prev = SEEN.sub[id]; SEEN.sub[id] = s.status;
+      if (prev === s.status || s.status === 'pending' || prev === undefined) return;
+      if (s.status === 'approved') note('Your result', 'was approved. Winners will be announced soon.', '✓');
+      else if (s.status === 'rejected') note('Your result', 'was rejected: ' + (s.why || 'see details') + '. You can resubmit.', '!');
+    });
+    ui();
+  }));
+  OFF.push(DB.watch('leaderboard', v => { LBD = v || {}; ui(); }));
+  OFF.push(DB.watch('referrals/' + ACC, v => {
+    const list = Object.keys(v || {}).map(k => Object.assign({id: k}, v[k])).filter(f => f.paid);
+    list.forEach(f => {
+      if (SEEN.ref[f.id]) return; SEEN.ref[f.id] = 1;
+      WAL.bn += CFG.REFERRAL_BONUS; REF.earn += CFG.REFERRAL_BONUS;
+      TX.unshift({t: Date.now(), k: 'Referral bonus', d: f.name + ' played their first contest', a: CFG.REFERRAL_BONUS, m: 'Bonus', id: 'GZF' + String(f.id).slice(-5)});
+      note(f.name, 'played their first contest. You earned ' + inr(CFG.REFERRAL_BONUS) + ' bonus.', '🎁');
+    });
+    REF.friends = list.map(f => ({n: f.name}));
+    refReward(); ui();
+  }));
+}
+
+/* ---------- sign in / sign up ---------- */
+function mkCode(n) { return 'GZ' + (n.replace(/[^A-Za-z]/g, '').toUpperCase().slice(0, 4) || 'GAME') + (100 + Math.floor(Math.random() * 900)); }
+async function bootUser(id, o) {
+  o = o || {};
+  const u = await DB.get('users/' + id);
+  if (!u) { tryLs(() => localStorage.removeItem(SKEY)); return false; }
+  stopWatch(); resetState(); ready = false; ACC = id; U = u;
+  tryLs(() => localStorage.setItem(SKEY, id));
+  const st = await DB.get('userState/' + id); if (st) applyState(st);
+  REF.code = u.refCode || REF.code; if (o.by && !REF.by) REF.by = o.by;
+  _b = +u.wallet || 0; _bn = +u.bonus || 0;
+  enterApp(u.name);
+  PF.name = u.name; PF.phone = u.phone; PF.state = u.state; PF.dob = u.dob; PF.ver = 1;
+  PF.since = new Date(u.joinedAt || Date.now()).toLocaleDateString('en-IN', {month: 'short', year: 'numeric'});
+  ready = true; startWatch(); blockUI(u.status === 'blocked'); saveState(true);
+  return true;
+}
+function forceLogout(msg) { logout(); toast(msg); }
+
+const _startOtp = window.startOtp;
+window.startOtp = async function (n) {
+  const er = $('err'), p = $('phone').value.replace(/\D/g, '').slice(-10);
+  try {
+    if (await DB.get('users/u' + p)) { er.textContent = 'This number is already registered. Please log in.'; return; }
+    const rc = $('rc').value.trim().toUpperCase();
+    if (rc && /^GZ[A-Z0-9]{4,10}$/.test(rc) && !(await DB.get('refCodes/' + rc))) { er.textContent = 'That referral code was not found. Check it or leave it blank.'; return; }
+  } catch (e) { er.textContent = 'Could not check right now. Please try again.'; return; }
+  _startOtp(n);
+};
+$('otpgo').onclick = async () => {
+  if (OB.map(i => i.value).join('') !== '1234') { $('oerr').textContent = 'Wrong code. The demo code is 1234.'; return; }
+  clearInterval(otpT);
+  const n = OTPN, p = $('phone').value.replace(/\D/g, '').slice(-10), w = $('pass').value, id = 'u' + p;
+  try {
+    if (await DB.get('users/' + id)) { $('oerr').textContent = 'This number is already registered.'; return; }
+    let code = mkCode(n); for (let k = 0; k < 5 && await DB.get('refCodes/' + code); k++) code = mkCode(n);
+    await DB.set('users/' + id, {name: n, phone: p, state: PD.state, dob: PD.dob, wallet: 0, bonus: 0, status: 'active', joinedAt: Date.now(), earned: 0, wins: 0, battles: 0, refCode: code});
+    await DB.set('refCodes/' + code, id);
+    await DB.set('auth/' + id, {hash: pwHash(id, w)});
+    const rc = $('rc').value.trim().toUpperCase(); let by = '';
+    if (rc) { const rid = await DB.get('refCodes/' + rc); if (rid && rid !== id) { by = rc; await DB.update('users/' + id, {referredBy: rid}); await DB.set('referrals/' + rid + '/' + id, {name: n, paid: false}); } }
+    $('otp').hidden = true;
+    await bootUser(id, {by});
+    if (by) toast('Code ' + by + ' applied. ' + inr(CFG.REFERRAL_BONUS) + ' bonus after your first paid entry.');
+  } catch (e) { $('oerr').textContent = 'Could not create your account: ' + e.message; }
+};
+$('lgo').onclick = async () => {
+  const p = $('lphone').value.replace(/\D/g, '').slice(-10), w = $('lpass').value;
+  if (p.length < 10) { $('lphone').focus(); return; }
+  if (w.length < 4) { $('lpass').focus(); return; }
+  const id = 'u' + p;
+  try {
+    const a = await DB.get('auth/' + id);
+    if (!a) { toast('No account found. Please sign up first.'); return; }
+    if (a.hash !== pwHash(id, w)) { toast('Wrong password. Try again.'); return; }
+    if (!(await bootUser(id))) toast('Could not open your account.');
+  } catch (e) { toast('Could not log in: ' + e.message); }
+};
+const _logout = window.logout;
+window.logout = function () {
+  saveState(true); ready = false; stopWatch(); ACC = ''; U = null;
+  tryLs(() => localStorage.removeItem(SKEY)); blockUI(false); resetState(); _logout();
+};
+setInterval(() => saveState(), 3000);
+addEventListener('pagehide', () => saveState(true));
+document.addEventListener('visibilitychange', () => { if (document.hidden) saveState(true); });
+
+/* ---------- paying from the wallet (entry fee, VIP) ---------- */
+window.payFlow = function (o) {
+  if (blocked()) { blockUI(true); return; }
+  if (RST.includes(PF.state)) { openBlock('geo', PF.state); return; }
+  PX = o; o.useB = bnU(o) > 0; payView();
+};
+window.payView = function () {
+  const o = PX, pa = payAmt(o), low = WAL.b < pa, ub = bnU(o);
+  sheet('Pay ' + inr(pa),
+    '<div class="pay-h"><small>' + esc(o.title) + '</small><strong>' + inr(pa) + '</strong>' + (o.useB ? '<small>' + inr(o.amt) + ' − ' + inr(ub) + ' bonus</small>' : '') + '</div>' +
+    (ub > 0 ? '<button class="pmr' + (o.useB ? ' on' : '') + '" data-a="bnuse"><span class="pmi" style="background:#8a6a1a">🎁</span><div>Use bonus balance<small>Save ' + inr(ub) + ' · bonus ' + inr(WAL.bn) + '</small></div>' + (o.useB ? '<i style="margin-left:auto;color:var(--green);font-style:normal;font-size:18px">✓</i>' : '') + '</button>' : '') +
+    '<div class="kv"><span>Wallet balance</span><b>' + inr(WAL.b) + '</b></div>' +
+    '<div class="err" id="payerr" role="alert">' + (low ? 'You need ' + inr(pa - WAL.b) + ' more in your wallet.' : '') + '</div>' +
+    (low ? '<button class="cta" data-a="wal">Add money</button>' : '<button class="cta" data-a="paygo">Pay ' + inr(pa) + ' from wallet</button>') +
+    '<p class="mut" style="margin:12px 0 0;text-align:center;font-size:12px">18+ only. Play responsibly.</p>');
+};
+async function payGo(b) {
+  const o = PX; if (!o) return;
+  if (blocked()) { blockUI(true); return; }
+  const pa = payAmt(o), ub = o.useB ? bnU(o) : 0;
+  b.disabled = true; b.textContent = 'Processing…';
+  if (WAL.b < pa) { payView(); return; }
+  if (o.commit) {
+    const r = await o.commit();
+    if (r !== true) { payView(); $('payerr').textContent = r || 'Could not complete this. Please try again.'; return; }
+  }
+  WAL.b -= pa; WAL.bn -= ub;
+  const id = 'GZ' + Math.floor(1e9 + Math.random() * 9e9);
+  TX.unshift({t: Date.now(), k: o.kind, d: o.title + (ub ? ' (' + inr(ub) + ' bonus used)' : ''), a: -pa, m: 'Wallet', id});
+  if (o.done) await o.done(pa);
+  let gr = 0;
+  if (o.kind === 'Entry fee' && REF.by && !REF.got) {
+    REF.got = 1; gr = CFG.REFERRAL_BONUS; WAL.bn += gr;
+    TX.unshift({t: Date.now(), k: 'Referral bonus', d: 'Welcome bonus for using a code', a: gr, m: 'Bonus', id: id + 'B'});
+    if (U && U.referredBy) DB.update('referrals/' + U.referredBy + '/' + ACC, {paid: true});
+  }
+  sheet('Payment successful', '<div class="pay-ok"><div class="tick">✓</div><strong>' + inr(pa) + '</strong><small>' + esc(o.title) + '</small></div><div class="kv"><span>Paid with</span><b>Wallet</b></div>' +
+    (ub ? '<div class="kv"><span>Bonus used</span><b>' + inr(ub) + '</b></div>' : '') + (gr ? '<div class="kv"><span>Referral bonus</span><b>+' + inr(gr) + '</b></div>' : '') +
+    '<div class="kv"><span>Transaction ID</span><b>' + id + '</b></div><button class="cta" data-a="x" style="margin-top:14px">Done</button>');
+  ui(); feed(); renderStories(); saveState(true);
+}
+
+/* ---------- wallet: add money (UPI + UTR), withdraw ---------- */
+const lim = (k, f) => +CONF[k] || f;
+function reqRows() {
+  const L = Object.keys(PAYS).map(k => Object.assign({id: k}, PAYS[k])).sort((a, b) => b.createdAt - a.createdAt).slice(0, 5);
+  if (!L.length) return '';
+  const col = {pending: '#ffd66b', approved: '#00ff88', rejected: '#ff6b6b'}, lab = {pending: 'Waiting', approved: 'Approved', rejected: 'Rejected'};
+  return '<div class="rsec" style="margin-top:18px">Your requests</div>' + L.map(p =>
+    '<div class="kv"><span>' + (p.type === 'deposit' ? 'Add money' : 'Withdraw') + ' ' + inr(p.amount) + ' · ' + dateShort(p.createdAt) + '</span><b style="color:' + (col[p.status] || '#fff') + '">' + (lab[p.status] || esc(p.status)) + '</b></div>').join('');
+}
+window.walSheet = function () {
+  sheet('Wallet',
+    '<div class="kv"><span>Balance</span><b>' + inr(WAL.b) + '</b></div>' + (WAL.bn ? '<div class="kv"><span>Bonus balance</span><b>' + inr(WAL.bn) + '</b></div>' : '') +
+    '<label for="wamt" style="margin-top:14px">Add money</label><div class="fl" style="margin-bottom:12px">' + [50, 100, 200, 500].map(n => '<button class="chip" data-a="wamt" data-n="' + n + '">₹' + n + '</button>').join('') + '</div>' +
+    '<input id="wamt" inputmode="numeric" maxlength="5" placeholder="Enter amount" value="100"><div class="err" id="werr" role="alert"></div>' +
+    '<button class="cta" data-a="wadd">Add money</button><button class="btn" data-a="wdopen" style="width:100%;margin-top:10px">Withdraw money</button>' +
+    '<p class="mut" style="margin:12px 0 0;text-align:center;font-size:12px">Money you add is checked by our team before it reaches your wallet.</p>' + reqRows());
+};
+function upiLinkFor(upi, name, n) { return 'upi://pay?pa=' + encodeURIComponent(upi) + '&pn=' + encodeURIComponent(name || 'GAMERZONE') + '&am=' + Number(n).toFixed(2) + '&cu=INR&tn=' + encodeURIComponent('GAMERZONE wallet'); }
+function drawDepQR(upi, name, n) {
+  const box = $('dqr'); if (!box) return;
+  if (typeof QRCode === 'undefined') { box.innerHTML = '<span style="color:#000;font-size:12px;padding:8px;display:block">QR could not load. Please pay to the UPI ID below.</span>'; return; }
+  box.innerHTML = '';
+  try { new QRCode(box, {text: upiLinkFor(upi, name, n), width: 200, height: 200, correctLevel: QRCode.CorrectLevel.M}); } catch (e) { box.textContent = ''; }
+}
+function depSheet(n) {
+  const upi = CONF.upiId || CFG.UPI_ID, nm = CONF.upiName || CFG.UPI_NAME;
+  if (!upi) { sheet('Add money', '<p class="mut" style="margin:0 0 14px">Adding money is not switched on yet. Please try again later or write to <b>' + esc(support()) + '</b>.</p><button class="cta" data-a="x">OK</button>'); return; }
+  sheet('Add ' + inr(n),
+    '<p class="mut" style="margin:0 0 8px">1. Scan this QR with Google Pay, PhonePe, Paytm or any UPI app and pay <b style="color:var(--text)">' + inr(n) + '</b>.</p>' +
+    '<div style="display:flex;justify-content:center;margin:10px 0"><div id="dqr" style="background:#fff;padding:10px;border-radius:12px;min-width:220px;min-height:220px;display:flex;align-items:center;justify-content:center"></div></div>' +
+    '<div class="rmr"><div><small>' + esc(nm) + '</small><b>' + esc(upi) + '</b></div><button class="btn" data-a="cpy" data-v="' + esc(upi) + '">Copy</button></div>' +
+    '<p class="mut" style="margin:16px 0 8px">2. Enter the 12-digit UTR (transaction ID) from your payment app.</p>' +
+    '<input id="utr" inputmode="numeric" maxlength="12" placeholder="12-digit UTR number" autocomplete="off">' +
+    '<p class="mut" style="margin:14px 0 8px">3. Upload a screenshot of the payment.</p>' +
+    '<input id="dshot" type="file" accept="image/*"><img id="dprev" alt="" style="display:none;max-height:150px;border-radius:10px;margin-top:8px"><div class="err" id="derr" role="alert"></div>' +
+    '<button class="cta" data-a="depgo" data-n="' + n + '">Submit request</button>' +
+    '<p class="mut" style="margin:12px 0 0;text-align:center;font-size:12px">We add the money after we check your payment. Wrong or fake UTR numbers and screenshots get the account blocked.</p>');
+  drawDepQR(upi, nm, n);
+}
+/* shrink a payment screenshot to a small JPEG (data URL) so it stays light in the database */
+function shrinkShot(f) {
+  return new Promise((res, rej) => {
+    const im = new Image(), u = URL.createObjectURL(f);
+    im.onload = () => {
+      let mx = 1000, q = 0.7, out = '';
+      for (let i = 0; i < 6; i++) {
+        const k = Math.min(1, mx / Math.max(im.width, im.height)), c = document.createElement('canvas');
+        c.width = Math.round(im.width * k); c.height = Math.round(im.height * k);
+        c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
+        out = c.toDataURL('image/jpeg', q);
+        if (out.length < 400000) break;
+        mx = Math.round(mx * 0.8); q = Math.max(0.4, q - 0.08);
+      }
+      URL.revokeObjectURL(u); res(out);
+    };
+    im.onerror = () => { URL.revokeObjectURL(u); rej(new Error('bad image')); };
+    im.src = u;
+  });
+}
+document.addEventListener('change', e => {
+  if (!e.target || e.target.id !== 'dshot') return;
+  const f = e.target.files && e.target.files[0], p = $('dprev');
+  if (f && /^image\//.test(f.type)) { p.src = URL.createObjectURL(f); p.style.display = 'block'; } else if (p) p.style.display = 'none';
+});
+
+function wdSheet() {
+  const min = lim('minWithdraw', CFG.MIN_WITHDRAW);
+  sheet('Withdraw money',
+    '<div class="kv"><span>Wallet balance</span><b>' + inr(WAL.b) + '</b></div>' +
+    '<label for="wdamt" style="margin-top:14px">Amount (minimum ' + inr(min) + ')</label><input id="wdamt" inputmode="numeric" maxlength="5" placeholder="Enter amount">' +
+    '<label for="wdupi">Your UPI ID</label><input id="wdupi" placeholder="yourname@upi" autocomplete="off" value="' + esc(UPIID) + '">' +
+    '<div class="err" id="wderr" role="alert"></div><button class="cta" data-a="wdgo">Request withdrawal</button>' +
+    '<p class="mut" style="margin:12px 0 0;text-align:center;font-size:12px">The amount is held from your wallet now and sent to your UPI ID after we check. Bonus balance cannot be withdrawn. We may ask for ID proof (KYC).</p>');
+}
+
+/* ---------- every button the live layer owns ---------- */
+const H = {};
+H.wadd = () => {
+  if (blocked()) return blockUI(true);
+  if (RST.includes(PF.state)) return openBlock('geo', PF.state);
+  const n = Math.floor(+$('wamt').value), mn = lim('minDeposit', CFG.MIN_DEPOSIT), mx = lim('maxDeposit', CFG.MAX_DEPOSIT);
+  if (!(n >= mn && n <= mx)) { $('werr').textContent = 'Enter an amount between ' + inr(mn) + ' and ' + inr(mx) + '.'; return; }
+  depSheet(n);
+};
+H.cpy = (b, d) => copyTxt(d.v, 'UPI ID copied');
+H.depgo = async (b, d) => {
+  const n = +d.n, utr = $('utr').value.replace(/\s/g, ''), er = $('derr'), file = $('dshot') && $('dshot').files[0];
+  if (!/^\d{12}$/.test(utr)) { er.textContent = 'Enter the 12-digit UTR from your payment app.'; return; }
+  if (!file || !/^image\//.test(file.type)) { er.textContent = 'Please upload a screenshot of your payment.'; return; }
+  b.disabled = true; er.textContent = '';
+  const pid = DB.newId();
+  let shot;
+  try { shot = await shrinkShot(file); await DB.putImage('pay_' + pid, shot); }
+  catch (x) { er.textContent = 'Could not upload the screenshot. Please try again.'; b.disabled = false; return; }
+  if (!(await DB.claim('utr/' + utr, null, pid))) { er.textContent = 'This transaction ID was already submitted.'; b.disabled = false; return; }
+  await DB.set('payments/' + pid, {uid: ACC, type: 'deposit', amount: n, method: 'UPI', ref: utr, imgId: 'pay_' + pid, status: 'pending', createdAt: Date.now()});
+  SEEN.pay[pid] = 'pending';
+  sheet('Request sent', '<div class="pay-ok"><div class="tick">✓</div><strong>' + inr(n) + '</strong><small>Waiting for our team to check your payment</small></div><div class="kv"><span>UTR</span><b>' + esc(utr) + '</b></div><p class="mut" style="margin:12px 0 0">You will get a notification when the money is added to your wallet.</p><button class="cta" data-a="x" style="margin-top:14px">Done</button>');
+  saveState(true);
+};
+H.wdopen = () => { if (blocked()) return blockUI(true); wdSheet(); };
+H.wdgo = async (b) => {
+  const er = $('wderr'), amt = Math.floor(+$('wdamt').value), upi = $('wdupi').value.trim(), mn = lim('minWithdraw', CFG.MIN_WITHDRAW), mx = lim('maxWithdraw', CFG.MAX_WITHDRAW);
+  if (!(amt >= mn && amt <= mx)) { er.textContent = 'Enter an amount between ' + inr(mn) + ' and ' + inr(mx) + '.'; return; }
+  if (amt > WAL.b) { er.textContent = 'You only have ' + inr(WAL.b) + ' in your wallet.'; return; }
+  if (!/^[\w.\-]{2,}@[a-zA-Z]{2,}$/.test(upi)) { er.textContent = 'Enter a valid UPI ID, like name@upi.'; return; }
+  if (Object.values(PAYS).some(p => p.type === 'withdrawal' && p.status === 'pending')) { er.textContent = 'You already have a withdrawal waiting. Wait for it to finish.'; return; }
+  b.disabled = true; UPIID = upi;
+  const pid = DB.newId();
+  WAL.b -= amt;
+  TX.unshift({t: Date.now(), k: 'Withdrawal', d: 'Request to ' + upi, a: -amt, m: 'UPI', id: 'GZW' + pid.slice(-5)});
+  await DB.set('payments/' + pid, {uid: ACC, type: 'withdrawal', amount: amt, method: 'UPI', ref: upi, status: 'pending', createdAt: Date.now()});
+  SEEN.pay[pid] = 'pending';
+  sheet('Request sent', '<div class="pay-ok"><div class="tick">✓</div><strong>' + inr(amt) + '</strong><small>Withdrawal requested</small></div><div class="kv"><span>Paying to</span><b>' + esc(upi) + '</b></div><p class="mut" style="margin:12px 0 0">We check and send the money to your UPI ID. You will get a notification.</p><button class="cta" data-a="x" style="margin-top:14px">Done</button>');
+  ui(); saveState(true);
+};
+H.paygo = (b) => payGo(b);
+H.bnuse = () => { PX.useB = !PX.useB; payView(); };
+H.bpay = (b, d) => {
+  const c = CS.find(x => x.id == d.id); if (!c) return;
+  const u = $('uid').value.trim(), n = $('ign').value.trim(), er = $('jerr');
+  if (!/^\d{8,12}$/.test(u)) { er.textContent = 'Enter a valid ' + (c.g === 'BGMI' ? 'BGMI Character ID' : 'Free Fire UID') + ' (8-12 digits).'; return; }
+  if (!n) { er.textContent = 'Enter your in-game name.'; return; }
+  if (JN.has(c.id)) { er.textContent = 'You already joined this contest.'; return; }
+  if (!canJoin(c)) { er.textContent = 'This contest just filled up.'; return; }
+  payFlow({
+    title: 'Entry fee · ' + c.name, kind: 'Entry fee', amt: c.fee,
+    commit: async () => {
+      const m = MATCHES[c.id];
+      if (!m || m.status !== 'upcoming' || Date.now() >= m.startAt) return 'Registration is closed.';
+      const vipSpot = isVip() && (+m.vipJoined || 0) < (+m.vipSlots || 0);
+      if (!(await DB.inc('matches/' + c.id + '/joined', 1, {max: +m.slots}))) return 'This contest just filled up.';
+      if (!isVip()) {
+        const mm = await DB.get('matches/' + c.id);
+        if ((mm.joined - (mm.vipJoined || 0)) > (mm.slots - (mm.vipSlots || 0))) { await DB.inc('matches/' + c.id + '/joined', -1); return 'Only VIP slots are left.'; }
+      }
+      if (vipSpot) await DB.inc('matches/' + c.id + '/vipJoined', 1);
+      return true;
+    },
+    done: async pa => {
+      const e = {ign: n, gameUid: u, paid: pa, joinedAt: Date.now(), refunded: false, vip: isVip()};
+      await DB.set('entries/' + c.id + '/' + ACC, Object.assign({name: PF.name}, e));
+      await DB.set('myEntries/' + ACC + '/' + c.id, e);
+      DB.inc('users/' + ACC + '/battles', 1);
+      JN.add(c.id); JI[c.id] = {uid: u, ign: n, paid: pa, refunded: false};
+      if (c.g === 'BGMI') { UIDB = u; if (!PF.bid) PF.bid = u; } else { UID = u; if (!PF.uid) PF.uid = u; }
+      toast('You joined ' + c.name);
+    }
+  });
+};
+H.subgo = async (b, d) => {
+  const c = CS.find(x => x.id == d.id); if (!c) return;
+  const rk = Math.floor(+$('srk').value), kl = Math.floor(+$('skl').value), er = $('suberr');
+  if (!SUBIMG) { er.textContent = 'Add your result screenshot.'; return; }
+  if (!(rk >= 1 && rk <= c.slots)) { er.textContent = 'Enter your rank (1 to ' + c.slots + ').'; return; }
+  if (!(kl >= 0 && kl <= 99)) { er.textContent = 'Enter your kills (0 to 99).'; return; }
+  if (c.res) { er.textContent = 'Results are already out for this contest.'; return; }
+  b.disabled = true;
+  const sid = c.id + '_' + ACC, imgId = sid + '_' + Date.now().toString(36);
+  try {
+    await DB.putImage(imgId, SUBIMG); IMG[imgId] = SUBIMG;
+    await DB.set('submissions/' + sid, {matchId: c.id, matchName: c.name, uid: ACC, name: PF.name || 'You', gameUid: (JI[c.id] || {}).uid || '', ign: (JI[c.id] || {}).ign || '', rank: rk, kills: kl, imgId, status: 'pending', why: '', createdAt: Date.now()});
+    SEEN.sub[sid] = 'pending';
+    closeSheet(); toast('Submitted. The host will review it soon.');
+  } catch (e) { er.textContent = 'Could not send: ' + e.message; b.disabled = false; }
+};
+
+/* hook into the app's one click dispatcher */
+const _ext = window.ext;
+window.ext = function (a, b) {
+  const h = H[a];
+  if (!h) return _ext(a, b);
+  try { const r = h(b, b.dataset); if (r && r.catch) r.catch(e => { console.error(e); toast('Something went wrong. Please try again.'); }); }
+  catch (e) { console.error(e); toast('Something went wrong. Please try again.'); }
+  return 1;
+};
+
+/* ---------- start ---------- */
+(async () => {
+  try { await DB.ensureSeed(); } catch (e) { console.error(e); }
+  const sid = tryLs(() => localStorage.getItem(SKEY));
+  if (sid) { try { await bootUser(sid); } catch (e) { console.error(e); } }
+  window.__gz = {ready: true, user: () => U, mode: DB.mode};
+})();
+})();
+
+</script>
+</body>
+</html>

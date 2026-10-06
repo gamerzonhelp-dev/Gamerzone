@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#050d0b">
+<title>GAMERZONE Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+
+:root{--bg:#050d0b;--panel:#10151b;--card:#1a1f29;--field:#0d1015;--line:#2a303c;--text:#f2f5f7;--muted:#8a919e;--green:#00ff88;--green-d:#0a3a29;--amber:#ffd66b;--amber-d:#3a2d08;--red:#ff6b6b;--red-d:#3a1616;--blue:#8fb4ff;--blue-d:#14223d;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% 0,#0b2a20 0,var(--bg) 60%) fixed;color:var(--text);font:400 15px/1.5 Roboto,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3,p{margin:0}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+small,.sub{color:var(--muted);font-size:13px}
+b{font-weight:500}
+
+/* login */
+.login{min-height:100vh;display:grid;place-items:center;padding:24px 16px}
+.lcard{width:100%;max-width:380px;background:var(--card);border:1px solid var(--line);border-radius:24px;padding:30px 26px}
+.logo{width:44px;height:44px;border:1.5px solid var(--green);border-radius:12px;display:grid;place-items:center;color:var(--green);font-weight:700;font-size:20px;flex:none}
+.lcard h1{font-size:24px;font-weight:500;margin:20px 0 4px}
+.lcard form{margin-top:22px;display:grid;gap:14px}
+
+/* fields + buttons */
+.f{display:grid;gap:6px;color:var(--muted);font-size:13px}
+.f input,.f select{background:var(--field);border:1px solid var(--line);border-radius:12px;padding:11px 13px;color:var(--text);font-size:15px;width:100%;min-height:44px}
+.f input::placeholder{color:#5d6471}
+.f input:focus,.f select:focus{border-color:var(--green)}
+input[type=datetime-local]{color-scheme:dark}
+.err{color:var(--red);font-size:13px;min-height:0}
+.err:empty{display:none}
+.btn{border:1px solid var(--line);background:transparent;border-radius:12px;padding:10px 16px;min-height:44px;cursor:pointer;font-weight:500;font-size:14px;transition:background .15s,border-color .15s}
+.btn:hover{border-color:#44505f}
+.btn.primary{background:var(--green);border-color:var(--green);color:#04150d}
+.btn.primary:hover{background:#33ffa0}
+.btn.danger{color:var(--red);border-color:#5a2a2a}
+.btn.danger:hover{background:var(--red-d)}
+.btn.ok{color:var(--green);border-color:#176a46}
+.btn.ok:hover{background:var(--green-d)}
+.btn.sm{padding:6px 12px;min-height:36px;font-size:13px}
+.btn[disabled]{opacity:.45;cursor:default}
+
+/* app shell */
+.app{min-height:100vh;display:grid;grid-template-columns:248px minmax(0,1fr)}
+.side{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:22px;padding:22px 14px;background:rgba(16,21,27,.7);border-right:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:12px;padding:0 6px}
+.brand b{display:block;font-size:16px;letter-spacing:.02em}
+.brand small{display:block;line-height:1.2}
+.nav{display:grid;gap:4px}
+.nav button{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:none;border:0;border-radius:12px;padding:11px 12px;min-height:44px;color:var(--muted);cursor:pointer;font-weight:500}
+.nav button:hover{background:#171d25;color:var(--text)}
+.nav button[aria-current=page]{background:var(--green-d);color:var(--green)}
+.nav svg{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nav .cnt{margin-left:auto;background:var(--amber);color:#2a1f00;border-radius:99px;font-size:12px;font-weight:700;padding:1px 8px;min-width:22px;text-align:center}
+.sidefoot{margin-top:auto;display:grid;gap:10px}
+.chip{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);padding:0 6px}
+.chip i{width:8px;height:8px;border-radius:50%;background:var(--amber);flex:none}
+.chip.live i{background:var(--green)}
+.top{display:none}
+main{padding:34px 36px 60px;max-width:1180px;width:100%;outline:0}
+.ph{margin-bottom:24px}
+.ph h1{font-size:28px;font-weight:500;letter-spacing:-.01em}
+.ph p{color:var(--muted);margin-top:4px}
+
+/* dashboard */
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px}
+.stat span{color:var(--muted);font-size:13px}
+.stat strong{display:block;font-size:30px;font-weight:500;margin:6px 0 2px;letter-spacing:-.01em}
+.stat small{display:block}
+.stat.warn{border-color:#6b5514;background:linear-gradient(180deg,#241d08,var(--card) 70%)}
+.stat.warn strong{color:var(--amber)}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:14px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px}
+.panel h2{font-size:17px;font-weight:500;margin-bottom:14px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 0;border-top:1px solid var(--line)}
+.row:first-of-type{border-top:0}
+.row>div{min-width:0}
+.row b,.row small{display:block;overflow:hidden;text-overflow:ellipsis}
+.empty{color:var(--muted);padding:14px 0}
+.foot{margin-top:22px;display:flex;gap:12px;align-items:center;color:var(--muted);font-size:13px;flex-wrap:wrap}
+
+/* badges */
+.badge{display:inline-block;font-size:12px;font-weight:500;padding:2px 10px;border-radius:99px;white-space:nowrap}
+.b-live,.b-approved,.b-active{background:var(--green-d);color:var(--green)}
+.b-upcoming{background:var(--blue-d);color:var(--blue)}
+.b-pending{background:var(--amber-d);color:var(--amber)}
+.b-completed{background:#232833;color:var(--muted)}
+.b-cancelled,.b-rejected,.b-blocked{background:var(--red-d);color:var(--red)}
+
+/* forms */
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;align-items:end}
+.grid .span2{grid-column:span 2}
+.grid .full{grid-column:1/-1}
+.toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+.toolbar .f{flex:1;min-width:200px}
+.seg{display:inline-flex;background:var(--field);border:1px solid var(--line);border-radius:12px;padding:3px;gap:2px;flex-wrap:wrap}
+.seg button{background:none;border:0;border-radius:9px;padding:8px 14px;min-height:38px;color:var(--muted);cursor:pointer;font-weight:500;font-size:14px}
+.seg button[aria-pressed=true]{background:var(--green-d);color:var(--green)}
+
+/* matches */
+.mlist{display:grid;gap:14px;margin-top:18px}
+.match{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px}
+.match.is-live{border-color:#176a46}
+.mh{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.mh h3{font-size:17px;font-weight:500}
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:16px 0;padding:14px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.facts div span{display:block;color:var(--muted);font-size:12px}
+.facts div b{font-size:16px}
+.room{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end}
+.macts{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+
+/* tables */
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{text-align:left;color:var(--muted);font-weight:400;font-size:13px;padding:0 12px 10px}
+.tbl td{padding:13px 12px;border-top:1px solid var(--line);vertical-align:middle}
+.tbl td small{display:block}
+.tbl .r{text-align:right}
+.tbl .act{text-align:right;white-space:nowrap}
+.tbl .act .btn+.btn{margin-left:8px}
+.tw{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:14px 8px 4px}
+
+/* dialog + toast */
+dialog{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:20px;padding:0;width:min(460px,calc(100vw - 28px));max-height:calc(100vh - 40px);overflow:auto}
+dialog::backdrop{background:rgba(2,6,5,.72)}
+.dlgf{padding:24px;display:grid;gap:14px}
+.dlgf h3{font-size:19px;font-weight:500}
+.drow{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+.winrow{display:grid;grid-template-columns:42px 1fr 110px;gap:10px;align-items:center}
+.winrow select,.winrow input{background:var(--field);border:1px solid var(--line);border-radius:10px;padding:9px 10px;min-height:42px;width:100%;color:var(--text)}
+.place{color:var(--muted);font-size:14px}
+.hint{color:var(--muted);font-size:13px}
+#toast{position:fixed;left:50%;bottom:calc(88px + env(safe-area-inset-bottom,0px));transform:translate(-50%,12px);background:#e9fff4;color:#04150d;padding:11px 18px;border-radius:12px;font-weight:500;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;max-width:calc(100vw - 32px);z-index:50;text-align:center}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+#toast.bad{background:#ffe3e3;color:#3a0b0b}
+
+/* tablet + mobile */
+
+/* results review */
+.sumbar{display:flex;gap:6px 16px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.srow{display:grid;grid-template-columns:132px minmax(0,1fr) auto;gap:16px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px}
+.sthumb{width:132px;height:92px;border-radius:12px;overflow:hidden;background:var(--field);display:grid;place-items:center;color:var(--muted);font-size:12px;cursor:zoom-in}
+.sthumb img{width:100%;height:100%;object-fit:cover;display:block}
+.sinfo{display:grid;gap:4px;min-width:0;justify-items:start}
+.sinfo small{display:block;color:var(--muted);font-size:13px}
+.sacts{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.flag{display:inline-block;background:var(--amber-d);color:var(--amber);font-size:12px;border-radius:8px;padding:2px 8px}
+.bigimg{max-width:100%;max-height:70vh;border-radius:12px;display:block;margin:0 auto}
+.kvr{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-top:1px solid var(--line)}
+.kvr:first-child{border-top:0}
+.opt{display:block;width:100%;text-align:left;background:var(--field);border:1px solid var(--line);border-radius:12px;padding:12px 14px;min-height:44px;cursor:pointer}
+.opt:hover{border-color:#44505f}
+@media(max-width:600px){.srow{grid-template-columns:96px minmax(0,1fr)}.sthumb{width:96px;height:72px}.sacts{grid-column:1/-1;justify-content:stretch}.sacts .btn{flex:1}}
+
+@media(max-width:1020px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.facts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:860px){
+ .app{grid-template-columns:minmax(0,1fr)}
+ .side{position:static;height:auto;padding:0;border:0;background:none}
+ .side .brand,.side .sidefoot{display:none}
+ .nav{position:fixed;left:0;right:0;bottom:0;z-index:20;grid-auto-flow:column;grid-auto-columns:1fr;gap:0;background:rgba(13,17,22,.96);backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px))}
+ .nav button{flex-direction:column;gap:3px;padding:7px 4px;font-size:11.5px;text-align:center;justify-content:center;position:relative}
+ .nav .cnt{position:absolute;top:2px;left:calc(50% + 6px);margin:0;font-size:10px;padding:0 6px;min-width:18px}
+ .top{display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:env(safe-area-inset-top,0px);z-index:10;padding:12px 16px;background:rgba(5,13,11,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+ .top .brand b{font-size:15px}
+ main{padding:20px 16px 110px}
+ .ph h1{font-size:24px}
+}
+@media(max-width:760px){
+ .two{grid-template-columns:minmax(0,1fr)}
+ .room{grid-template-columns:1fr 1fr}.room .btn{grid-column:1/-1}
+ .tbl thead{display:none}
+ .tbl,.tbl tbody,.tbl tr,.tbl td{display:block}
+ .tw{padding:10px;background:none;border:0}
+ .tbl tr{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:10px 14px;margin-bottom:10px}
+ .tbl td{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:6px 0;border:0;text-align:right}
+ .tbl td::before{content:attr(data-l);color:var(--muted);text-align:left;font-size:13px;flex:none}
+ .tbl td.act{justify-content:flex-end;padding-top:10px}
+ .tbl td.act::before{content:none}
+}
+@media(max-width:520px){
+ .stats{gap:10px}.stat{padding:14px}.stat strong{font-size:24px}
+ .grid{grid-template-columns:minmax(0,1fr)}.grid .span2{grid-column:auto}
+ .facts{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+</style>
+</head>
+<body>
+<!-- ============ LOGIN ============ -->
+<div id="login" class="login">
+  <div class="lcard">
+    <div class="logo" aria-hidden="true">G</div>
+    <h1>Admin sign in</h1>
+    <p class="sub">GAMERZONE control panel. Authorised staff only.</p>
+    <form id="lform" autocomplete="off" novalidate>
+      <label class="f" id="lemailw" hidden>Email<input id="lemail" type="email" autocomplete="username" placeholder="admin@yourdomain.com" value="gamerzone.help@gmail.com"></label>
+      <label class="f">Password<input id="lpw" type="password" autocomplete="current-password" placeholder="Enter admin password" required></label>
+      <p class="err" id="lerr" role="alert"></p>
+      <button class="btn primary" id="lbtn">Sign in</button>
+    </form>
+  </div>
+</div>
+
+<!-- ============ APP ============ -->
+<div id="app" class="app" hidden>
+  <aside class="side">
+    <div class="brand"><span class="logo" aria-hidden="true">G</span><div><b>GAMERZONE</b><small>Admin panel</small></div></div>
+    <nav class="nav" id="nav" aria-label="Sections"></nav>
+    <div class="sidefoot">
+      <span class="chip" id="modeChip"><i></i><span></span></span>
+      <button class="btn" id="logout">Log out</button>
+    </div>
+  </aside>
+  <header class="top">
+    <div class="brand"><span class="logo" aria-hidden="true">G</span><div><b>GAMERZONE</b><small id="modeTxt"></small></div></div>
+    <button class="btn sm" id="logout2">Log out</button>
+  </header>
+  <main id="main" tabindex="-1"></main>
+</div>
+
+<dialog id="dlg"></dialog>
+<div id="toast" role="status" aria-live="polite"></div>
+
+
+<script>
+/* =====================================================================
+   GAMERZONE DATA LAYER  (this exact block is inside BOTH GAMERZONE.html
+   and admin.html, so the app and the admin panel talk to the same data)
+
+   BACKEND 'local'    : data is kept in this browser (localStorage). The app and the
+                        admin panel share it when both pages are opened from the same
+                        place (same folder / same website) in the same browser.
+                        Use this to test everything before you add services.
+   BACKEND 'firebase' : data is kept in your Firebase Realtime Database, so every
+                        phone and the admin panel see the same live data.
+                        To switch: set BACKEND to 'firebase' and fill in FIREBASE below.
+                        Do this in BOTH files.
+
+   DATA SHAPE
+     users/{id}            name, phone, state, dob, wallet, bonus, status('active'|'blocked'),
+                           joinedAt, earned, wins, battles, refCode, referredBy
+     auth/{id}             hash            (password check; replace with Firebase Auth later)
+     matches/{id}          name, game('FREE FIRE'|'BGMI'), mode, fee, prizes[], slots, minPlayers,
+                           startAt, durationMin, vipSlots, joined, vipJoined, roomId, roomPass,
+                           status('upcoming'|'completed'|'cancelled'), results[], createdAt
+     entries/{match}/{id}  name, ign, gameUid, paid, joinedAt, refunded, vip     (admin view)
+     myEntries/{id}/{match}  same record, for the player's own app
+     payments/{id}         uid, type('deposit'|'withdrawal'), amount, method, ref, status, createdAt,
+                           handledAt, note
+     utr/{utr}             payment id   (stops one UTR being used twice)
+     submissions/{match}_{id}  matchId, uid, name, gameUid, rank, kills, imgId, status, why, createdAt
+     img/{imgId}           screenshot as a data URL
+     leaderboard/{id}      n, earned, wins
+     referrals/{id}/{friend}   name, paid
+     refCodes/{code}       user id
+     config/payment        upiId, upiName, minDeposit, minWithdraw, supportEmail
+     userState/{id}        the player's own app data (profile, posts, history)
+   ===================================================================== */
+const GZ_CONFIG = {
+  BACKEND: 'firebase',
+  FIREBASE: {
+    apiKey: 'AIzaSyAr2IKLImYwVgwKe0vV1_9uJNWVwkPsiU4',
+    authDomain: 'gamerzone-30d34.firebaseapp.com',
+    databaseURL: 'https://gamerzone-30d34-default-rtdb.asia-southeast1.firebasedatabase.app',
+    projectId: 'gamerzone-30d34',
+    storageBucket: 'gamerzone-30d34.firebasestorage.app',
+    messagingSenderId: '345682890290',
+    appId: '1:345682890290:web:30c0bc67ccff3315e0362b'
+  },
+  FIREBASE_SDK: 'https://www.gstatic.com/firebasejs/10.12.2/'
+};
+
+const DB = (() => {
+  const useFb = GZ_CONFIG.BACKEND === 'firebase' && !/YOUR_/.test(Object.values(GZ_CONFIG.FIREBASE).join(' '));
+  const parts = p => String(p).split('/').filter(Boolean);
+  const newId = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+  const filt = (v, f, x) => {
+    if (!v || typeof v !== 'object') return null;
+    const o = {};
+    Object.keys(v).forEach(k => { if (v[k] && v[k][f] === x) o[k] = v[k]; });
+    return o;
+  };
+
+  /* ---------------- local (browser) backend ---------------- */
+  const LOCAL = (() => {
+    const P = 'gzdb:', SPLIT = {userState: 1, img: 1};
+    const watchers = [];
+    const keyOf = (top, id) => P + top + (SPLIT[top] && id != null ? ':' + id : '');
+    const rd = k => { try { const r = localStorage.getItem(k); return r == null ? undefined : JSON.parse(r); } catch (e) { return undefined; } };
+    const wr = (k, v) => {
+      try { if (v === undefined) localStorage.removeItem(k); else localStorage.setItem(k, JSON.stringify(v)); return true; }
+      catch (e) { return false; }
+    };
+    function get(path) {
+      const a = parts(path); if (!a.length) return undefined;
+      let node, rest;
+      if (SPLIT[a[0]]) { if (a.length < 2) return undefined; node = rd(keyOf(a[0], a[1])); rest = a.slice(2); }
+      else { node = rd(keyOf(a[0])); rest = a.slice(1); }
+      for (const k of rest) { if (node == null || typeof node !== 'object') return undefined; node = node[k]; }
+      return node;
+    }
+    function set(path, val) {
+      const a = parts(path); let key, rest;
+      if (SPLIT[a[0]]) { key = keyOf(a[0], a[1]); rest = a.slice(2); } else { key = keyOf(a[0]); rest = a.slice(1); }
+      if (val === null) val = undefined;
+      if (!rest.length) { if (!wr(key, val)) throw new Error('Browser storage is full. Clear some data and try again.'); return; }
+      let root = rd(key); if (root == null || typeof root !== 'object') root = {};
+      let o = root;
+      for (let i = 0; i < rest.length - 1; i++) { if (o[rest[i]] == null || typeof o[rest[i]] !== 'object') o[rest[i]] = {}; o = o[rest[i]]; }
+      const last = rest[rest.length - 1];
+      if (val === undefined) delete o[last]; else o[last] = val;
+      if (!wr(key, root)) throw new Error('Browser storage is full. Clear some data and try again.');
+    }
+    function notify() {
+      watchers.slice().forEach(w => {
+        let v = get(w.path);
+        if (w.field !== undefined) v = filt(v, w.field, w.val);
+        const s = JSON.stringify(v === undefined ? null : v);
+        if (s !== w.last) { w.last = s; try { w.cb(v === undefined ? null : JSON.parse(s)); } catch (e) { console.error(e); } }
+      });
+    }
+    const later = () => Promise.resolve().then(notify);
+    addEventListener('storage', e => { if (e.key && e.key.indexOf(P) === 0) notify(); });
+    return {
+      async init() {},
+      async get(p) { const v = get(p); return v === undefined ? null : JSON.parse(JSON.stringify(v)); },
+      async set(p, v) { set(p, v); later(); },
+      async update(p, o) { Object.keys(o).forEach(k => set(p + '/' + k, o[k])); later(); },
+      async inc(p, d, o) {
+        o = o || {};
+        const min = o.min == null ? -Infinity : o.min, max = o.max == null ? Infinity : o.max;
+        const n = (Number(get(p)) || 0) + d;
+        if (n < min || n > max) return false;
+        set(p, n); later(); return true;
+      },
+      async claim(p, from, to) {
+        const c = get(p);
+        if (from === null ? c != null : c !== from) return false;
+        set(p, to); later(); return true;
+      },
+      watch(p, cb, field, val) {
+        const w = {path: p, cb, field, val, last: undefined};
+        watchers.push(w);
+        Promise.resolve().then(() => {
+          let v = get(p); if (field !== undefined) v = filt(v, field, val);
+          w.last = JSON.stringify(v === undefined ? null : v);
+          cb(v === undefined ? null : JSON.parse(w.last));
+        });
+        return () => { const i = watchers.indexOf(w); if (i >= 0) watchers.splice(i, 1); };
+      },
+      async wipe() {
+        const rm = [];
+        for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k && k.indexOf(P) === 0) rm.push(k); }
+        rm.forEach(k => localStorage.removeItem(k)); later();
+      }
+    };
+  })();
+
+  /* ---------------- Firebase backend (needs the config above) ---------------- */
+  const FB = (() => {
+    let db = null;
+    const load = src => new Promise((res, rej) => {
+      const s = document.createElement('script'); s.src = src; s.onload = res;
+      s.onerror = () => rej(new Error('Could not load ' + src)); document.head.appendChild(s);
+    });
+    return {
+      async init() {
+        await load(GZ_CONFIG.FIREBASE_SDK + 'firebase-app-compat.js');
+        await load(GZ_CONFIG.FIREBASE_SDK + 'firebase-database-compat.js');
+        if (!firebase.apps.length) firebase.initializeApp(GZ_CONFIG.FIREBASE);
+        db = firebase.database();
+      },
+      async get(p) { return (await db.ref(p).get()).val(); },
+      async set(p, v) { await db.ref(p).set(v === undefined ? null : v); },
+      async update(p, o) { await db.ref(p).update(o); },
+      async inc(p, d, o) {
+        o = o || {};
+        const min = o.min == null ? -Infinity : o.min, max = o.max == null ? Infinity : o.max;
+        const r = await db.ref(p).transaction(c => { const n = (Number(c) || 0) + d; return (n < min || n > max) ? undefined : n; });
+        return r.committed;
+      },
+      async claim(p, from, to) {
+        const r = await db.ref(p).transaction(c => {
+          if (c === null) return to;                 /* first pass can be empty: Firebase re-checks with the real value */
+          return (from === null ? false : c === from) ? to : undefined;
+        });
+        return r.committed && (from !== null || r.snapshot.val() === to);
+      },
+      watch(p, cb, field, val) {
+        const ref = field !== undefined ? db.ref(p).orderByChild(field).equalTo(val) : db.ref(p);
+        const fn = s => cb(s.val());
+        ref.on('value', fn);
+        return () => ref.off('value', fn);
+      },
+      async wipe() { await db.ref().set(null); }
+    };
+  })();
+
+  const B = useFb ? FB : LOCAL;
+  const ready = (async () => { await B.init(); })();
+
+  /* ---------------- sample matches (first run only) ---------------- */
+  function sampleMatches() {
+    const N = Date.now(), M = 6e4;
+    return {
+      m1: {name: 'Solo Clash', game: 'FREE FIRE', mode: 'SOLO', fee: 20, prizes: [100, 40], slots: 48, minPlayers: 25, startAt: N + 25 * M, durationMin: 30, vipSlots: 4, joined: 31, vipJoined: 0, roomId: '', roomPass: '', status: 'upcoming', createdAt: N},
+      m2: {name: '1v1 Stadium', game: 'FREE FIRE', mode: '1V1', fee: 50, prizes: [200, 100], slots: 16, minPlayers: 12, startAt: N + 90 * M, durationMin: 60, vipSlots: 2, joined: 9, vipJoined: 0, roomId: '', roomPass: '', status: 'upcoming', createdAt: N},
+      m3: {name: 'Mega Solo', game: 'BGMI', mode: 'SOLO', fee: 200, prizes: [3000, 1500, 600], slots: 48, minPlayers: 48, startAt: N + 180 * M, durationMin: 40, vipSlots: 4, joined: 44, vipJoined: 0, roomId: '', roomPass: '', status: 'upcoming', createdAt: N}
+    };
+  }
+
+
+  /* ---------- DEMO DATA (local test mode only) ----------
+     Fake players, entries, payments and screenshots so you can watch the admin panel
+     and the app work together. It is written ONLY when BACKEND is 'local'. With
+     BACKEND 'firebase' none of this is ever written, so going live starts clean.
+     Demo logins: phone 9876500001 to 9876500005, password demo123 (signup OTP is 1234). */
+  function demoData() {
+    const N = Date.now(), M = 6e4, HR = 36e5, DAY = 864e5;
+    const shot = (rank, kills, who) => 'data:image/svg+xml;utf8,' + encodeURIComponent(
+      '<svg xmlns="http://www.w3.org/2000/svg" width="360" height="640" viewBox="0 0 360 640"><rect width="360" height="640" fill="#0b1210"/>' +
+      '<text x="180" y="120" fill="#00ff88" font-family="Arial" font-size="26" font-weight="700" text-anchor="middle">MATCH RESULT</text>' +
+      '<text x="180" y="260" fill="#fff" font-family="Arial" font-size="84" font-weight="700" text-anchor="middle">#' + rank + '</text>' +
+      '<text x="180" y="330" fill="#9fb3aa" font-family="Arial" font-size="22" text-anchor="middle">RANK</text>' +
+      '<text x="180" y="420" fill="#fff" font-family="Arial" font-size="56" font-weight="700" text-anchor="middle">' + kills + '</text>' +
+      '<text x="180" y="456" fill="#9fb3aa" font-family="Arial" font-size="22" text-anchor="middle">KILLS</text>' +
+      '<text x="180" y="560" fill="#00c46a" font-family="Arial" font-size="20" text-anchor="middle">' + who + ' (demo screenshot)</text></svg>');
+    const mk = (n, g, mode, fee, prizes, slots, minP, off, dur, vip, joined, extra) => Object.assign({name: n, game: g, mode, fee, prizes, slots, minPlayers: minP, startAt: N + off, durationMin: dur, vipSlots: vip, joined, vipJoined: 0, roomId: '', roomPass: '', status: 'upcoming', createdAt: N - DAY}, extra || {});
+    const ent = (name, ign, uid, paid, ago, vip) => ({name, ign, gameUid: uid, paid, joinedAt: N - ago, refunded: false, vip: !!vip});
+    const mine = e => { const o = Object.assign({}, e); delete o.name; return o; };
+    const E = {
+      m1: {u9876500001: ent('Rahul Sharma', 'RahulYT', '512345678', 20, 3 * HR), u9876500002: ent('Priya Verma', 'PriyaGG', '523456789', 20, 2 * HR), u9876500004: ent('Vikram Singh', 'VikramOP', '534567890', 20, HR)},
+      m2: {u9876500004: ent('Vikram Singh', 'VikramOP', '534567890', 50, 40 * M)},
+      m3: {u9876500002: ent('Priya Verma', 'PriyaGG', '5112233445', 200, HR)},
+      m4: {u9876500001: ent('Rahul Sharma', 'RahulYT', '512345678', 20, 2 * HR + 50 * M), u9876500002: ent('Priya Verma', 'PriyaGG', '523456789', 20, 2 * HR + 40 * M), u9876500004: ent('Vikram Singh', 'VikramOP', '534567890', 20, 2 * HR + 30 * M), u9876500005: ent('Neha Gupta', 'NehaQueen', '545678901', 20, 2 * HR + 20 * M)},
+      m5: {u9876500001: ent('Rahul Sharma', 'RahulYT', '512345678', 20, DAY + 5 * HR), u9876500004: ent('Vikram Singh', 'VikramOP', '534567890', 20, DAY + 4 * HR)}
+    };
+    const ME = {};
+    Object.keys(E).forEach(m => Object.keys(E[m]).forEach(u => { (ME[u] = ME[u] || {})[m] = mine(E[m][u]); }));
+    const sub = (matchId, matchName, uid, name, gameUid, ign, rank, kills, status, why, ago) => ({matchId, matchName, uid, name, gameUid, ign, rank, kills, imgId: 'demo_' + matchId + '_' + uid, status, why: why || '', createdAt: N - ago});
+    const S = {
+      ['m4_u9876500001']: sub('m4', 'Evening Solo', 'u9876500001', 'Rahul Sharma', '512345678', 'RahulYT', 2, 6, 'pending', '', 12 * M),
+      ['m4_u9876500002']: sub('m4', 'Evening Solo', 'u9876500002', 'Priya Verma', '523456789', 'PriyaGG', 1, 12, 'pending', '', 10 * M),
+      ['m4_u9876500004']: sub('m4', 'Evening Solo', 'u9876500004', 'Vikram Singh', '534567890', 'VikramOP', 9, 1, 'pending', '', 8 * M),
+      ['m4_u9876500005']: sub('m4', 'Evening Solo', 'u9876500005', 'Neha Gupta', '545678901', 'NehaQueen', 4, 3, 'rejected', 'Screenshot is blurry or cropped', 6 * M),
+      ['m5_u9876500004']: sub('m5', 'Morning Clash', 'u9876500004', 'Vikram Singh', '534567890', 'VikramOP', 1, 9, 'approved', '', DAY + 2 * HR),
+      ['m5_u9876500001']: sub('m5', 'Morning Clash', 'u9876500001', 'Rahul Sharma', '512345678', 'RahulYT', 2, 5, 'approved', '', DAY + 2 * HR)
+    };
+    const IMGS = {};
+    Object.keys(S).forEach(k => { const s = S[k]; IMGS[s.imgId] = shot(s.rank, s.kills, s.name); });
+    const usr = (name, phone, state, dob, wallet, bonus, status, joinedDays, earned, wins, battles, refCode, extra) => Object.assign({name, phone, state, dob, wallet, bonus, status, joinedAt: N - joinedDays * DAY, earned, wins, battles, refCode}, extra || {});
+    return {
+      users: {
+        u9876500001: usr('Rahul Sharma', '9876500001', 'Rajasthan', '2002-04-12', 340, 0, 'active', 30, 40, 0, 3, 'GZRAHU101'),
+        u9876500002: usr('Priya Verma', '9876500002', 'Maharashtra', '2001-09-03', 120, 0, 'active', 21, 0, 0, 3, 'GZPRIY202', {referredBy: 'u9876500001'}),
+        u9876500003: usr('Aman Khan', '9876500003', 'Delhi', '2000-01-25', 0, 0, 'blocked', 15, 0, 0, 0, 'GZAMAN303'),
+        u9876500004: usr('Vikram Singh', '9876500004', 'Punjab', '1999-11-18', 560, 0, 'active', 10, 100, 1, 4, 'GZVIKR404'),
+        u9876500005: usr('Neha Gupta', '9876500005', 'Uttar Pradesh', '2003-06-30', 75, 0, 'active', 4, 0, 0, 1, 'GZNEHA505', {referredBy: 'u9876500001'})
+      },
+      auth: {u9876500001: {hash: '0a705584e9b97e052773a6856e17d9d085c98e611627274faa2054e6670d0e3d'}, u9876500002: {hash: '0face9b6d9075e43cc0c5908e8a3ab2d30ffb01031b7fcedefa9e0fccfa258ba'}, u9876500003: {hash: '9d34a6fe6e0322376c02bbb855dcd074f2f0c6badc9faec1b20d55199a7259e2'}, u9876500004: {hash: '37322df5c1d598ab7ff5db7bed1d900cf07d2c4aa318d93a6a09d00589995182'}, u9876500005: {hash: 'b0f0c5e41e6c409a7e7b806a79aa9189bfe9f0bfa8cc59d866f51ebbc1452595'}},
+      refCodes: {GZRAHU101: 'u9876500001', GZPRIY202: 'u9876500002', GZAMAN303: 'u9876500003', GZVIKR404: 'u9876500004', GZNEHA505: 'u9876500005'},
+      referrals: {u9876500001: {u9876500002: {name: 'Priya Verma', paid: true}, u9876500005: {name: 'Neha Gupta', paid: false}}},
+      matches: {
+        m1: mk('Solo Clash', 'FREE FIRE', 'SOLO', 20, [100, 40], 48, 25, 25 * M, 30, 4, 31),
+        m2: mk('1v1 Stadium', 'FREE FIRE', '1V1', 50, [200, 100], 16, 12, 90 * M, 60, 2, 9),
+        m3: mk('Mega Solo', 'BGMI', 'SOLO', 200, [3000, 1500, 600], 48, 48, 180 * M, 40, 4, 44),
+        m4: mk('Evening Solo', 'FREE FIRE', 'SOLO', 20, [100, 40], 48, 25, -50 * M, 30, 4, 30, {roomId: '78451236', roomPass: 'gz2026'}),
+        m5: mk('Morning Clash', 'FREE FIRE', 'SOLO', 20, [100, 40], 48, 25, -DAY - 3 * HR, 30, 4, 28, {roomId: '66120098', roomPass: 'clash9', status: 'completed', completedAt: N - DAY - 2 * HR,
+          results: [{place: 1, uid: 'u9876500004', name: 'Vikram Singh', prize: 100}, {place: 2, uid: 'u9876500001', name: 'Rahul Sharma', prize: 40}]}),
+        m6: mk('BGMI Quick Solo', 'BGMI', 'SOLO', 50, [400, 150], 48, 30, -10 * M, 40, 4, 41, {roomId: '90017733', roomPass: 'bgmi77'})
+      },
+      entries: E, myEntries: ME, submissions: S, img: IMGS,
+      payments: {
+        p1: {uid: 'u9876500005', type: 'deposit', amount: 200, method: 'UPI', ref: '412398765432', status: 'pending', createdAt: N - 15 * M},
+        p2: {uid: 'u9876500001', type: 'withdrawal', amount: 300, method: 'UPI', ref: 'rahul@okaxis', status: 'pending', createdAt: N - 40 * M},
+        p3: {uid: 'u9876500002', type: 'deposit', amount: 500, method: 'UPI', ref: '398712345678', status: 'approved', createdAt: N - 2 * DAY, handledAt: N - 2 * DAY + 20 * M},
+        p4: {uid: 'u9876500004', type: 'withdrawal', amount: 150, method: 'UPI', ref: 'vikram@oksbi', status: 'rejected', note: 'UPI ID is not valid', createdAt: N - DAY, handledAt: N - DAY + HR},
+        p5: {uid: 'u9876500001', type: 'deposit', amount: 100, method: 'UPI', ref: '455512349876', status: 'pending', createdAt: N - 5 * M}
+      },
+      utr: {'412398765432': 'p1', '398712345678': 'p3', '455512349876': 'p5'},
+      leaderboard: {u9876500004: {n: 'Vikram Singh', earned: 100, wins: 1}, u9876500001: {n: 'Rahul Sharma', earned: 40, wins: 0}},
+      config: {payment: {upiId: 'gamerzone@okicici', upiName: 'GAMERZONE', minDeposit: 10, maxDeposit: 10000, minWithdraw: 100, maxWithdraw: 10000, supportEmail: 'GAMERZONE.HELP@gmail.com'}}
+    };
+  }
+  async function putDemo() {
+    const d = demoData();
+    for (const top of Object.keys(d)) {
+      if (top === 'img') { for (const id of Object.keys(d.img)) await B.set('img/' + id, d.img[id]); }
+      else await B.set(top, d[top]);
+    }
+    await B.set('meta/demo', true);
+  }
+
+  return {
+    mode: useFb ? 'firebase' : 'local',
+    ready, newId,
+    get: async (p) => { await ready; return B.get(p); },
+    set: async (p, v) => { await ready; return B.set(p, v); },
+    update: async (p, o) => { await ready; return B.update(p, o); },
+    inc: async (p, d, o) => { await ready; return B.inc(p, d, o); },
+    claim: async (p, a, b) => { await ready; return B.claim(p, a, b); },
+    watch(p, cb) { let off = null, dead = false; ready.then(() => { if (!dead) off = B.watch(p, cb); }); return () => { dead = true; if (off) off(); }; },
+    watchWhere(p, f, v, cb) { let off = null, dead = false; ready.then(() => { if (!dead) off = B.watch(p, cb, f, v); }); return () => { dead = true; if (off) off(); }; },
+    putImage: (id, data) => DB.set('img/' + id, data),
+    getImage: (id) => DB.get('img/' + id),
+    /* make sample matches the first time anything opens */
+    async ensureSeed() {
+      await ready;
+      if (await B.get('meta/seeded')) return;
+      await B.set('meta/seeded', true);
+      if (useFb) return;                       /* live database starts clean: no demo data */
+      await putDemo();
+    },
+    /* kind 'demo': wipe and restore sample matches. kind 'fresh': wipe everything (use before launch). */
+    async reset(kind) {
+      await ready; await B.wipe();
+      await B.set('meta/seeded', true);
+      if (kind === 'demo' && !useFb) await putDemo();
+    }
+  };
+})();
+
+</script>
+<script>
+'use strict';
+/* =====================================================================
+   GAMERZONE ADMIN PANEL
+   Reads and writes the same database as the GAMERZONE app (see the DATA
+   LAYER block above). Backend choice and Firebase keys live in GZ_CONFIG.
+
+   PASSWORD: the default is  admin123  (stored as a SHA-256 hash).
+   CHANGE IT before going live. To make a new hash, run this in the
+   browser console and paste the result into ADMIN_PASS_SHA256:
+     crypto.subtle.digest('SHA-256',new TextEncoder().encode('NEW_PASSWORD'))
+       .then(b=>console.log([...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')))
+
+   IMPORTANT: a password check inside a web page only hides the screen,
+   because anyone can read this file. For real security, use the Firebase
+   backend with USE_FIREBASE_AUTH = true (Firebase checks email + password)
+   and lock the database with rules (see the notes in the DATA LAYER block).
+   ===================================================================== */
+const CONFIG = {
+  ADMIN_PASS_SHA256: '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9', /* = admin123 */
+  USE_FIREBASE_AUTH: true,             /* true = sign in with Firebase email + password (needs BACKEND 'firebase') */
+  WITHDRAW_DEDUCT_ON_APPROVE: false,   /* false = the app already held the money when the player asked, so
+                                          rejecting returns it. Keep false to match the GAMERZONE app. */
+  IDLE_MINUTES: 30
+};
+const REASONS = ['Screenshot is blurry or cropped', 'In-game ID does not match', 'Wrong match or time', 'Looks edited or reused'];
+
+/* ---------- helpers ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const inr = n => '₹' + Number(n || 0).toLocaleString('en-IN');
+const when = t => t ? new Date(t).toLocaleString('en-IN', {day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit'}) : '-';
+const day = t => t ? new Date(t).toLocaleDateString('en-IN', {day: 'numeric', month: 'short', year: 'numeric'}) : '-';
+const list = o => Object.keys(o || {}).map(id => Object.assign({id}, o[id]));
+const sum = a => (a || []).reduce((x, y) => x + (+y || 0), 0);
+let toastT;
+function toast(msg, bad) {
+  const t = $('#toast'); t.textContent = msg; t.className = 'on' + (bad ? ' bad' : '');
+  clearTimeout(toastT); toastT = setTimeout(() => t.className = '', 3400);
+}
+async function sha256(txt) {
+  if (!(window.crypto && crypto.subtle)) throw new Error('nocrypto');
+  const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(txt));
+  return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, '0')).join('');
+}
+const tryLs = f => { try { return f(); } catch (e) { return null; } };
+const hsh = u => { let h = 5381; for (let i = 0; i < u.length; i++) h = ((h << 5) + h + u.charCodeAt(i)) | 0; return u.length + ':' + h; };
+
+/* ---------- data (kept up to date by the database) ---------- */
+const D = {users: {}, matches: {}, payments: {}, submissions: {}, conf: {}};
+let OFF = [], view = 'dash', dirty = false;
+const F = {mf: 'all', uq: '', uf: 'all', ptype: 'withdrawal', pst: 'pending', rm: ''};
+const IMGC = {}, IMH = {};
+
+function startWatch() {
+  ['users', 'matches', 'payments', 'submissions'].forEach(k => OFF.push(DB.watch(k, v => { D[k] = v || {}; loadImgs(); refresh(); })));
+  OFF.push(DB.watch('config/payment', v => { D.conf = v || {}; }));
+}
+function stopWatch() { OFF.forEach(f => { try { f(); } catch (e) {} }); OFF = []; D.users = {}; D.matches = {}; D.payments = {}; D.submissions = {}; }
+
+let imgBusy = false;
+async function loadImgs() {
+  if (imgBusy) return; imgBusy = true; let got = false;
+  try {
+    for (const p of list(D.payments)) {
+      if (p.imgId && !IMGC[p.imgId]) { const u = await DB.getImage(p.imgId); if (u) { IMGC[p.imgId] = u; got = true; } }
+    }
+    for (const s of list(D.submissions)) {
+      if (s.imgId && !IMGC[s.imgId]) {
+        const u = await DB.getImage(s.imgId);
+        if (u) { IMGC[s.imgId] = u; IMH[s.id] = hsh(u); got = true; }
+      }
+    }
+  } catch (e) { console.error(e); }
+  imgBusy = false; if (got) refresh();
+}
+
+/* ---------- match state ---------- */
+function mstate(m) {
+  if (m.status === 'cancelled') return 'cancelled';
+  if (m.status === 'completed') return 'completed';
+  const n = Date.now(), end = m.startAt + (m.durationMin || 30) * 6e4;
+  if (n < m.startAt) return 'upcoming';
+  if ((m.joined || 0) < m.minPlayers) return 'cancelled';
+  return n < end ? 'live' : 'ended';
+}
+const LAB = {upcoming: 'Upcoming', live: 'Live', ended: 'Awaiting results', completed: 'Completed', cancelled: 'Cancelled'};
+const matchList = () => list(D.matches);
+const subsFor = id => list(D.submissions).filter(s => s.matchId === id);
+const uname = id => (D.users[id] || {}).name || 'Unknown user';
+
+/* ---------- dialogs ---------- */
+function openDlg(html) {
+  const d = $('#dlg'); d.onclose = null; d.returnValue = ''; d.innerHTML = html;
+  d.querySelectorAll('[data-x]').forEach(b => b.onclick = () => d.close('cancel'));
+  d.showModal(); return d;
+}
+function ask({title, body, ok, danger, field}) {
+  return new Promise(res => {
+    const d = openDlg('<form method="dialog" class="dlgf"><h3>' + esc(title) + '</h3>' + (body ? '<div class="sub" style="font-size:14px">' + body + '</div>' : '') +
+      (field ? '<label class="f">' + esc(field.label) + '<input name="v" maxlength="' + (field.max || 120) + '"' + (field.req ? ' required' : '') + ' placeholder="' + esc(field.ph || '') + '"></label>' : '') +
+      '<div class="drow"><button type="button" class="btn" data-x>Cancel</button><button class="btn ' + (danger ? 'danger' : 'primary') + '" value="ok">' + esc(ok || 'Confirm') + '</button></div></form>');
+    d.onclose = () => res(d.returnValue === 'ok' ? (field ? d.querySelector('[name=v]').value.trim() : true) : false);
+  });
+}
+function pickReason() {
+  return new Promise(res => {
+    const d = openDlg('<form method="dialog" class="dlgf"><h3>Reject this result</h3><p class="sub">Pick a reason. The player will see it and can send a new screenshot.</p>' +
+      REASONS.map((r, i) => '<button class="btn opt" value="r' + i + '">' + esc(r) + '</button>').join('') +
+      '<div class="drow"><button type="button" class="btn" data-x>Cancel</button></div></form>');
+    d.onclose = () => res(/^r\d$/.test(d.returnValue) ? REASONS[+d.returnValue.slice(1)] : false);
+  });
+}
+
+/* ---------- icons + navigation ---------- */
+const ICON = {
+  dash: '<svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>',
+  host: '<svg viewBox="0 0 24 24"><path d="M6 12h4M8 10v4"/><circle cx="15" cy="13" r="1"/><circle cx="18" cy="11" r="1"/><path d="M17.3 5H6.7a4 4 0 0 0-3.9 3.2l-1.5 7A3 3 0 0 0 4.2 19a3 3 0 0 0 2.2-1l1.6-2h8l1.6 2a3 3 0 0 0 2.2 1 3 3 0 0 0 2.9-3.8l-1.5-7A4 4 0 0 0 17.3 5z"/></svg>',
+  results: '<svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>',
+  users: '<svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg>',
+  pay: '<svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>',
+  settings: '<svg viewBox="0 0 24 24"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>'
+};
+const VIEWS = [['dash', 'Dashboard'], ['host', 'Host panel'], ['results', 'Results'], ['users', 'Users'], ['pay', 'Payments'], ['settings', 'Settings']];
+const pendingPay = () => list(D.payments).filter(p => (p.type === 'deposit' || p.type === 'withdrawal') && p.status === 'pending').length;
+const pendingSubs = () => list(D.submissions).filter(s => s.status === 'pending' && D.matches[s.matchId] && D.matches[s.matchId].status !== 'completed').length;
+
+function renderNav() {
+  const cnt = {pay: pendingPay(), results: pendingSubs()};
+  $('#nav').innerHTML = VIEWS.map(v => '<button data-view="' + v[0] + '"' + (v[0] === view ? ' aria-current="page"' : '') + '>' + ICON[v[0]] + '<span>' + v[1] + '</span>' +
+    (cnt[v[0]] ? '<span class="cnt" aria-label="' + cnt[v[0]] + ' waiting">' + cnt[v[0]] + '</span>' : '') + '</button>').join('');
+}
+function segHtml(items, cur) { return items.map(i => '<button type="button" data-v="' + i[0] + '" aria-pressed="' + (cur === i[0]) + '">' + esc(i[1]) + '</button>').join(''); }
+
+function setView(k) {
+  view = k; dirty = false; renderNav();
+  const m = $('#main');
+  if (k === 'dash') m.innerHTML = '<div class="ph"><h1>Dashboard</h1><p>What is happening in GAMERZONE right now.</p></div><div id="body"></div>';
+  else if (k === 'host') { m.innerHTML = '<div class="ph"><h1>Host panel</h1><p>Create matches, share room details and see who joined.</p></div>' + hostForm() + '<div class="toolbar" style="margin-top:22px"><div class="seg" id="mseg" role="group" aria-label="Filter matches"></div></div><div id="body" class="mlist" style="margin-top:0"></div>'; bindHostForm(); renderMseg(); }
+  else if (k === 'results') { m.innerHTML = '<div class="ph"><h1>Results</h1><p>Check each player\u2019s screenshot, approve or reject it, then pay the winners.</p></div><div class="toolbar"><label class="f"><span>Match</span><select id="rsel"></select></label></div><div id="body"></div>'; renderRsel(); $('#rsel').onchange = e => { F.rm = e.target.value; renderBody(); }; }
+  else if (k === 'users') { m.innerHTML = '<div class="ph"><h1>Users</h1><p>Wallet balances and account status. Block accounts you suspect of cheating or fraud.</p></div><div class="toolbar"><label class="f"><span>Search by name, phone or state</span><input id="uq" type="search" placeholder="Search players" value="' + esc(F.uq) + '"></label><div class="seg" id="useg" role="group" aria-label="Filter users"></div></div><div id="body"></div>'; $('#uq').oninput = e => { F.uq = e.target.value; renderBody(); }; renderUseg(); }
+  else if (k === 'pay') { m.innerHTML = '<div class="ph"><h1>Payments</h1><p>Approve or reject deposit and withdrawal requests.</p></div><div class="toolbar"><div class="seg" id="ptseg" role="group" aria-label="Request type"></div><div class="seg" id="psseg" role="group" aria-label="Request status"></div></div><div id="body"></div>'; renderPseg(); }
+  else { m.innerHTML = settingsHtml(); bindSettings(); }
+  renderBody(); window.scrollTo(0, 0);
+}
+function refresh() {
+  if (!$('#app') || $('#app').hidden) return;
+  renderNav();
+  if (view === 'host') {
+    const b = $('#body');
+    if (b && b.contains(document.activeElement) && /INPUT|SELECT/.test(document.activeElement.tagName)) { dirty = true; return; }
+    renderMseg();
+  } else if (view === 'pay') renderPseg();
+  else if (view === 'users') renderUseg();
+  else if (view === 'results') renderRsel();
+  else if (view === 'settings') return;
+  renderBody();
+}
+document.addEventListener('focusout', () => { if (dirty) setTimeout(() => { if (!document.activeElement || !/INPUT|SELECT/.test(document.activeElement.tagName)) { dirty = false; refresh(); } }, 0); });
+function renderBody() {
+  const b = $('#body'); if (!b) return;
+  b.innerHTML = view === 'dash' ? dashHtml() : view === 'host' ? matchesHtml() : view === 'results' ? resultsHtml() : view === 'users' ? usersHtml() : view === 'pay' ? payHtml() : '';
+  b.querySelectorAll('img[data-img]').forEach(im => { const u = IMGC[im.dataset.img]; if (u) im.src = u; });
+}
+
+/* ---------- dashboard ---------- */
+function dashHtml() {
+  const U = list(D.users), M = matchList().map(m => Object.assign(m, {_s: mstate(m)}));
+  const P = list(D.payments).filter(p => p.type === 'deposit' || p.type === 'withdrawal');
+  const live = M.filter(m => m._s === 'live').length, up = M.filter(m => m._s === 'upcoming').length;
+  const blocked = U.filter(u => u.status === 'blocked').length;
+  const depOk = P.filter(p => p.type === 'deposit' && p.status === 'approved'), depSum = depOk.reduce((a, p) => a + (+p.amount || 0), 0);
+  const depPend = P.filter(p => p.type === 'deposit' && p.status === 'pending').length;
+  const wPend = P.filter(p => p.type === 'withdrawal' && p.status === 'pending'), wSum = wPend.reduce((a, p) => a + (+p.amount || 0), 0);
+  const q = [];
+  P.filter(p => p.status === 'pending').forEach(p => q.push({t: p.createdAt, a: uname(p.uid), b: (p.type === 'deposit' ? 'Deposit' : 'Withdrawal') + ' · ' + when(p.createdAt), r: inr(p.amount), go: 'pay'}));
+  list(D.submissions).filter(s => s.status === 'pending' && D.matches[s.matchId] && D.matches[s.matchId].status !== 'completed').forEach(s => q.push({t: s.createdAt, a: s.name, b: 'Result screenshot · ' + (s.matchName || ''), r: 'Rank #' + s.rank, go: 'results'}));
+  q.sort((a, b) => a.t - b.t);
+  const next = M.filter(m => m._s === 'live' || m._s === 'upcoming' || m._s === 'ended').sort((a, b) => a.startAt - b.startAt).slice(0, 5);
+  return '<div class="stats">' +
+    '<div class="stat"><span>Total users</span><strong>' + U.length + '</strong><small>' + blocked + ' blocked</small></div>' +
+    '<div class="stat"><span>Active matches</span><strong>' + (live + up) + '</strong><small>' + live + ' live now, ' + up + ' upcoming</small></div>' +
+    '<div class="stat"><span>Total deposits</span><strong>' + inr(depSum) + '</strong><small>' + depOk.length + ' approved, ' + depPend + ' waiting</small></div>' +
+    '<div class="stat warn"><span>Pending withdrawals</span><strong>' + wPend.length + '</strong><small>' + inr(wSum) + ' to pay out</small></div></div>' +
+    '<div class="two"><section class="panel"><h2>Waiting for you</h2>' +
+    (q.length ? q.slice(0, 6).map(x => '<div class="row"><div><b>' + esc(x.a) + '</b><small>' + esc(x.b) + '</small></div><b>' + esc(x.r) + '</b></div>').join('') + '<div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn sm" data-go="pay">Open payments</button><button class="btn sm" data-go="results">Open results</button></div>' : '<p class="empty">Nothing is waiting. All clear.</p>') +
+    '</section><section class="panel"><h2>Next matches</h2>' +
+    (next.length ? next.map(m => '<div class="row"><div><b>' + esc(m.name) + '</b><small>' + when(m.startAt) + ' · ' + (m.joined || 0) + '/' + m.slots + ' joined</small></div><span class="badge b-' + m._s + '">' + LAB[m._s] + '</span></div>').join('') + '<div style="margin-top:12px"><button class="btn sm" data-go="host">Open host panel</button></div>' : '<p class="empty">No matches scheduled. Add one in the host panel.</p>') +
+    '</section></div>';
+}
+
+/* ---------- host panel: add match ---------- */
+function hostForm() {
+  return '<section class="panel" aria-labelledby="nmh"><h2 id="nmh">Add a match</h2><form id="nm" class="grid" novalidate>' +
+  '<label class="f">Game<select name="game"><option>FREE FIRE</option><option>BGMI</option></select></label>' +
+  '<label class="f">Format<select name="mode"><option value="SOLO">Solo</option><option value="1V1">1 vs 1</option></select></label>' +
+  '<label class="f span2">Match name<input name="name" maxlength="30" placeholder="e.g. Solo Clash" required></label>' +
+  '<label class="f span2">Date and time<input name="when" type="datetime-local" required></label>' +
+  '<label class="f">Match length (minutes)<input name="dur" type="number" min="10" max="180" step="1" inputmode="numeric" value="30" required></label>' +
+  '<label class="f">Entry fee (₹)<input name="fee" type="number" min="0" max="100000" step="1" inputmode="numeric" placeholder="20" required></label>' +
+  '<label class="f">1st prize (₹)<input name="p1" type="number" min="1" step="1" inputmode="numeric" placeholder="100" required></label>' +
+  '<label class="f">2nd prize (₹, optional)<input name="p2" type="number" min="0" step="1" inputmode="numeric" placeholder="40"></label>' +
+  '<label class="f">3rd prize (₹, optional)<input name="p3" type="number" min="0" step="1" inputmode="numeric" placeholder="0"></label>' +
+  '<label class="f">Total slots<input name="slots" type="number" min="2" max="200" step="1" inputmode="numeric" value="48" required></label>' +
+  '<label class="f">Minimum players<input name="minp" type="number" min="2" max="200" step="1" inputmode="numeric" value="25" required></label>' +
+  '<label class="f">VIP reserved slots<input name="vip" type="number" min="0" max="50" step="1" inputmode="numeric" value="4" required></label>' +
+  '<p class="hint full" id="nmpool">Prize pool: ₹0</p><p class="err full" id="nmerr" role="alert"></p>' +
+  '<div class="full"><button class="btn primary">Add match</button></div></form></section>';
+}
+function bindHostForm() {
+  const f = $('#nm'), pad = n => String(n).padStart(2, '0'), n = new Date();
+  f.elements.when.min = n.getFullYear() + '-' + pad(n.getMonth() + 1) + '-' + pad(n.getDate()) + 'T' + pad(n.getHours()) + ':' + pad(n.getMinutes());
+  const pool = () => { $('#nmpool').textContent = 'Prize pool: ' + inr(sum(['p1', 'p2', 'p3'].map(k => Number(f.elements[k].value) || 0))); };
+  ['p1', 'p2', 'p3'].forEach(k => f.elements[k].oninput = pool);
+  f.onsubmit = async e => {
+    e.preventDefault();
+    const v = k => f.elements[k].value.trim(), er = $('#nmerr'), bad = m => { er.textContent = m; };
+    const name = v('name'), fee = Number(v('fee')), slots = Number(v('slots')), minp = Number(v('minp')), vip = Number(v('vip')), dur = Number(v('dur'));
+    const prizes = [Number(v('p1')), Number(v('p2') || 0), Number(v('p3') || 0)];
+    const startAt = new Date(v('when')).getTime();
+    if (!name) return bad('Enter a match name.');
+    if (!Number.isInteger(fee) || fee < 0 || v('fee') === '') return bad('Entry fee must be a whole number, 0 or more.');
+    if (!prizes.every(x => Number.isInteger(x) && x >= 0) || prizes[0] < 1) return bad('Enter a 1st prize of at least ₹1. Other prizes are whole numbers.');
+    if (prizes[2] > 0 && prizes[1] === 0) return bad('Add a 2nd prize before a 3rd prize.');
+    if (!Number.isInteger(slots) || slots < 2 || slots > 200) return bad('Slots must be between 2 and 200.');
+    if (!Number.isInteger(minp) || minp < 2 || minp > slots) return bad('Minimum players must be between 2 and the total slots.');
+    if (!Number.isInteger(vip) || vip < 0 || vip > slots) return bad('VIP slots must be between 0 and the total slots.');
+    if (!Number.isInteger(dur) || dur < 10 || dur > 180) return bad('Match length must be 10 to 180 minutes.');
+    if (!startAt || startAt < Date.now() - 6e4) return bad('Pick a start time in the future.');
+    er.textContent = '';
+    const id = DB.newId();
+    try {
+      await DB.set('matches/' + id, {name, game: v('game'), mode: v('mode'), fee, prizes: prizes.filter(x => x > 0), slots, minPlayers: minp, startAt, durationMin: dur, vipSlots: vip, joined: 0, vipJoined: 0, roomId: '', roomPass: '', status: 'upcoming', createdAt: Date.now()});
+      f.reset(); f.elements.slots.value = 48; f.elements.minp.value = 25; f.elements.vip.value = 4; f.elements.dur.value = 30; pool();
+      toast('Match added. Players can see it in the app now.');
+    } catch (x) { bad('Could not save: ' + x.message); }
+  };
+}
+function renderMseg() {
+  const el = $('#mseg'); if (!el) return;
+  const M = matchList(), c = s => M.filter(m => mstate(m) === s).length;
+  el.innerHTML = segHtml([['all', 'All (' + M.length + ')'], ['upcoming', 'Upcoming (' + c('upcoming') + ')'], ['live', 'Live (' + c('live') + ')'], ['ended', 'Awaiting results (' + c('ended') + ')'], ['completed', 'Completed (' + c('completed') + ')'], ['cancelled', 'Cancelled (' + c('cancelled') + ')']], F.mf);
+}
+const RANK = {live: 0, ended: 1, upcoming: 2, completed: 3, cancelled: 4};
+function matchesHtml() {
+  let M = matchList().map(m => Object.assign(m, {_s: mstate(m)})).filter(m => F.mf === 'all' || m._s === F.mf);
+  M.sort((a, b) => (RANK[a._s] - RANK[b._s]) || (['completed', 'cancelled'].includes(a._s) ? b.startAt - a.startAt : a.startAt - b.startAt));
+  if (!M.length) return '<p class="empty">No matches here yet.</p>';
+  return M.map(m => {
+    const open = ['upcoming', 'live', 'ended'].includes(m._s), pool = sum(m.prizes), nsub = subsFor(m.id).length;
+    return '<article class="match' + (m._s === 'live' ? ' is-live' : '') + '" data-mid="' + esc(m.id) + '">' +
+      '<div class="mh"><div><h3>' + esc(m.name) + '</h3><p class="sub">' + esc(m.game) + ' · ' + (m.mode === '1V1' ? '1 vs 1' : 'Solo') + ' · ' + when(m.startAt) + ' · ' + (m.durationMin || 30) + ' min</p></div><span class="badge b-' + m._s + '">' + LAB[m._s] + '</span></div>' +
+      '<div class="facts"><div><span>Entry fee</span><b>' + inr(m.fee) + '</b></div><div><span>Prize pool</span><b>' + inr(pool) + '</b></div><div><span>Players joined</span><b>' + (m.joined || 0) + ' / ' + m.slots + '</b></div><div><span>Needs at least</span><b>' + m.minPlayers + ' players</b></div></div>' +
+      '<p class="sub" style="margin:-4px 0 14px">Prizes: ' + (m.prizes || []).map((p, i) => ['1st', '2nd', '3rd'][i] + ' ' + inr(p)).join(' · ') + ' · ' + (m.vipSlots || 0) + ' VIP slots</p>' +
+      (m.status !== 'completed' && (m.joined || 0) < m.minPlayers && m._s === 'cancelled' && m.status !== 'cancelled' ? '<p class="err">Not enough players joined, so this match was cancelled automatically and entry fees go back to the players.</p>' : '') +
+      (open ? '<div class="room"><label class="f">Room ID<input name="rid" inputmode="numeric" maxlength="12" placeholder="6 to 12 digits" value="' + esc(m.roomId) + '"></label><label class="f">Room password<input name="rpw" maxlength="12" placeholder="Password" value="' + esc(m.roomPass) + '"></label><button class="btn" data-act="room">Save room details</button></div><p class="hint">Players see these 10 minutes before the match starts.</p><p class="err" role="alert"></p>' : '') +
+      '<div class="macts"><button class="btn" data-act="players">Players (' + (m.joined || 0) + ')</button>' +
+      (['live', 'ended', 'completed'].includes(m._s) ? '<button class="btn primary" data-act="review">' + (m._s === 'completed' ? 'View results' : 'Review results' + (nsub ? ' (' + nsub + ')' : '')) + '</button>' : '') +
+      (open ? '<button class="btn danger" data-act="cancel">Cancel match</button>' : '') + '</div></article>';
+  }).join('');
+}
+async function saveRoom(card, m) {
+  const rid = card.querySelector('[name=rid]').value.trim(), pw = card.querySelector('[name=rpw]').value.trim(), er = card.querySelector('.err');
+  if (!/^\d{6,12}$/.test(rid)) { er.textContent = 'Room ID should be 6 to 12 digits.'; return; }
+  if (pw.length < 3 || pw.length > 12) { er.textContent = 'Password should be 3 to 12 characters.'; return; }
+  er.textContent = '';
+  try { await DB.update('matches/' + m.id, {roomId: rid, roomPass: pw}); toast('Room details saved. Joined players will see them.'); }
+  catch (x) { er.textContent = 'Could not save: ' + x.message; }
+}
+async function cancelMatch(m) {
+  if (!(await ask({title: 'Cancel ' + m.name + '?', body: 'Every player who joined gets their entry fee (' + inr(m.fee) + ') back in their wallet automatically when they next open the app. This cannot be undone.', ok: 'Cancel match', danger: true}))) return;
+  if (await DB.claim('matches/' + m.id + '/status', m.status, 'cancelled')) toast('Match cancelled'); else toast('This match was already changed.', true);
+}
+async function showPlayers(m) {
+  const E = await DB.get('entries/' + m.id), L = list(E).sort((a, b) => a.joinedAt - b.joinedAt);
+  openDlg('<div class="dlgf"><h3>Players in ' + esc(m.name) + '</h3><p class="sub">' + L.length + ' joined through the app' + ((m.joined || 0) > L.length ? ' (the match also shows ' + ((m.joined || 0) - L.length) + ' sample players)' : '') + '</p>' +
+    (L.length ? '<div style="max-height:50vh;overflow:auto">' + L.map(e => '<div class="row"><div><b>' + esc(e.name) + (e.vip ? ' ⭐' : '') + '</b><small>' + esc(e.ign) + ' · ID ' + esc(e.gameUid) + '</small></div><small>' + when(e.joinedAt) + '</small></div>').join('') + '</div>' : '<p class="empty">Nobody has joined yet.</p>') +
+    '<div class="drow"><button type="button" class="btn" data-x>Close</button></div></div>');
+}
+
+/* ---------- results: check screenshots, pay winners ---------- */
+function resultMatches() {
+  return matchList().map(m => Object.assign(m, {_s: mstate(m)})).filter(m => subsFor(m.id).length || ['live', 'ended', 'completed'].includes(m._s)).sort((a, b) => b.startAt - a.startAt);
+}
+function renderRsel() {
+  const sel = $('#rsel'); if (!sel) return;
+  const M = resultMatches();
+  if (!M.find(m => m.id === F.rm)) F.rm = (M[0] || {}).id || '';
+  const html = M.length ? M.map(m => { const p = subsFor(m.id).filter(s => s.status === 'pending').length; return '<option value="' + esc(m.id) + '"' + (m.id === F.rm ? ' selected' : '') + '>' + esc(m.name) + ' · ' + when(m.startAt) + ' · ' + LAB[m._s] + (p ? ' · ' + p + ' to check' : '') + '</option>'; }).join('') : '<option value="">No matches to review yet</option>';
+  if (sel.innerHTML !== html) sel.innerHTML = html;
+}
+function flagsFor(s) {
+  const f = [], o = subsFor(s.matchId).filter(x => x.id !== s.id);
+  if (IMH[s.id] && o.some(x => IMH[x.id] && IMH[x.id] === IMH[s.id])) f.push('Same screenshot used by another player');
+  if (o.some(x => x.rank === s.rank && x.status !== 'rejected') && s.status !== 'rejected') f.push('Rank #' + s.rank + ' claimed by more than one player');
+  return f;
+}
+function winnersOf(m) {
+  return subsFor(m.id).filter(s => s.status === 'approved').sort((a, b) => a.rank - b.rank || a.createdAt - b.createdAt).slice(0, (m.prizes || []).length);
+}
+function checkDeclare(m) {
+  const all = subsFor(m.id), pd = all.filter(s => s.status === 'pending').length, ap = all.filter(s => s.status === 'approved');
+  if (pd) return 'Check all screenshots first (' + pd + ' waiting).';
+  if (ap.length < (m.prizes || []).length) return 'Approve at least ' + (m.prizes || []).length + ' results first.';
+  const rk = ap.map(s => s.rank); if (new Set(rk).size !== rk.length) return 'Two approved players claim the same rank. Reject one of them.';
+  const w = winnersOf(m);
+  for (const s of w) { const u = D.users[s.uid]; if (!u) return s.name + ' no longer has an account.'; if (u.status === 'blocked') return s.name + ' is blocked. Unblock them or reject their result.'; }
+  return '';
+}
+function resultsHtml() {
+  const m0 = D.matches[F.rm]; if (!m0) return '<p class="empty">Pick a match above. Matches show here once they are live or players send screenshots.</p>';
+  const m = Object.assign({id: F.rm}, m0), st = mstate(m), subs = subsFor(m.id);
+  subs.sort((a, b) => ({pending: 0, approved: 1, rejected: 2}[a.status] - {pending: 0, approved: 1, rejected: 2}[b.status]) || a.rank - b.rank);
+  const cnt = s => subs.filter(x => x.status === s).length;
+  let h = '<div class="sumbar"><span class="badge b-' + st + '">' + LAB[st] + '</span><small>' + (m.joined || 0) + ' joined</small><small>' + subs.length + ' screenshots</small><small>' + cnt('pending') + ' to check</small><small>' + cnt('approved') + ' approved</small><small>' + cnt('rejected') + ' rejected</small></div>';
+  if (st === 'upcoming') h += '<div class="panel" style="margin-bottom:14px"><p class="empty" style="padding:0">This match has not started yet. Players can send screenshots after it ends.</p></div>';
+  h += '<div class="mlist" style="margin-top:0">' + (subs.length ? subs.map(s => {
+    const fl = flagsFor(s), done = m.status === 'completed';
+    return '<div class="srow" data-sid="' + esc(s.id) + '"><div class="sthumb" data-act="zoom">' + (s.imgId ? '<img data-img="' + esc(s.imgId) + '" alt="Result screenshot">' : 'No image') + '</div>' +
+      '<div class="sinfo"><b>' + esc(s.name) + '</b><small>' + (s.ign ? 'In-game ' + esc(s.ign) + ' · ' : '') + 'ID ' + esc(s.gameUid) + '</small><small>Claims rank #' + s.rank + ' · ' + s.kills + ' kills · ' + when(s.createdAt) + '</small>' +
+      '<span><span class="badge b-' + s.status + '">' + ({pending: 'To check', approved: 'Approved', rejected: 'Rejected'}[s.status]) + '</span></span>' +
+      fl.map(t => '<span class="flag">⚠ ' + esc(t) + '</span>').join('') + (s.status === 'rejected' && s.why ? '<small>Reason: ' + esc(s.why) + '</small>' : '') + '</div>' +
+      '<div class="sacts">' + (done ? '' : s.status === 'pending' ? '<button class="btn ok sm" data-act="sapp">Approve</button><button class="btn danger sm" data-act="srej">Reject</button>' : '<button class="btn sm" data-act="sund">Undo</button>') + '</div></div>';
+  }).join('') : '<p class="empty">No screenshots yet.</p>') + '</div>';
+  if (m.status === 'completed') {
+    h += '<section class="panel" style="margin-top:18px"><h2>Winners paid</h2>' + (m.results || []).filter(Boolean).map(r => '<div class="row"><div><b>' + ['1st', '2nd', '3rd'][r.place - 1] + ' · ' + esc(r.name) + '</b></div><b>' + inr(r.prize) + '</b></div>').join('') + '</section>';
+  } else if (st !== 'upcoming' && st !== 'cancelled') {
+    const err = checkDeclare(m), w = winnersOf(m);
+    h += '<section class="panel" style="margin-top:18px"><h2>Declare winners</h2>' +
+      (w.length ? w.map((s, i) => '<div class="row"><div><b>' + ['1st', '2nd', '3rd'][i] + ' · ' + esc(s.name) + '</b><small>Rank #' + s.rank + '</small></div><b>' + inr(m.prizes[i]) + '</b></div>').join('') : '<p class="empty" style="padding:0 0 10px">Approved players will appear here, best rank first.</p>') +
+      (err ? '<p class="hint" style="margin-top:10px">' + esc(err) + '</p>' : '') +
+      '<div style="margin-top:14px"><button class="btn primary" data-act="declare"' + (err ? ' disabled' : '') + '>Pay prizes and declare winners</button></div></section>';
+  }
+  return h;
+}
+async function setSub(s, status, why) {
+  await DB.update('submissions/' + s.id, {status, why: why || '', checkedAt: Date.now()});
+  toast(status === 'approved' ? 'Approved' : status === 'rejected' ? 'Rejected' : 'Moved back to check');
+}
+async function declare(m) {
+  const err = checkDeclare(m); if (err) return toast(err, true);
+  const w = winnersOf(m), total = w.reduce((a, s, i) => a + m.prizes[i], 0);
+  const ok = await ask({title: 'Pay ' + inr(total) + ' to the winners?', ok: 'Pay prizes', body: w.map((s, i) => '<div class="kvr"><span>' + ['1st', '2nd', '3rd'][i] + ' ' + esc(s.name) + '</span><b>' + inr(m.prizes[i]) + '</b></div>').join('') + '<p style="margin:10px 0 0">The money goes to their wallets straight away. This cannot be undone.</p>'});
+  if (!ok) return;
+  if (!(await DB.claim('matches/' + m.id + '/status', m.status, 'completed'))) return toast('This match was already changed.', true);
+  const res = w.map((s, i) => ({place: i + 1, uid: s.uid, name: s.name, prize: m.prizes[i]}));
+  await DB.update('matches/' + m.id, {results: res, completedAt: Date.now()});
+  for (const r of res) {
+    await DB.inc('users/' + r.uid + '/wallet', r.prize, {min: 0});
+    await DB.inc('users/' + r.uid + '/earned', r.prize, {min: 0});
+    if (r.place === 1) await DB.inc('users/' + r.uid + '/wins', 1, {min: 0});
+    const u = await DB.get('users/' + r.uid);
+    await DB.update('leaderboard/' + r.uid, {n: u.name, earned: u.earned || 0, wins: u.wins || 0});
+  }
+  toast('Winners declared. ' + inr(total) + ' paid.');
+}
+
+/* ---------- users ---------- */
+function renderUseg() {
+  const el = $('#useg'); if (!el) return; const U = list(D.users);
+  el.innerHTML = segHtml([['all', 'All (' + U.length + ')'], ['active', 'Active'], ['blocked', 'Blocked (' + U.filter(u => u.status === 'blocked').length + ')']], F.uf);
+}
+function usersHtml() {
+  const q = F.uq.trim().toLowerCase();
+  const U = list(D.users).filter(u => (F.uf === 'all' || u.status === F.uf) && (!q || [u.name, u.phone, u.state].some(x => String(x || '').toLowerCase().includes(q)))).sort((a, b) => (b.joinedAt || 0) - (a.joinedAt || 0));
+  if (!U.length) return '<p class="empty">' + (list(D.users).length ? 'No users match this search.' : 'No players have signed up yet.') + '</p>';
+  return '<div class="tw"><table class="tbl"><thead><tr><th>Player</th><th>State</th><th>Joined</th><th class="r">Wallet</th><th class="r">Won</th><th>Status</th><th></th></tr></thead><tbody>' +
+    U.map(u => '<tr data-uid="' + esc(u.id) + '"><td data-l="Player"><span><b>' + esc(u.name) + '</b><small>' + esc(u.phone || '') + '</small></span></td><td data-l="State">' + esc(u.state || '-') + '</td><td data-l="Joined">' + day(u.joinedAt) + '</td><td data-l="Wallet" class="r"><b>' + inr(u.wallet) + '</b></td><td data-l="Won" class="r">' + inr(u.earned) + '</td><td data-l="Status"><span class="badge b-' + (u.status === 'blocked' ? 'blocked' : 'active') + '">' + (u.status === 'blocked' ? 'Blocked' : 'Active') + '</span></td><td class="act">' +
+      (u.status === 'blocked' ? '<button class="btn ok sm" data-act="unblock">Unblock</button>' : '<button class="btn danger sm" data-act="block">Block</button>') + '</td></tr>').join('') + '</tbody></table></div>';
+}
+async function setBlocked(uid, block) {
+  const u = D.users[uid]; if (!u) return;
+  if (!(await ask({title: (block ? 'Block ' : 'Unblock ') + u.name + '?', body: block ? 'They will see an "Account suspended" screen in the app and cannot join, add money or withdraw. Pending requests cannot be approved while blocked.' : 'They can play and use their wallet again.', ok: block ? 'Block user' : 'Unblock user', danger: block}))) return;
+  await DB.update('users/' + uid, block ? {status: 'blocked', blockedAt: Date.now()} : {status: 'active', blockedAt: null});
+  toast(u.name + (block ? ' is blocked' : ' is unblocked'));
+}
+
+/* ---------- payments ---------- */
+function renderPseg() {
+  const P = list(D.payments), c = (t, s) => P.filter(p => p.type === t && p.status === s).length;
+  $('#ptseg').innerHTML = segHtml([['withdrawal', 'Withdrawals (' + c('withdrawal', 'pending') + ' pending)'], ['deposit', 'Deposits (' + c('deposit', 'pending') + ' pending)']], F.ptype);
+  $('#psseg').innerHTML = segHtml([['pending', 'Pending'], ['approved', 'Approved'], ['rejected', 'Rejected'], ['all', 'All']], F.pst);
+}
+function payHtml() {
+  const P = list(D.payments).filter(p => p.type === F.ptype && (F.pst === 'all' || p.status === F.pst)).sort((a, b) => F.pst === 'pending' ? a.createdAt - b.createdAt : b.createdAt - a.createdAt);
+  if (!P.length) return '<p class="empty">No ' + (F.pst === 'all' ? '' : F.pst + ' ') + (F.ptype === 'deposit' ? 'deposit' : 'withdrawal') + ' requests.</p>';
+  return '<div class="tw"><table class="tbl"><thead><tr><th>Player</th><th class="r">Amount</th><th>' + (F.ptype === 'deposit' ? 'UTR number' : 'Pay out to') + '</th><th>Requested</th><th>Status</th><th></th></tr></thead><tbody>' +
+    P.map(p => {
+      const u = D.users[p.uid] || {name: 'Unknown user', wallet: 0};
+      return '<tr data-pid="' + esc(p.id) + '"><td data-l="Player"><span><b>' + esc(u.name) + (u.status === 'blocked' ? ' (blocked)' : '') + '</b><small>Wallet ' + inr(u.wallet) + '</small></span></td><td data-l="Amount" class="r"><b>' + inr(p.amount) + '</b></td><td data-l="' + (F.ptype === 'deposit' ? 'UTR' : 'Pay out to') + '">' + esc(p.ref || '-') + '</td><td data-l="Requested">' + when(p.createdAt) + '</td>' +
+        '<td data-l="Status"><span><span class="badge b-' + p.status + '">' + ({pending: 'Pending', approved: 'Approved', rejected: 'Rejected'}[p.status] || esc(p.status)) + '</span>' + (p.note ? '<small>' + esc(p.note) + '</small>' : '') + '</span></td>' +
+        '<td class="act">' + (p.imgId ? '<button class="btn sm" data-act="pshot">Screenshot</button>' : '') + (p.status === 'pending' ? '<button class="btn ok sm" data-act="approve">Approve</button><button class="btn danger sm" data-act="reject">Reject</button>' : '') + '</td></tr>';
+    }).join('') + '</tbody></table></div>';
+}
+async function approvePay(id) {
+  const p = D.payments[id]; if (!p || p.status !== 'pending') return;
+  const u = D.users[p.uid]; if (!u) return toast('This user no longer exists.', true);
+  if (u.status === 'blocked') return toast('This user is blocked. Unblock them first.', true);
+  const wd = p.type === 'withdrawal', deduct = wd && CONFIG.WITHDRAW_DEDUCT_ON_APPROVE;
+  if (deduct && (u.wallet || 0) < p.amount) return toast('Wallet has only ' + inr(u.wallet) + '. Cannot pay ' + inr(p.amount) + '.', true);
+  const ok = await ask({title: (wd ? 'Approve withdrawal of ' : 'Approve deposit of ') + inr(p.amount) + '?', ok: 'Approve',
+    body: wd ? 'Send <b>' + inr(p.amount) + '</b> to UPI ID <b>' + esc(p.ref) + '</b> (' + esc(u.name) + ') from your bank or UPI app first, then approve. The amount was already held from their wallet.' : 'Check that UTR <b>' + esc(p.ref) + '</b> for ' + inr(p.amount) + ' really reached your account. The money is added to ' + esc(u.name) + '\u2019s wallet.'});
+  if (!ok) return;
+  if (!(await DB.claim('payments/' + id + '/status', 'pending', 'approved'))) return toast('Someone already handled this request.', true);
+  let applied = true;
+  if (!wd) applied = await DB.inc('users/' + p.uid + '/wallet', p.amount, {min: 0});
+  else if (deduct) applied = await DB.inc('users/' + p.uid + '/wallet', -p.amount, {min: 0});
+  if (!applied) { await DB.set('payments/' + id + '/status', 'pending'); return toast('Wallet could not be updated, so the request is back in pending.', true); }
+  await DB.update('payments/' + id, {handledAt: Date.now()});
+  toast(wd ? 'Withdrawal approved' : 'Deposit approved, wallet credited');
+}
+async function rejectPay(id) {
+  const p = D.payments[id]; if (!p || p.status !== 'pending') return;
+  const reason = await ask({title: 'Reject ' + p.type + ' of ' + inr(p.amount) + '?', body: 'The player will see the reason you enter.' + (p.type === 'withdrawal' && !CONFIG.WITHDRAW_DEDUCT_ON_APPROVE ? ' The held money goes back to their wallet.' : ''), ok: 'Reject request', danger: true, field: {label: 'Reason', ph: 'e.g. Payment not found', max: 80, req: true}});
+  if (reason === false) return;
+  if (!(await DB.claim('payments/' + id + '/status', 'pending', 'rejected'))) return toast('Someone already handled this request.', true);
+  if (p.type === 'withdrawal' && !CONFIG.WITHDRAW_DEDUCT_ON_APPROVE) await DB.inc('users/' + p.uid + '/wallet', p.amount, {min: 0});
+  await DB.update('payments/' + id, {handledAt: Date.now(), note: reason});
+  toast('Request rejected');
+}
+
+/* ---------- settings ---------- */
+function settingsHtml() {
+  const c = D.conf || {}, fb = DB.mode === 'firebase';
+  return '<div class="ph"><h1>Settings</h1><p>Payment details shown to players, and data tools.</p></div>' +
+    '<section class="panel" style="margin-bottom:14px"><h2>Payments</h2><form id="cf" class="grid" novalidate>' +
+    '<label class="f span2">Your UPI ID (players pay here)<input name="upiId" maxlength="60" placeholder="yourname@bank" value="' + esc(c.upiId) + '"></label>' +
+    '<label class="f span2">Name shown with it<input name="upiName" maxlength="40" placeholder="GAMERZONE" value="' + esc(c.upiName || 'GAMERZONE') + '"></label>' +
+    '<label class="f">Minimum deposit (₹)<input name="minDeposit" type="number" min="1" step="1" value="' + esc(c.minDeposit || 10) + '"></label>' +
+    '<label class="f">Maximum deposit (₹)<input name="maxDeposit" type="number" min="1" step="1" value="' + esc(c.maxDeposit || 10000) + '"></label>' +
+    '<label class="f">Minimum withdrawal (₹)<input name="minWithdraw" type="number" min="1" step="1" value="' + esc(c.minWithdraw || 100) + '"></label>' +
+    '<label class="f">Maximum withdrawal (₹)<input name="maxWithdraw" type="number" min="1" step="1" value="' + esc(c.maxWithdraw || 10000) + '"></label>' +
+    '<label class="f span2">Support email shown to blocked players<input name="supportEmail" type="email" maxlength="80" value="' + esc(c.supportEmail || 'GAMERZONE.HELP@gmail.com') + '"></label>' +
+    '<p class="err full" id="cferr" role="alert"></p><div class="full"><button class="btn primary">Save settings</button></div></form></section>' +
+    '<section class="panel"><h2>Data</h2><p class="sub" style="margin-bottom:12px">' + (fb ? 'Connected to your Firebase database. Every phone and this panel share the same live data.' : 'Data is kept in this browser only (test mode). The app and this panel share it when opened from the same place. To go live, switch BACKEND to \u2018firebase\u2019 in both files.') + '</p>' +
+    (fb ? '' : '<p class="sub" style="margin-bottom:12px">Demo players (password <b>demo123</b>): 9876500001 Rahul, 9876500002 Priya, 9876500003 Aman (blocked), 9876500004 Vikram, 9876500005 Neha. Demo data exists only in this browser and is never sent to Firebase.</p>') +
+    '<div class="macts" style="margin-top:0">' + (fb ? '' : '<button class="btn" data-act="demo">Restore demo data</button>') + '<button class="btn danger" data-act="fresh">Start fresh (delete everything)</button></div></section>';
+}
+function bindSettings() {
+  $('#cf').onsubmit = async e => {
+    e.preventDefault(); const f = e.target, v = k => f.elements[k].value.trim(), er = $('#cferr');
+    const o = {upiId: v('upiId'), upiName: v('upiName'), minDeposit: +v('minDeposit'), maxDeposit: +v('maxDeposit'), minWithdraw: +v('minWithdraw'), maxWithdraw: +v('maxWithdraw'), supportEmail: v('supportEmail')};
+    if (o.upiId && !/^[\w.\-]{2,}@[a-zA-Z]{2,}$/.test(o.upiId)) return er.textContent = 'Enter a valid UPI ID, like name@bank.';
+    if (!(o.minDeposit >= 1 && o.maxDeposit >= o.minDeposit)) return er.textContent = 'Check the deposit limits.';
+    if (!(o.minWithdraw >= 1 && o.maxWithdraw >= o.minWithdraw)) return er.textContent = 'Check the withdrawal limits.';
+    er.textContent = '';
+    try { await DB.set('config/payment', o); toast('Settings saved'); } catch (x) { er.textContent = 'Could not save: ' + x.message; }
+  };
+}
+
+/* ---------- one click handler ---------- */
+document.addEventListener('click', async e => {
+  const t = e.target.closest('button, [data-act]'); if (!t) return;
+  try {
+    if (t.dataset.view) return setView(t.dataset.view);
+    if (t.dataset.go) return setView(t.dataset.go);
+    if (t.closest('#mseg') && t.dataset.v) { F.mf = t.dataset.v; renderMseg(); return renderBody(); }
+    if (t.closest('#useg') && t.dataset.v) { F.uf = t.dataset.v; renderUseg(); return renderBody(); }
+    if (t.closest('#ptseg') && t.dataset.v) { F.ptype = t.dataset.v; renderPseg(); return renderBody(); }
+    if (t.closest('#psseg') && t.dataset.v) { F.pst = t.dataset.v; renderPseg(); return renderBody(); }
+    const a = t.dataset.act; if (!a) return;
+    const card = t.closest('[data-mid]'), m = card && D.matches[card.dataset.mid] && Object.assign({id: card.dataset.mid}, D.matches[card.dataset.mid]);
+    if (a === 'room' && m) return saveRoom(card, m);
+    if (a === 'cancel' && m) return cancelMatch(m);
+    if (a === 'players' && m) return showPlayers(m);
+    if (a === 'review' && m) { F.rm = m.id; return setView('results'); }
+    const row = t.closest('tr'), sc = t.closest('[data-sid]'), s = sc && D.submissions[sc.dataset.sid] && Object.assign({id: sc.dataset.sid}, D.submissions[sc.dataset.sid]);
+    if (a === 'zoom' && s) { const u = IMGC[s.imgId]; if (!u) return toast('Screenshot is still loading'); openDlg('<div class="dlgf"><h3>' + esc(s.name) + ' · rank #' + s.rank + ', ' + s.kills + ' kills</h3><img class="bigimg" src="' + u + '" alt="Result screenshot"><div class="drow"><button type="button" class="btn" data-x>Close</button></div></div>'); return; }
+    if (a === 'pshot' && row) {
+      const p = D.payments[row.dataset.pid]; if (!p || !p.imgId) return;
+      let u = IMGC[p.imgId]; if (!u) { toast('Loading screenshot...'); u = await DB.getImage(p.imgId); if (u) IMGC[p.imgId] = u; }
+      if (!u) return toast('Screenshot not found', true);
+      const who = D.users[p.uid] ? D.users[p.uid].name : 'Unknown user';
+      openDlg('<div class="dlgf"><h3>' + esc(who) + ' · ' + inr(p.amount) + '</h3><p style="margin:0 0 10px">UTR: <b>' + esc(p.ref || '-') + '</b></p><img class="bigimg" src="' + u + '" alt="Payment screenshot"><div class="drow"><button type="button" class="btn" data-x>Close</button></div></div>'); return;
+    }
+    if (a === 'sapp' && s) return setSub(s, 'approved');
+    if (a === 'sund' && s) return setSub(s, 'pending');
+    if (a === 'srej' && s) { const why = await pickReason(); if (why) setSub(s, 'rejected', why); return; }
+    if (a === 'declare') return declare(Object.assign({id: F.rm}, D.matches[F.rm]));
+    if (a === 'block' || a === 'unblock') return setBlocked(row.dataset.uid, a === 'block');
+    if (a === 'approve') return approvePay(row.dataset.pid);
+    if (a === 'reject') return rejectPay(row.dataset.pid);
+    if (a === 'demo') { if (await ask({title: 'Restore demo data?', body: 'This deletes everything and puts back the demo players, matches, payments and screenshots.', ok: 'Restore', danger: true})) { await DB.reset('demo'); toast('Demo data restored'); } return; }
+    if (a === 'fresh') { const v = await ask({title: 'Delete everything?', body: 'This removes all matches, players, wallets, payments and screenshots. Use it once, before you launch. Type <b>DELETE</b> to confirm.', ok: 'Delete everything', danger: true, field: {label: 'Type DELETE', req: true, max: 10}}); if (v === 'DELETE') { await DB.reset('fresh'); toast('Everything deleted. You are starting fresh.'); } else if (v !== false) toast('Nothing was deleted. You must type DELETE.', true); return; }
+  } catch (x) { console.error(x); toast('Something went wrong: ' + (x.message || x), true); }
+});
+
+/* ---------- login, session, idle timeout ---------- */
+let fails = 0, lastAct = Date.now(), idleT = null;
+const SESSION = 'gz_admin_until';
+const lockUntil = () => Number(tryLs(() => localStorage.getItem('gz_admin_lock')) || 0);
+function enter() {
+  $('#login').hidden = true; $('#app').hidden = false;
+  tryLs(() => sessionStorage.setItem(SESSION, String(Date.now() + CONFIG.IDLE_MINUTES * 6e4)));
+  lastAct = Date.now(); clearInterval(idleT);
+  idleT = setInterval(() => { if (Date.now() - lastAct > CONFIG.IDLE_MINUTES * 6e4) leave('You were logged out after ' + CONFIG.IDLE_MINUTES + ' minutes of inactivity.'); }, 15000);
+  startWatch(); setView(view);
+}
+async function leave(msg) {
+  clearInterval(idleT); tryLs(() => sessionStorage.removeItem(SESSION)); stopWatch();
+  if (DB.mode === 'firebase' && CONFIG.USE_FIREBASE_AUTH) { try { await firebase.auth().signOut(); } catch (x) {} }
+  $('#app').hidden = true; $('#login').hidden = false; $('#lpw').value = ''; $('#lerr').textContent = msg || '';
+  const d = $('#dlg'); if (d.open) d.close('cancel');
+}
+['click', 'keydown', 'touchstart', 'pointermove'].forEach(ev => document.addEventListener(ev, () => { lastAct = Date.now(); }, {passive: true}));
+$('#lform').onsubmit = async e => {
+  e.preventDefault();
+  const er = $('#lerr'), btn = $('#lbtn'), pw = $('#lpw').value; er.textContent = '';
+  const wait = lockUntil() - Date.now();
+  if (wait > 0) { er.textContent = 'Too many attempts. Try again in ' + Math.ceil(wait / 1000) + ' seconds.'; return; }
+  if (!pw) { er.textContent = 'Enter the password.'; return; }
+  btn.disabled = true;
+  try {
+    if (CONFIG.USE_FIREBASE_AUTH && DB.mode === 'firebase') await firebase.auth().signInWithEmailAndPassword($('#lemail').value.trim(), pw);
+    else { if ((await sha256(pw)) !== CONFIG.ADMIN_PASS_SHA256) throw new Error('bad'); enter(); }
+    fails = 0;
+  } catch (x) {
+    const code = (x && x.code) || '';
+    const bad = !code || /invalid-credential|wrong-password|user-not-found|invalid-email|invalid-login/.test(code) || x.message === 'bad';
+    if (x.message === 'nocrypto') er.textContent = 'This browser blocks secure login on this address. Open the page over https or localhost.';
+    else if (!bad) {
+      const why = {
+        'auth/operation-not-allowed': 'Email/Password sign-in is switched off in Firebase (Authentication, Sign-in method).',
+        'auth/unauthorized-domain': 'This website address is not allowed in Firebase (Authentication, Settings, Authorized domains).',
+        'auth/operation-not-supported-in-this-environment': 'Login does not work when the file is opened from the phone. Open the https website link instead.',
+        'auth/network-request-failed': 'No internet, or the connection to Firebase is blocked.',
+        'auth/too-many-requests': 'Firebase has paused logins for a while after too many tries. Wait some minutes and try again.',
+        'auth/user-disabled': 'This admin account is disabled in Firebase.',
+        'auth/invalid-api-key': 'The Firebase API key in this file is wrong.',
+        'auth/api-key-not-valid.-please-pass-a-valid-api-key.': 'The Firebase API key in this file is wrong.'
+      }[code];
+      er.textContent = (why || 'Login problem.') + ' (' + code + ')';
+    }
+    else { fails++; if (fails >= 5) { tryLs(() => localStorage.setItem('gz_admin_lock', String(Date.now() + 30000))); fails = 0; er.textContent = 'Too many attempts. Locked for 30 seconds.'; } else er.textContent = (CONFIG.USE_FIREBASE_AUTH ? 'Wrong email or password.' : 'Wrong password.') + ' ' + (5 - fails) + ' tries left.'; }
+    $('#lpw').select();
+  }
+  btn.disabled = false;
+};
+$('#logout').onclick = $('#logout2').onclick = () => leave('');
+(async () => {
+  try {
+    await DB.ready;
+    if (DB.mode === 'firebase' && CONFIG.USE_FIREBASE_AUTH) {
+      await new Promise((res, rej) => { const s = document.createElement('script'); s.src = GZ_CONFIG.FIREBASE_SDK + 'firebase-auth-compat.js'; s.onload = res; s.onerror = () => rej(new Error('Could not load sign-in')); document.head.appendChild(s); });
+    }
+    await DB.ensureSeed();
+  } catch (x) { $('#lerr').textContent = 'Could not start: ' + x.message; return; }
+  const live = DB.mode === 'firebase';
+  $('#modeChip').className = 'chip' + (live ? ' live' : ''); $('#modeChip span').textContent = live ? 'Firebase connected' : 'Test mode, data in this browser';
+  $('#modeTxt').textContent = live ? 'Firebase connected' : 'Test mode';
+  if (live && CONFIG.USE_FIREBASE_AUTH) {
+    $('#lemailw').hidden = false;
+    firebase.auth().onAuthStateChanged(u => { if (u && $('#app').hidden) enter(); else if (!u && !$('#app').hidden) leave(''); });
+  } else if (Number(tryLs(() => sessionStorage.getItem(SESSION))) > Date.now()) enter();
+})();
+window.__gzAdmin = {D, F};
+
+</script>
+</body>
+</html>
