@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#050d0b">
+<title>GAMERZONE Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="admin.css?v=3">
+</head>
+<body>
+<!-- ============ LOGIN ============ -->
+<div id="login" class="login">
+  <div class="lcard">
+    <div class="logo" aria-hidden="true">G</div>
+    <h1>Admin sign in</h1>
+    <p class="sub">GAMERZONE control panel. Authorised staff only.</p>
+    <form id="lform" autocomplete="off" novalidate>
+      <label class="f" id="lemailw" hidden>Email<input id="lemail" type="email" autocomplete="username" placeholder="admin@yourdomain.com" value="gamerzone.help@gmail.com"></label>
+      <label class="f">Password<input id="lpw" type="password" autocomplete="current-password" placeholder="Enter admin password" required></label>
+      <p class="err" id="lerr" role="alert"></p>
+      <button class="btn primary" id="lbtn">Sign in</button>
+    </form>
+  </div>
+</div>
+
+<!-- ============ APP ============ -->
+<div id="app" class="app" hidden>
+  <aside class="side">
+    <div class="brand"><span class="logo" aria-hidden="true">G</span><div><b>GAMERZONE</b><small>Admin panel</small></div></div>
+    <nav class="nav" id="nav" aria-label="Sections"></nav>
+    <div class="sidefoot">
+      <span class="chip" id="modeChip"><i></i><span></span></span>
+      <button class="btn" id="logout">Log out</button>
+    </div>
+  </aside>
+  <header class="top">
+    <div class="brand"><span class="logo" aria-hidden="true">G</span><div><b>GAMERZONE</b><small id="modeTxt"></small></div></div>
+    <button class="btn sm" id="logout2">Log out</button>
+  </header>
+  <main id="main" tabindex="-1"></main>
+</div>
+
+<dialog id="dlg"></dialog>
+<div id="toast" role="status" aria-live="polite"></div>
+
+
+<script src="admin-db.js?v=3"></script>
+<script src="admin-core.js?v=3"></script>
+<script src="admin-nav.js?v=3"></script>
+<script src="admin-matches.js?v=3"></script>
+<script src="admin-results.js?v=3"></script>
+<script src="admin-users.js?v=3"></script>
+<script src="admin-money.js?v=3"></script>
+<script src="admin-buttons.js?v=3"></script>
+<script src="admin-social.js?v=3"></script>
+<script src="admin-login.js?v=3"></script>
+</body>
+</html>
