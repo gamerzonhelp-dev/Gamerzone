@@ -355,7 +355,10 @@ function renderS() {
     (window.gzIsApp && gzIsApp()
       ? ""
       : '<div class="sg">APP</div>' +
-        sbox([sra("📲", "Install GAMERZONE app", "Add it to your home screen", "instapp")])) +
+        sbox([
+          sra("📲", "Install GAMERZONE app", "Add it to your home screen", "instapp"),
+          sra("🤖", "Download Android app (APK)", "Get the app file from our site", "getapk"),
+        ])) +
     '<div class="sg">SUPPORT</div>' +
     sbox([
       sra("❓", "Help center", "Answers to common questions", "shelp"),
@@ -432,6 +435,10 @@ function ext7(a, b) {
   }
   if (a === "instapp") {
     window.gzInstall && gzInstall();
+    return 1;
+  }
+  if (a === "getapk") {
+    location.href = "download.html";
     return 1;
   }
   if (a === "sleg") {
